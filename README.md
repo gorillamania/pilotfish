@@ -14,6 +14,13 @@ Quality is a top goal of the interactions produced here. You can trust that stab
 
 More info can be found on the pilotfish.io website. TODO: Link.
 
+### Features
+* Thin javascript library, plugin architecture. You only get what you need.
+* High quality, well tested code. We've already sorted out the browser incompatibilities.
+* Highly evolved user interactions, thoroughly tested by usability experts.
+* Supported by an underlying server side api, and a console for management via a web interface. OPTIONAL.
+* Extensive community of plugins ready for you to use. No need to roll your own.
+
 ### FAQ
 Q\. Can't I just do this on my own? 
 
@@ -112,18 +119,10 @@ While it is recommend you use the 'stable', minified release of the javascript, 
 * /client/portfolio/alpha/portfolio-min.js
 * /client/portfolio/beta/portfolio-min.js
 
+## License
+MIT License - see [LICENSE](https://github.com/pilotfish/pilotfish/blob/master/LICENSE)
 
-## More information
-* The [wiki](https://github.com/pilotfish/pilotfish/wiki) (TODO)
-* The Google Discussion Group (TODO)
-
-
-## Issues/Requests/Support ##
-We want you to have a good experience, too. :)
-
-Please check out [the existing issues](https://github.com/pilotfish/pilotfish/issues), and if you don't see that your problem is already being worked on, please [file an issue](https://github.com/pilotfish/pilotfish/issues/new)
-
-## Contributing ##
+## Contributing
 
 Would you like to help out? We need:
 
@@ -133,4 +132,15 @@ Would you like to help out? We need:
 * Tests written
 * Documentation written
 
-See [HELPING](HELPING.md) to get started. See [DEVELOPMENT](DEVELOPMENT.md) for guidelines on how to write code that gets included in the production release.
+See [HELPING](https://github.com/pilotfish/pilotfish/blob/master/HELPING.md) to get started. See [DEVELOPMENT](https://github.com/pilotfish/pilotfish/blob/master/DEVELOPMENT.md) for guidelines on how to write code that gets included in the production release.
+
+## More information
+* The [wiki](https://github.com/pilotfish/pilotfish/wiki) (TODO)
+* The Google Discussion Group (TODO)
+
+
+## Issues/Requests/Support
+We want you to have a good experience, too. :)
+
+Please check out [the existing issues](https://github.com/pilotfish/pilotfish/issues), and if you don't see that your problem is already being worked on, please [file an issue](https://github.com/pilotfish/pilotfish/issues/new)
+
