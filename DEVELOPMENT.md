@@ -9,7 +9,12 @@ You are welcome to fork this repository. We'd love getting pull requests. Here a
  
 
 ## Testing
-We recommend [Test Driven Development](http://en.wikipedia.org/wiki/Test-driven_development) be used, and we aim for 100% coverage. Current tests are Passing/Failing (TODO)
+We recommend [Test Driven Development](http://en.wikipedia.org/wiki/Test-driven_development) be used, and we aim for 100% coverage. 
+
+We use travis-ci for automagic testing on every commit. Current test status:
+
+[![Build Status](https://secure.travis-ci.org/pilotfish/pilotfish.png)](http://travis-ci.org/pilotfish/pilotfish)
+
 
 ### Running Tests
 
