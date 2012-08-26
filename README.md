@@ -115,14 +115,21 @@ Several core plugins are included with the platform, and there is also a communi
 
 ## Browser Compatibility
 
-All of the grade A browsers are fully supported.
+Pilotfish accepts the burden of browser compatiblity testing, and we aim to make reasonable trade offs for compatibility versus complexity/bloat. 
 
-* Chrome Latest Stable
-* Firefox Latest Stable
-* Internet Explorer >= 7
+We currently to support all browsers that support [querySelectorAll](http://caniuse.com/queryselector), which as of Aug 26, 2012, that's 93% of the browsing population:
+
+* Chrome >= 4
+* Firefox >= 3.5
+* Internet Explorer >= 8
 * Safari (including iOS) >= 4
 
-For older browsers that don't support required functionality, we aim to gracefully degrade, ie. silently disabled without causing problems for the user.
+For older browsers that don't support required functionality, we aim to gracefully degrade - silently disabled without causing problems for the user.
+
+<small>Developer note: The reason why we don't inclue IE 7 is because it doesn't support querySelectorAll, which means we would
+have had to include a library like [sizzle](http://sizzlejs.com/) to implement this functionality. If the community pushes for IE 7 support,
+we could implement this via a shim, keeping the library lightweight for the other browsers but having IE 7 download
+an additional js file, but we are hoping no one notices. :)</small>
 
 ## Alternate Hosting Options
 
