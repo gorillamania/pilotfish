@@ -1,7 +1,7 @@
-# Warning #
+# Warning 
 I'm practicing [README driven development](http://tom.preston-werner.com/2010/08/23/readme-driven-development.html), so this documentation is being written before the code is actually done. :)
 
-## About ##
+## About
 We think websites should be intuitive, easy, and fun to use. Pilotfish is a user experience platform for web and application developers to build better experiences. 
 
 Pilotfish itself is a thin javascript framework that provides a plugin driven architecture for widgets that improve user experience. 
@@ -14,7 +14,7 @@ Quality is a top goal of the interactions produced here. You can trust that stab
 
 More info can be found on the pilotfish.io website. TODO: Link.
 
-### FAQ ###
+### FAQ
 Q\. Can't I just do this on my own? 
 
 A\. Sure, most developers have created experiences like the ones you see here. Do you want to keep doing that over and over again, or use well tested, high quality interactions?
@@ -27,16 +27,29 @@ Q\. Do I have to use your server for the plugins that require server side suppor
 
 A\. No. We provide a platform-as-a-service at api.pilotfish.io TODO: Link, but you can also download/install the api code and host yourself.
 
-### Etymylogical Trivia ###
+### Etymylogical Trivia
 Why the name pilotfish? A pilot fish is one of those little fish that hover around sharks and eat the parasites, creating a mutually beneficial relationship with the shark. Similarly, Pilotfish aims to work alongside your application to make it better.
 
-## Plugins ##
+## Demo
+To see a working sample site, head over to our demo site TODO: Link, where we show off what features we can add to your site.
+
+## Using
+
+To use pilotfish, first include the base framework:
+
+`<script src="http://cdn.portfolio.io/client/portfolio-stable-min.js"></script>`
+
+Then you include the javascript for which plugins you may want to use:
+
+`<script src="http://cdn.portfolio.io/plugins/new-user-walkthrough/new-user-walkthrough-stable-min.js"></script>`
+
+## Plugins
 Several core plugins are included with the platform, and there is also a community of developers that create plugins as they are needed.
 
-### Existing plugins ###
+### Existing plugins
 * TODO 
 
-### Ideas for plugins ###
+### Ideas for plugins
 
 * New User Tutorial
 * User Notifications
@@ -82,23 +95,14 @@ Several core plugins are included with the platform, and there is also a communi
 
 **Have an idea for a plugin? We'd love to hear it.** Please [file an issue](https://github.com/pilotfish/pilotfish/issues/new) describing your idea.
 
-## Dependencies ##
+## Dependencies
 jQuery >= 1.4
 
 Interested in running this on a site that doesn't have jQuery? Please [file an issue](https://github.com/pilotfish/pilotfish/issues/new) so we can guage demand.
 
-## Using ##
 
-To use pilotfish, first include the base framework:
-
-`<script src="http://cdn.portfolio.io/client/portfolio-stable-min.js"></script>`
-
-Then you include the javascript for which plugins you may want to use:
-
-`<script src="http://cdn.portfolio.io/plugins/new-user-walkthrough/new-user-walkthrough-stable-min.js"></script>`
-
-#### Alternate Hosting Options ####
-You may host these files yourself if you like. You may also use the Google CDN (TODO) or the Yahoo! CDN (TODO).
+## Alternate Hosting Options 
+You may host these files yourself if you like. You may also use the Google CDN (TODO), Yahoo! CDN (TODO), or the Github CDN (TODO).
 
 While it is recommend you use the 'stable', minified release of the javascript, you may also pick a different release state or lock to a specific version number. Examples:
 
@@ -107,3 +111,26 @@ While it is recommend you use the 'stable', minified release of the javascript, 
 * /client/portfolio/1/portfolio-min.js # will automatically upgrade to the latest stable release in the 1.0 series
 * /client/portfolio/alpha/portfolio-min.js
 * /client/portfolio/beta/portfolio-min.js
+
+
+## More information
+* The [wiki](https://github.com/pilotfish/pilotfish/wiki) (TODO)
+* The Google Discussion Group (TODO)
+
+
+## Issues/Requests/Support ##
+We want you to have a good experience, too. :)
+
+Please check out [the existing issues](https://github.com/pilotfish/pilotfish/issues), and if you don't see that your problem is already being worked on, please [file an issue](https://github.com/pilotfish/pilotfish/issues/new)
+
+## Contributing ##
+
+Would you like to help out? We need:
+
+* Plugins created
+* Features added
+* Bugs fixed
+* Tests written
+* Documentation written
+
+See [HELPING](HELPING.md) to get started. See [DEVELOPMENT](DEVELOPMENT.md) for guidelines on how to write code that gets included in the production release.
