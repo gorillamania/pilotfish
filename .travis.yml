@@ -1,0 +1,13 @@
+language: node_js
+
+# test on these node.js versions
+node_js:
+   - 0.8
+   - 0.9
+
+notifications:
+  email:
+    recipients:
+      - nick@sullivanflock.com
+    on_success: [change]
+    on_failure: [always]
