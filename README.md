@@ -12,7 +12,7 @@ Pilotfish's architecture comes in 3 components:
 
 * A thin javascript toolkit that provides a plugin driven architecture for widgets that improve user experience. 
 * A [server side api](https://github.com/pilotfish/pilotfish-api), for data collection, processing, and access, for the plugins that require server side support.
-* A [web console](https://github.com/pilotfish/pilotfish-api) to provide allow for configuration of the widgets, analytics, and insights into your users.
+* A [web console](https://github.com/pilotfish/pilotfish-console) to provide allow for configuration of the widgets, analytics, and insights into your users.
 
 More info can be found on the pilotfish.io website. TODO: Link.
 
@@ -27,7 +27,7 @@ jQuery is client side only. Pilotfish provides a server side component as well f
 
 ###### Do I have to use your server for the plugins that require server side support?
 
-No. While there is a highly available, scalable platform-as-a-service at api.pilotfish.io TODO: Link, you can also download/install the api code and host yourself. See [alternate hosting options](#alternate hosting options).
+No. While there is a highly available, scalable platform-as-a-service at api.pilotfish.io TODO: Link, you can also download/install the api code and host yourself. See [alternate hosting options](#alternate-hosting-options).
 
 ###### Does it work with jQuery, Prototype, Backbone, Underscore, jQuery UI, YUI, mooTools, dojo, etc.? 
 
