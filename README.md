@@ -1,23 +1,18 @@
 # Warning 
-Pilotfish developers are practicing [README driven development](http://tom.preston-werner.com/2010/08/23/readme-driven-development.html), so this documentation is being written before the code is actually done. :)
+**This code is not production ready.**  Pilotfish developers are practicing [README driven development](http://tom.preston-werner.com/2010/08/23/readme-driven-development.html), so this documentation is being written before the code is actually done. :) If the project interests you and you would like to be notified when the first release is ready, let us know. TODO: Link to newsletter signup.
 
 ## About
 Software should be intuitive, easy, and fun to use. Pilotfish is a user experience platform for web and application developers to build better experiences. 
 
-Pilotfish itself is a thin javascript framework that provides a plugin driven architecture for widgets that improve user experience. 
+Instead re-writing these common user experiences for each platform over and over again, pilotfish unifies this effort as a community driven project that pulls together the latest best practices in User Experience. Your users get a better experience, and you save time. See [plugins](#plugins) for a list of the functionality you gain by using a User Experience Platform.
 
-Instead re-writing these common user experiences for each platform over and over again, pilotfish unifies this effort as a community driven project that pulls together the best practices in User Experience. Your users get a better experience, and you save time. See [plugins](#plugins) for a list of the functionality you gain by using a User Experience Platform.
+Pilotfish's architecture comes in 3 components:
 
-Going beyond client side frameworks like jQuery UI, Pilotfish combines the javascript framework and plugins with a [server side api](https://github.com/pilotfish/pilotfish-api), and a [web console](https://github.com/pilotfish/pilotfish-api) to provide an integrated platform for user experience related widgets. 
+* A thin javascript toolkit that provides a plugin driven architecture for widgets that improve user experience. 
+* A [server side api](https://github.com/pilotfish/pilotfish-api), for data collection, processing, and access, for the plugins that require server side support.
+* A [web console](https://github.com/pilotfish/pilotfish-api) to provide allow for configuration of the widgets, analytics, and insights into your users.
 
 More info can be found on the pilotfish.io website. TODO: Link.
-
-### Features
-* Thin javascript library, plugin architecture. You only get what you need.
-* High quality, well tested code. Pilotfish contributors have already sorted out the browser incompatibilities.
-* Highly evolved user interactions, thoroughly tested by usability experts.
-* Supported by an underlying server side api, and a console for management via a web interface. OPTIONAL.
-* Extensive community of plugins ready for you to use. 
 
 ### FAQ
 ###### Can't I just do this on my own? 
@@ -43,7 +38,11 @@ Pilotfish uses a plugin driven architecture, so you only get the plugins you nee
 #### Etymylogical Trivia
 Why the name pilotfish? A pilot fish is one of those little fish that hover around sharks and eat the parasites, creating a mutually beneficial relationship with the shark. Similarly, Pilotfish aims to work alongside your application to make it better.
 
-## Using
+
+## Demo
+To see a working sample site, head over to our demo site TODO: Link, where we show off what features we can add to your site.
+
+## Getting started
 
 To use pilotfish, first include the base framework:
 
@@ -55,12 +54,13 @@ Then you include the javascript for which plugins you may want to use:
 
 Depending on the plugin, some additional configuration may be required. 
 
-## Demo
-To see a working sample site, head over to our demo site TODO: Link, where we show off what features we can add to your site.
-
 
 ## Plugins
 Several core plugins are included with the platform, and there is also a community of developers that create plugins as they are needed.
+
+### Core
+
+* User Notifications
 
 ### Existing plugins
 * TODO 
@@ -68,7 +68,6 @@ Several core plugins are included with the platform, and there is also a communi
 ### Ideas for plugins
 
 * New User Tutorial
-* User Notifications
 * Javascript Error Handling
 * Online Help
 * Auto Detect Stuck Users
@@ -129,7 +128,7 @@ For older browsers that don't support required functionality, we aim to graceful
 While it is recommend you use the 'stable', minified release of the javascript, you may also pick a different release state or lock to a specific version number. Examples:
 
 * /client/portfolio/0.1/portfolio.js # non minifed, full comments in source code
-* /client/portfolio/0.2/portfolio-min.js
+* /client/portfolio/0.2/portfolio-min.js # the latest stable version of the 0.2 branch 
 * /client/portfolio/1/portfolio-min.js # will automatically upgrade to the latest stable release in the 1.0 series
 * /client/portfolio/master/portfolio-min.js # Latest release from github that passes all the tests
 
@@ -149,6 +148,9 @@ TODO
 
 ## License
 We aim for you to use this inside your application, so we picked the leased restrictive license we could find. MIT License - see [LICENSE](https://github.com/pilotfish/pilotfish/blob/master/LICENSE)
+
+##  Who is using Pilotfish?
+See [USING](https://github.com/pilotfish/pilotfish/blob/master/USING.md). 
 
 ## Contributing
 
@@ -170,4 +172,4 @@ Please check out [the existing issues](https://github.com/pilotfish/pilotfish/is
 
 ## More information
 * The [wiki](https://github.com/pilotfish/pilotfish/wiki) (TODO)
-* The Google Discussion Group (TODO)
+* The Pilotfish Discussion Group (TODO)
