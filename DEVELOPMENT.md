@@ -2,6 +2,10 @@
 You are welcome to fork this repository. We'd love getting pull requests. Here are some recommendations for setting up your environment so that the code you write smells like the main project.
 
 **TODO**
+
+* jslint/jshint
+* editorconfig
+* use something to run tests on every write
  
 
 ## Testing
