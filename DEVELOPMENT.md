@@ -67,13 +67,9 @@ Have a suggestion? Fork this page and issue a pull request! :)
 Here are a few interesting resources:
 
 * http://neil.rashbrook.org/JS.htm
-
 * https://developer.mozilla.org/En/Mozilla_Coding_Style_Guide
-
 * http://google-styleguide.googlecode.com/svn/trunk/javascriptguide.xml
-
 * https://developers.google.com/closure/compiler/docs/js-for-compiler
-
 * http://substack.net/posts/b96642
 
 
