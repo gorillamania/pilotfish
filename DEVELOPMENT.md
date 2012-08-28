@@ -18,7 +18,7 @@ We use travis-ci for automagic testing on every commit. Current test status:
 
 ### Running Tests
 
-TODO
+`npm test`
 
 ## Coding Philosophy
 In order to ensure high quality code, we ask that contributors follow some coding standards. 
