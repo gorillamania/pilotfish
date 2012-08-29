@@ -72,6 +72,3 @@ Here are a few interesting resources:
 * https://developers.google.com/closure/compiler/docs/js-for-compiler
 * http://substack.net/posts/b96642
 
-
-
-
