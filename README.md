@@ -171,7 +171,7 @@ Would you like to help out? We need:
 * Tests written
 * Documentation written
 
-See [HELPING](https://github.com/pilotfish/pilotfish/blob/master/HELPING.md) to get started. See [DEVELOPMENT](https://github.com/pilotfish/pilotfish/blob/master/DEVELOPMENT.md) for guidelines on how to write code that gets included in the production release.
+See [doc/helping](https://github.com/pilotfish/pilotfish/blob/master/doc/helping.md) to get started. See [doc/development](https://github.com/pilotfish/pilotfish/blob/master/doc/development.md) for guidelines on how to write code that gets included in the production release.
 
 
 ## Issues/Requests/Support
