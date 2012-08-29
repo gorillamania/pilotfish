@@ -6,7 +6,9 @@ You are welcome to fork this repository. We'd love getting pull requests. Here a
 * jslint/jshint
 * editorconfig
 * use something to run tests on every write
- 
+* phantomjs - to automatically run all the qunit tests for you
+	* Mac - `brew install phantomjs` is the easiest. [Alternatives](http://ariya.ofilabs.com/2012/02/phantomjs-and-mac-os-x.html)
+	* Unbuntu - TODO
 
 ## Testing
 We recommend [Test Driven Development](http://en.wikipedia.org/wiki/Test-driven_development) be used, and we aim for 100% coverage. 

@@ -36,11 +36,16 @@
         }
     ],
     "dependencies": {},
-    "devDependencies": {},
+    "devDependencies": {
+        "grunt": "~0.3.13"
+    },
     "homepage": "http://pilotfish.io",
     "os": [],
     "cpu": [],
     "engines": {
         "node": ">=0.8"
+    },
+    "scripts": {
+      "test": "grunt qunit"
     }
 }
