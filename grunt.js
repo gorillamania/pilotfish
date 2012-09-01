@@ -6,18 +6,25 @@ module.exports = function(grunt) {
     meta: {
       banner: '/* Pilotfish, a toolkit for improving user experience. http://pilotfish.io\n' + 
                   'Copyright (c) <%= grunt.template.today("yyyy") %> Nick Sullivan, MIT license ' + 
-                  'https://github.com/pilotfish/pilotfish/blob/master/LICENSE*/'
+                  'https://github.com/pilotfish/pilotfish/blob/master/LICENSE */'
     },
+
+    // Minify pilotfish src to pilotfish.min.js, prepending a banner
     min: {
       dist: {
         src: ['<banner:meta.banner>', 'pilotfish.js'],
         dest: 'pilotfish.min.js'
       }
     },
+
+    // run jshint on the files, with the options described below. Different globals defined based on file type
+    // 'node' for files that are run by node.js (module, process, etc.)
+    // 'browser' for files that are run by a browser (window, document, etc.)
+    // 'qunit', ok, equal, etc.
     lint: {
       node: ['grunt.js'],
       browser: ['pilotfish.js'],
-      test: ['test/**/*.js']
+      qunit: ['test/**/*.js']
     },
     jshint: {
       // Apply to all js fils
@@ -47,20 +54,24 @@ module.exports = function(grunt) {
         globals: {}
       },
       // Just for 'test' src files
-      test: {
+      qunit: {
         options: {browser: true},
         globals: {module:true, ok: true, test: true, equal: true}
       }
     },
+
+    // Run qunit on all the test files, using phantomjs
     qunit: {
       files: ['test/**/*.html']
     },
+
+    // Every time a js file is changed, run lint and qunit
     watch: {
       files: ['**/*.js'],
       tasks: 'lint qunit'
     }
   });
 
-  grunt.registerTask('default', 'lint:browser qunit min');
+  grunt.registerTask('default', 'lint qunit min');
 
 };

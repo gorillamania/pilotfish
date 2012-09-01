@@ -11,7 +11,7 @@ var doc = win.document,
     nav = win.navigator;
 
 var Pilotfish = {
-    version: 0.1
+    version: "0.1.0"
 };
 // Make it global
 win.Pilotfish = Pilotfish;
