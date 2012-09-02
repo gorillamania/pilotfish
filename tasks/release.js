@@ -1,7 +1,10 @@
 /* Grunt task for building/releasing the javascript */
 module.exports = function(grunt) {
 
-  var fs = require('fs');
+  var fs = require('fs'),
+      Seq = require('seq'),
+      exec = require('child_process').exec;
+
 
   grunt.registerTask("_release", "perform a release of the javascript", function() {
 
@@ -57,12 +60,41 @@ module.exports = function(grunt) {
     writePilotfish('dist/client/' + major + '.' + minor);
     writePilotfish('dist/client/' + major + '.' + minor + '.' + patch);
 
-    // TODO: Commit locally
+    grunt.log.subhead("Commiting to git");
 
-    // TODO: Peg git
+    function run(cmd) {
+      return function (callback){
+        grunt.verbose.or.ok("Executing " + cmd);
+        exec(cmd, function (error, stdout, stderr) {
+          if (error) {
+            grunt.fatal("'" + cmd + "' failed with :" + stderr);
+          } else {
+            grunt.verbose.writeln("Result of " + cmd + ':\n' + stdout);
+            callback();
+          }
+        });
+      };
+    }
+
+    var taskDone = this.async();
+
+    grunt.utils.async.series([
+      run('git pull'),
+      run('git add dist'),
+      run('git commit -m "Release. version ' + version + '"'),
+      // Tagging
+      run('git tag -f -a release/' + version + ' -m "version ' + version + '"'),
+      run('git push --tags')
+    ], function (error, results) {
+      if (error) {
+         grunt.fatal(error);
+      } else {
+        grunt.log.ok("git work done");
+        taskDone();
+      }
+    });
 
     // TODO: Publish to pilotfish.github.com
-
     return true;
   });
 
