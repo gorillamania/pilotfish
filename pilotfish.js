@@ -53,16 +53,25 @@ Pilotfish.log = function(msg) {
 };
 
 // Core Plugins.
-Pilotfish.register('pageAttr', function(key, value) {
-    if (value === true || value === 0) {
-      // Convert to string
-      value = "" + value;
-    }
+function pageAttr(key, value) {
     if (value !== undefined) {
-       pageAttrs[key] = value;
+       pageAttrs[key] = toS(value);
     }
     return pageAttrs[key] || "";
-});
+}
+Pilotfish.register('pageAttr', pageAttr);
+
+
+function toS(input) {
+  if (input === undefined || input === null || (typeof input == "number" && isNaN(input))) {
+    return "";
+  } else if (typeof input == "object") {
+    return JSON.stringify(input);
+  } else {
+    return "" + input;
+  }
+}
+Pilotfish.register('toS', toS);
 
 // Initialization (self executing)
 (function init(){

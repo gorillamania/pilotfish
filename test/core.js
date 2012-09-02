@@ -1,7 +1,7 @@
 /* Tests for the underlying framework */
 
 // Browser compatibility
-module('browser compatibility assertions');
+module('Browser compatibility assertions');
 test('document.querySelector and document.querySelectorAll are there', function() {
     equal(typeof document.querySelectorAll, "function", "typeof document.querySelectorAll");
     equal(typeof document.querySelector, "function", "typeof document.querySelector");
@@ -36,11 +36,29 @@ test('public methods', function() {
    }
 });
 
-test('plugins', function() {
+module('Util');
+test('toS', function(){
+    deepEqual(Pilotfish('toS', null), "", "null");
+    deepEqual(Pilotfish('toS', {}), "{}", "empty object");
+    deepEqual(Pilotfish('toS', {foo: 1}), '{"foo":1}', "full object");
+    deepEqual(Pilotfish('toS', []), "[]", "empty array");
+    deepEqual(Pilotfish('toS', [4,5,6]), "[4,5,6]", "3 element array");
+    deepEqual(Pilotfish('toS', true), "true", "boolean true");
+    deepEqual(Pilotfish('toS', false), "false", "boolean false");
+    deepEqual(Pilotfish('toS', undefined), "", "undefined");
+    deepEqual(Pilotfish('toS', 0), "0", "0 int");
+    deepEqual(Pilotfish('toS', "0"), "0", "0 str");
+    deepEqual(Pilotfish('toS', parseInt("asdf", 10)), "", "NaN");
+    var now = new Date();
+    deepEqual(Pilotfish('toS', now), JSON.stringify(now), "date");
+});
+
+module('Plugins');
+test('Simple plugin', function() {
   Pilotfish.register('upper', function(arg) {
     return arg.toUpperCase();
   });
-  equal(Pilotfish('upper', 'test'), "TEST");
+  equal(Pilotfish('upper', 'test'), "TEST", "upper plugin");
 });
 
 test('Page attributes', function() {
@@ -55,7 +73,7 @@ test('Page attributes', function() {
     equal(Pilotfish('pageAttr', "foo"), "true", "foo boolean true converted to string 'true'");
 
     Pilotfish('pageAttr', "foo", false);
-    equal(Pilotfish('pageAttr', "foo"), "", "foo boolean false converted to empty string");
+    equal(Pilotfish('pageAttr', "foo"), "false", "foo boolean false converted to string 'false'");
 
     Pilotfish('pageAttr', "foo", null);
     equal(Pilotfish('pageAttr', "foo"), "", "null converted to empty string");
@@ -67,4 +85,3 @@ test('Page attributes', function() {
     deepEqual(Pilotfish('pageAttr', "foo", ""), "", "set to empty string should return empty string");
     equal(Pilotfish('pageAttr', "foo"), "", "empty string after clear");
 });
-
