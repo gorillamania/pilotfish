@@ -1,6 +1,6 @@
 {
     "name": "pilotfish",
-    "description": "Client Javascript code for Pilotfish, a toolkit for improving user experience",
+    "description": "Pilotfish, a toolkit for improving user experience",
     "version": "0.1.0",
     "keywords": [
         "user experience",
@@ -8,6 +8,7 @@
         "ux",
         "ui"
     ],
+    "author": { "name" : "Nick Sullivan" },
     "maintainers": [
         {
             "name": "Nick Sullivan",

@@ -4,9 +4,9 @@ module.exports = function(grunt) {
   grunt.initConfig({
     pkg: '<json:package.json>',
     meta: {
-      banner: '/* Pilotfish, a toolkit for improving user experience. http://pilotfish.io\n' + 
-                  'Copyright (c) <%= grunt.template.today("yyyy") %> Nick Sullivan, MIT license ' + 
-                  'https://github.com/pilotfish/pilotfish/blob/master/LICENSE */'
+      banner: '/* <%= pkg.description %>, v<%= pkg.version %> <%= pkg.homepage %>\n' + 
+                  'Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.author.name %>, MIT license ' + 
+                  '<%= pkg.licenses[0].url %> */'
     },
 
     // run jshint on the files, with the options described below. Different globals defined based on file type

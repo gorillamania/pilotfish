@@ -72,6 +72,7 @@ module.exports = function(grunt) {
       grunt.helper('copyp', minFile, dir + '/' + minFile);
     }
 
+    writePilotfish('dist/client/latest');
     writePilotfish('dist/client/' + major);
     writePilotfish('dist/client/' + major + '.' + minor);
     writePilotfish('dist/client/' + major + '.' + minor + '.' + patch);
