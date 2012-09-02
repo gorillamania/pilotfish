@@ -66,7 +66,7 @@ module.exports = function(grunt) {
 
     // Every time a js file is changed, run lint and qunit
     watch: {
-      files: ['**/*.js'],
+      files: ['grunt.js', 'tasks/*.js', 'pilotfish.js', 'test/**/*.js'],
       tasks: 'lint qunit'
     }
   });
