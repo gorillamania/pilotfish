@@ -11,12 +11,33 @@ test('JSON is supported', function() {
     equal(typeof JSON, "object", "typeof JSON");
 });
 
-test('Pilotfish is an object', function() {
-    equal(typeof Pilotfish, "object", "typeof Pilotfish");
+module('Pilotfish setup');
+test('Pilotfish object', function() {
+    equal(typeof Pilotfish, "function", "typeof Pilotfish");
+    equal(typeof Pilotfish.version, "string", "typeof Pilotfish.version");
+    ok((/[0-9]{1}\.[0-9]{1,2}\.[0-9]{1,3}/).test(Pilotfish.version), "Pilotfish.version matches x.x.x");
 });
 
-test('Page attributes working', function() {
-    deepEqual(Pilotfish.pageAttr(), "", "no key");
+test("Pilotfish(method, arg1, arg2)", function() {
+    equal(Pilotfish('pageAttr', 'x', 'y'), 'y');
+    equal(Pilotfish('pageAttr', 'x'), 'y');
+    //deepEqual(Pilotfish('non existant function', 'x', 'y'), false);
+});
+
+test('Predefined function called', function() {
+    equal(Pilotfish.pageAttr('test page'), 'yes', "pageAttr('test page') == 'yes'");
+});
+
+module('Pilotfish Object API');
+test('public methods', function() {
+   var publicMethods = ["log"];
+   for (var i = 0; i < publicMethods.length; i++ ){
+     equal(typeof Pilotfish[publicMethods[i]], "function", "typeof Pilotfish." + publicMethods[i]);
+   }
+});
+
+test('Page attributes', function() {
+    deepEqual(Pilotfish('pageAttr'), "", "no key");
     deepEqual(Pilotfish.pageAttr(""), "", "empty string key");
     deepEqual(Pilotfish.pageAttr("non existant"), "", "non existant key");
 
@@ -39,3 +60,4 @@ test('Page attributes working', function() {
     deepEqual(Pilotfish.pageAttr("foo", ""), "", "set to empty string should return empty string");
     equal(Pilotfish.pageAttr("foo"), "", "empty string after clear");
 });
+

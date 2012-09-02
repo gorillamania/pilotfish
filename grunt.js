@@ -24,6 +24,7 @@ module.exports = function(grunt) {
         camelcase: true,
         curly: true,
         eqeqeq: true,
+        expr: true,
         forin: true,
         indent: 2,
         latedef: true,
@@ -42,6 +43,7 @@ module.exports = function(grunt) {
       // Just for the 'browser' src files
       browser: {
         // Let's be strict here
+        options: {expr: true},
         globals: {}
       },
       // Just for 'test' src files
