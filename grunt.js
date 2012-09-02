@@ -9,20 +9,12 @@ module.exports = function(grunt) {
                   'https://github.com/pilotfish/pilotfish/blob/master/LICENSE */'
     },
 
-    // Minify pilotfish src to pilotfish.min.js, prepending a banner
-    min: {
-      dist: {
-        src: ['<banner:meta.banner>', 'pilotfish.js'],
-        dest: 'pilotfish.min.js'
-      }
-    },
-
     // run jshint on the files, with the options described below. Different globals defined based on file type
     // 'node' for files that are run by node.js (module, process, etc.)
     // 'browser' for files that are run by a browser (window, document, etc.)
     // 'qunit', ok, equal, etc.
     lint: {
-      node: ['grunt.js'],
+      node: ['grunt.js', 'tasks/**/*.js'],
       browser: ['pilotfish.js'],
       qunit: ['test/**/*.js']
     },
@@ -38,7 +30,6 @@ module.exports = function(grunt) {
         newcap: true,
         noarg: true,
         noempty: true, // debatable
-        regexp: true,
         sub: true,
         undef: true, // Really. Leave it
         unused: true
@@ -46,7 +37,7 @@ module.exports = function(grunt) {
       globals: {},
       // Just for the 'node' src files
       node: {
-        globals: {module:true}
+        globals: {module:true, require: true}
       },
       // Just for the 'browser' src files
       browser: {
@@ -57,6 +48,14 @@ module.exports = function(grunt) {
       qunit: {
         options: {browser: true},
         globals: {module:true, ok: true, test: true, equal: true}
+      }
+    },
+
+    // Minify pilotfish src to pilotfish.min.js, prepending a banner
+    min: {
+      dist: {
+        src: ['<banner:meta.banner>', 'pilotfish.js'],
+        dest: 'pilotfish.min.js'
       }
     },
 
@@ -72,6 +71,12 @@ module.exports = function(grunt) {
     }
   });
 
-  grunt.registerTask('default', 'lint qunit min');
+  // Load all the tasks inside the tasks/ directory
+  grunt.loadTasks('tasks');
+
+  // This is what gets run when you don't specify an argument for grunt. 
+  // Should be non destructive
+  grunt.registerTask('default', 'lint qunit');
+  grunt.registerTask('release', 'lint qunit _release');
 
 };
