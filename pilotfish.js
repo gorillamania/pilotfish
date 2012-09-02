@@ -16,7 +16,7 @@ var doc = win.document,
     nav = win.navigator;
 
 // Internal goodies
-var pageAttrs = {}, 
+var pageAttrs    = {}, 
     preloadQueue = win.Pilotfish && win.Pilotfish.q || [];
 
 // Set up the global Pilotfish object
@@ -29,28 +29,31 @@ var Pilotfish = function(){
     // Pilotfish('pageAttr', 'test page', 'yes')
     // This is the preferred public API, because it will work before or after the pilotfish.js is loaded.
 
-    // arguments is a magical array object, so shift won't work, rebuild as an array.
-    var method = arguments[0],
-        args   = [];
-    for (var i = 1, l = arguments.length; i < l; i++) {
-      args.push(arguments[i]);
-    }
+    var method = arguments[0], args = Array.prototype.slice.call( arguments, 1 );
     if (typeof Pilotfish[method] === "function") {
        return Pilotfish[method].apply(Pilotfish, args);
+    } else if (typeof Pilotfish._plugins[method] === "function") {
+       return Pilotfish._plugins[method].apply(Pilotfish.plugins, args);
     } else {
-       throw "method " + method + " cannot be executed";
+       throw "Unknown method: " + method;
     }
 };
 win.Pilotfish = Pilotfish;
 Pilotfish.version = "0.1.0";
 
+// Plugin API
+Pilotfish._plugins = [];
+Pilotfish.register = function(name, func) {
+  Pilotfish._plugins[name] = func;
+};
+
+// Methods
 Pilotfish.log = function(msg) {
   win.console && win.console("Pilotfish: " + msg);
 };
 
-// Simple mechanism to set/read page attributes
-// @public
-Pilotfish.pageAttr = function(key, value) {
+// Core Plugins.
+Pilotfish.register('pageAttr', function(key, value) {
     if (value === true || value === 0) {
       // Convert to string
       value = "" + value;
@@ -59,7 +62,7 @@ Pilotfish.pageAttr = function(key, value) {
        pageAttrs[key] = value;
     }
     return pageAttrs[key] || "";
-};
+});
 
 // Initialization (self executing)
 (function init(){
