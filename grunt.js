@@ -49,7 +49,7 @@ module.exports = function(grunt) {
       // Just for 'test' src files
       qunit: {
         options: {browser: true},
-        globals: {module:true, ok: true, test: true, equal: true}
+        globals: {module:true, ok: true, test: true, equal: true, expect: true}
       }
     },
 

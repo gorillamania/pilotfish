@@ -29,16 +29,12 @@ test('Predefined function called', function() {
 });
 
 
-module('Pilotfish Object API');
-test('public methods', function() {
-   var publicMethods = ["log"];
-   for (var i = 0; i < publicMethods.length; i++ ){
-     equal(typeof Pilotfish[publicMethods[i]], "function", "typeof Pilotfish." + publicMethods[i]);
-   }
-});
-
-
 module('Util');
+test('log', function(){
+   expect(1);
+   Pilotfish('log', "Pilotfish('log') test:", "second arg", 3, [1,2,3], true, {});
+   ok(true);
+});
 test('toS', function(){
     deepEqual(Pilotfish('toS', null), "", "null");
     deepEqual(Pilotfish('toS', {}), "{}", "empty object");

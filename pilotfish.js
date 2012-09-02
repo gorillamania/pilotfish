@@ -1,22 +1,26 @@
-/* Full, debug version of pilotfish javascript client library. For production usage, use the min version.
+/* Full, debug version of pilotfish javascript client library. 
+ * For production usage, use the .min version.
  * For more details, including licensing information, see
  * https://github.com/pilotfish/pilotfish
- *
  */
 (function(win, undefined){
 
+/* Setup
+ * --------------------------------------------------------------------------*/
 if(win.Pilotfish && win.Pilotfish.version) {
   // Abort: The tag is already on the page
   return;
 }
 
-// Shortcuts to make the overall file size smaller.
+// Shortcuts for browser globals to be explicit and make the min file size smaller.
 var doc = win.document,
     loc = win.location,
     nav = win.navigator;
 
 // Internal goodies
-var _pageAttrs    = {},
+var _core         = {},
+    _pageAttrs    = {},
+    _plugins      = {},
     _settings     = {},
     preloadQueue = win.Pilotfish && win.Pilotfish.q || [];
 
@@ -33,8 +37,10 @@ var Pilotfish = function(){
     var method = arguments[0], args = Array.prototype.slice.call( arguments, 1 );
     if (typeof Pilotfish[method] === "function") {
        return Pilotfish[method].apply(Pilotfish, args);
-    } else if (typeof Pilotfish._plugins[method] === "function") {
-       return Pilotfish._plugins[method].apply(Pilotfish.plugins, args);
+    } else if (typeof _core[method] === "function") {
+       return _core[method].apply(Pilotfish, args);
+    } else if (typeof _plugins[method] === "function") {
+       return _plugins[method].apply(Pilotfish, args);
     } else {
        throw "Unknown method: " + method;
     }
@@ -42,36 +48,38 @@ var Pilotfish = function(){
 win.Pilotfish = Pilotfish;
 Pilotfish.version = "0.1.0";
 
+// Core API
+Pilotfish.core = function(name, func) {
+  _core[name] = func;
+};
+
 // Plugin API
-Pilotfish._plugins = [];
 Pilotfish.register = function(name, func) {
-  Pilotfish._plugins[name] = func;
+  _plugins[name] = func;
 };
 
-// Methods
-Pilotfish.log = function(msg) {
-  win.console && win.console("Pilotfish: " + msg);
-};
 
-// Core Plugins.
-function pageAttr(key, value) {
+/* Core 
+ * --------------------------------------------------------------------------*/
+
+var log = _core.log = function(msg) {
+  win.console && win.console.log.apply(win.console, arguments);
+};
+var pageAttr = _core.pageAttr = function pageAttr(key, value) {
     if (value !== undefined) {
        _pageAttrs[key] = toS(value);
     }
     return _pageAttrs[key] || "";
-}
-Pilotfish.register('pageAttr', pageAttr);
+};
 
-function setting(key, value) {
+var setting = _core.setting = function setting(key, value) {
     if (value !== undefined) {
        _settings[key] = toS(value);
     }
     return _settings[key] || "";
-}
-Pilotfish.register('setting', setting);
+};
 
-
-function toS(input) {
+var toS = _core.toS = function toS(input) {
   if (input === undefined || input === null || (typeof input == "number" && isNaN(input))) {
     return "";
   } else if (typeof input == "object") {
@@ -79,10 +87,10 @@ function toS(input) {
   } else {
     return "" + input;
   }
-}
-Pilotfish.register('toS', toS);
+};
 
-// Initialization (self executing)
+/* Initialization
+ * --------------------------------------------------------------------------*/
 (function init(){
     // The preloadQueue allows for us to do:
     // Pilotfish('pageAttr', 'test page', 'yes')
