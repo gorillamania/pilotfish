@@ -29,34 +29,43 @@ test('Predefined function called', function() {
 });
 
 
-module('Util');
-test('log', function(){
-   expect(1);
-   Pilotfish('log', "Pilotfish('log') test:", "second arg", 3, [1,2,3], true, {});
-   ok(true);
-});
-test('toS', function(){
-    deepEqual(Pilotfish('toS', null), "", "null");
-    deepEqual(Pilotfish('toS', {}), "{}", "empty object");
-    deepEqual(Pilotfish('toS', {foo: 1}), '{"foo":1}', "full object");
-    deepEqual(Pilotfish('toS', []), "[]", "empty array");
-    deepEqual(Pilotfish('toS', [4,5,6]), "[4,5,6]", "3 element array");
-    deepEqual(Pilotfish('toS', true), "true", "boolean true");
-    deepEqual(Pilotfish('toS', false), "false", "boolean false");
-    deepEqual(Pilotfish('toS', undefined), "", "undefined");
-    deepEqual(Pilotfish('toS', 0), "0", "0 int");
-    deepEqual(Pilotfish('toS', "0"), "0", "0 str");
-    deepEqual(Pilotfish('toS', parseInt("asdf", 10)), "", "NaN");
-    var now = new Date();
-    deepEqual(Pilotfish('toS', now), JSON.stringify(now), "date");
+module('Extend');
+test('simple', function(){
+    deepEqual(Pilotfish('extend', {"one": 1}, {"two": 2}), {"one": 1, "two": 2}, "simple object extension");
+    deepEqual(Pilotfish('extend', {"one": 1}, {"one": false}), {"one": false}, "override");
+    deepEqual(Pilotfish('extend', null, {"two": 2}), {"two": 2}, "null source");
+    deepEqual(Pilotfish('extend', undefined, {"two": 2}), {"two": 2}, "undefined source");
+    deepEqual(Pilotfish('extend', [], {"two": 2}), {"two": 2}, "array source");
+    deepEqual(Pilotfish('extend', 42, {"two": 2}), {"two": 2}, "int source");
+    deepEqual(Pilotfish('extend', "str", {"two": 2}), {"two": 2}, "string source");
+    deepEqual(Pilotfish('extend', true, {"two": 2}), {"two": 2}, "boolean true source");
+    deepEqual(Pilotfish('extend', false, {"two": 2}), {"two": 2}, "boolean false source");
 });
 
-test('Settings', function(){
-    deepEqual(Pilotfish('setting'), "", "no key");
-    deepEqual(Pilotfish('setting', 'account', '1234'), "1234", "set account");
-    deepEqual(Pilotfish('setting', 'account'), "1234", "get account");
-    deepEqual(Pilotfish('setting', 'account', ''), "", "set cleared");
-    deepEqual(Pilotfish('setting', 'account'), "", "get cleared");
+test('clone', function(){
+    var one = {"one": 1};
+    deepEqual(one, {"one": 1}, "cloning object");
+    var oneClone = Pilotfish('extend', one);
+    deepEqual(oneClone, {"one": 1}, "cloned object");
+    one.one = 42;
+    equal(one.one, 42, "original object updated");
+    equal(oneClone.one, 1, "cloned object does not get updated");
+
+    var dataTypes = [42, parseInt("asdf", 10), 0, "0", true, false, null, undefined, [], {}, "str", "", new Date()];
+    for (var i = 0; i < dataTypes.length; i++) {
+        deepEqual(Pilotfish('extend', dataTypes[i]), dataTypes[i], "clone typeof " + typeof dataTypes[i]);
+    }
+});
+
+test('complex', function(){
+    deepEqual(Pilotfish('extend', {}, Pilotfish), Pilotfish, "Clone pilotfish object");
+});
+
+module('Util');
+test('log', function(){
+    expect(1);
+    Pilotfish('log', "Pilotfish('log') test:", "second arg", 3, [1,2,3], true, {});
+    ok(true);
 });
 
 test('Page attributes', function() {
@@ -82,6 +91,31 @@ test('Page attributes', function() {
     // Clear it
     deepEqual(Pilotfish('pageAttr', "foo", ""), "", "set to empty string should return empty string");
     equal(Pilotfish('pageAttr', "foo"), "", "empty string after clear");
+});
+
+test('Settings', function(){
+    deepEqual(Pilotfish('setting'), "", "no key");
+    deepEqual(Pilotfish('setting', 'account', '1234'), "1234", "set account");
+    deepEqual(Pilotfish('setting', 'account'), "1234", "get account");
+    deepEqual(Pilotfish('setting', 'account', ''), "", "set cleared");
+    deepEqual(Pilotfish('setting', 'account'), "", "get cleared");
+});
+
+
+test('toS', function(){
+    deepEqual(Pilotfish('toS', null), "", "null");
+    deepEqual(Pilotfish('toS', {}), "{}", "empty object");
+    deepEqual(Pilotfish('toS', {foo: 1}), '{"foo":1}', "full object");
+    deepEqual(Pilotfish('toS', []), "[]", "empty array");
+    deepEqual(Pilotfish('toS', [4,5,6]), "[4,5,6]", "3 element array");
+    deepEqual(Pilotfish('toS', true), "true", "boolean true");
+    deepEqual(Pilotfish('toS', false), "false", "boolean false");
+    deepEqual(Pilotfish('toS', undefined), "", "undefined");
+    deepEqual(Pilotfish('toS', 0), "0", "0 int");
+    deepEqual(Pilotfish('toS', "0"), "0", "0 str");
+    deepEqual(Pilotfish('toS', parseInt("asdf", 10)), "", "NaN");
+    var now = new Date();
+    deepEqual(Pilotfish('toS', now), JSON.stringify(now), "date");
 });
 
 

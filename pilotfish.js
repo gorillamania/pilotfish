@@ -62,9 +62,54 @@ Pilotfish.register = function(name, func) {
 /* Core 
  * --------------------------------------------------------------------------*/
 
+/* Javascript passes by reference for objects, so we need a facility to clone them.
+ * We also need a simple way to combine two objects, 
+ * handy for defining default functionality with user options that override.
+ * Nested objects are not yet supported
+ * If data other than objects is passed in, we do what we can.
+ */
+var extend = _core.extend = function(source, target) {
+  if (arguments.length === 1) {
+    if (isPlainObject(source)) {
+      return extend({}, source);
+    } else {
+      return source;
+    }
+  } else {
+    if (isPlainObject(source) && isPlainObject(target)) {
+      var ret = {}, name;
+      for (name in source){
+        if (source.hasOwnProperty(name)) {
+          ret[name] = source[name];
+        }
+      }
+      for (name in target){
+        if (target.hasOwnProperty(name)) {
+          ret[name] = target[name];
+        }
+      }
+      return ret;
+    } else {
+      // Type mismatch. Give up and return target
+      return target;
+    }
+  }
+};
+
+function isPlainObject(obj) {
+  if (typeof obj != "object" ) {
+    return false;
+  } else if (obj === null || obj instanceof Array || obj instanceof Date) {
+    return false;
+  } else{
+    return true;
+  }
+}
+
 var log = _core.log = function(msg) {
   win.console && win.console.log.apply(win.console, arguments);
 };
+
 var pageAttr = _core.pageAttr = function pageAttr(key, value) {
     if (value !== undefined) {
        _pageAttrs[key] = toS(value);
