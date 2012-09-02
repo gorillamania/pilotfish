@@ -10,7 +10,7 @@ var doc = win.document,
     loc = win.location,
     nav = win.navigator;
 
-var version = 4;
+var version = 5;
 
 var Pilotfish = {
     version: "0.1.0"
