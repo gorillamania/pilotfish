@@ -2,7 +2,6 @@
 module.exports = function(grunt) {
 
   var fs = require('fs'),
-      Seq = require('seq'),
       exec = require('child_process').exec;
 
   // Setup (make these args?)
