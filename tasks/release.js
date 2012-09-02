@@ -5,14 +5,30 @@ module.exports = function(grunt) {
       Seq = require('seq'),
       exec = require('child_process').exec;
 
+  // Setup (make these args?)
+  var historyFile = 'HISTORY.md',
+      packageFile = 'package.json',
+      minFile = 'pilotfish.min.js',
+      srcFile = 'pilotfish.js',
+      cdnDir = '../pilotfish.github.com';
 
-  grunt.registerTask("_release", "perform a release of the javascript", function() {
 
-    // Setup (make these args?)
-    var historyFile = 'HISTORY.md',
-        packageFile = 'package.json',
-        minFile = 'pilotfish.min.js',
-        srcFile = 'pilotfish.js';
+  // Helper function for shell commands (to be used by grunt.utils.async lib)
+  function run(cmd) {
+    return function (callback, options){
+      grunt.verbose.or.ok("Executing " + cmd);
+      exec(cmd, options || {}, function (error, stdout, stderr) {
+        if (error) {
+          grunt.fatal("'" + cmd + "' failed with :" + stderr);
+        } else {
+          grunt.verbose.writeln("Result of " + cmd + ':\n' + stdout);
+          callback();
+        }
+      });
+    };
+  }
+
+  grunt.registerTask("build", "Create the files in ./dist/", function() {
 
     // Read the version from the pacakge.json. 
     var packageConfig = grunt.file.readJSON(packageFile),
@@ -59,43 +75,68 @@ module.exports = function(grunt) {
     writePilotfish('dist/client/' + major);
     writePilotfish('dist/client/' + major + '.' + minor);
     writePilotfish('dist/client/' + major + '.' + minor + '.' + patch);
+    return true;
+  });
 
-    grunt.log.subhead("Commiting to git");
+  grunt.registerTask("gitRelease", "git commit/tag/push the files in ./dist/", function() {
 
-    function run(cmd) {
-      return function (callback){
-        grunt.verbose.or.ok("Executing " + cmd);
-        exec(cmd, function (error, stdout, stderr) {
-          if (error) {
-            grunt.fatal("'" + cmd + "' failed with :" + stderr);
-          } else {
-            grunt.verbose.writeln("Result of " + cmd + ':\n' + stdout);
-            callback();
-          }
-        });
-      };
-    }
+    // Read the version from the pacakge.json. 
+    var packageConfig = grunt.file.readJSON(packageFile),
+        version = packageConfig.version;
 
+    // Tell grunt this task is asynchronous
     var taskDone = this.async();
 
     grunt.utils.async.series([
       run('git pull'),
       run('git add dist'),
       run('git commit -m "Release. version ' + version + '"'),
+      run('git push'),
       // Tagging
       run('git tag -f -a release/' + version + ' -m "version ' + version + '"'),
       run('git push --tags')
     ], function (error, results) {
       if (error) {
-         grunt.fatal(error);
+        grunt.fatal(error);
       } else {
-        grunt.log.ok("git work done");
+        grunt.log.ok("./dist/ committed, tag added, results pushed");
+        // Mark this task as done
         taskDone();
       }
     });
 
-    // TODO: Publish to pilotfish.github.com
     return true;
+  });
+
+  grunt.registerTask("cdnPublish", "Push files to cdn.pilotfish.io (pilotfish.github.com)", function() {
+    if (! fs.existsSync(cdnDir)) {
+      grunt.fatal(cdnDir + " does not exist");
+    }
+
+    // Read the version from the pacakge.json. 
+    var packageConfig = grunt.file.readJSON(packageFile),
+        version = packageConfig.version;
+
+    var taskDone = this.async();
+
+    grunt.utils.async.series([
+      run('rsync -av --delete ./dist/client/ ' + cdnDir + '/client/'),
+      run('cd ' + cdnDir + ' && git pull'),
+      run('cd ' + cdnDir + ' && git add client', {'cwd': cdnDir}),
+      run('cd ' + cdnDir + ' && git commit -m "Release. version ' + version + '"', {'cwd': cdnDir}),
+      run('cd ' + cdnDir + ' && git push'),
+      // Tagging
+      run('cd ' + cdnDir + ' && git tag -f -a release/' + version + ' -m "version ' + version + '"', {'cwd': cdnDir}),
+      run('cd ' + cdnDir + ' && git push --tags', {'cwd': cdnDir})
+    ], function (error, results) {
+      if (error) {
+        grunt.fatal(error);
+      } else {
+        grunt.log.ok("Files copied to " + cdnDir + " , tag added, results pushed");
+        // Mark this task as done
+        taskDone();
+      }
+    });
   });
 
   // Copy file from src to dest, making directories if necessary
@@ -113,6 +154,7 @@ module.exports = function(grunt) {
     grunt.file.copy(src, dest);
   });
 
+  // Get the filename only from a full path
   grunt.registerHelper('basename', function(filename) {
     if (filename[filename.length-1] === "/") {
       return filename;

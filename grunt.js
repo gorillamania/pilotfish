@@ -77,6 +77,6 @@ module.exports = function(grunt) {
   // This is what gets run when you don't specify an argument for grunt. 
   // Should be non destructive
   grunt.registerTask('default', 'lint qunit');
-  grunt.registerTask('release', 'lint qunit _release');
+  grunt.registerTask('release', 'lint qunit build min gitRelease cdnPublish');
 
 };
