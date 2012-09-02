@@ -16,7 +16,8 @@ var doc = win.document,
     nav = win.navigator;
 
 // Internal goodies
-var pageAttrs    = {}, 
+var _pageAttrs    = {},
+    _settings     = {},
     preloadQueue = win.Pilotfish && win.Pilotfish.q || [];
 
 // Set up the global Pilotfish object
@@ -55,11 +56,19 @@ Pilotfish.log = function(msg) {
 // Core Plugins.
 function pageAttr(key, value) {
     if (value !== undefined) {
-       pageAttrs[key] = toS(value);
+       _pageAttrs[key] = toS(value);
     }
-    return pageAttrs[key] || "";
+    return _pageAttrs[key] || "";
 }
 Pilotfish.register('pageAttr', pageAttr);
+
+function setting(key, value) {
+    if (value !== undefined) {
+       _settings[key] = toS(value);
+    }
+    return _settings[key] || "";
+}
+Pilotfish.register('setting', setting);
 
 
 function toS(input) {

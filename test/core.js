@@ -1,6 +1,5 @@
 /* Tests for the underlying framework */
 
-// Browser compatibility
 module('Browser compatibility assertions');
 test('document.querySelector and document.querySelectorAll are there', function() {
     equal(typeof document.querySelectorAll, "function", "typeof document.querySelectorAll");
@@ -10,6 +9,7 @@ test('document.querySelector and document.querySelectorAll are there', function(
 test('JSON is supported', function() {
     equal(typeof JSON, "object", "typeof JSON");
 });
+
 
 module('Pilotfish setup');
 test('Pilotfish object', function() {
@@ -28,6 +28,7 @@ test('Predefined function called', function() {
     equal(Pilotfish('pageAttr', 'test page'), 'yes', "pageAttr('test page') == 'yes'");
 });
 
+
 module('Pilotfish Object API');
 test('public methods', function() {
    var publicMethods = ["log"];
@@ -35,6 +36,7 @@ test('public methods', function() {
      equal(typeof Pilotfish[publicMethods[i]], "function", "typeof Pilotfish." + publicMethods[i]);
    }
 });
+
 
 module('Util');
 test('toS', function(){
@@ -53,12 +55,12 @@ test('toS', function(){
     deepEqual(Pilotfish('toS', now), JSON.stringify(now), "date");
 });
 
-module('Plugins');
-test('Simple plugin', function() {
-  Pilotfish.register('upper', function(arg) {
-    return arg.toUpperCase();
-  });
-  equal(Pilotfish('upper', 'test'), "TEST", "upper plugin");
+test('Settings', function(){
+    deepEqual(Pilotfish('setting'), "", "no key");
+    deepEqual(Pilotfish('setting', 'account', '1234'), "1234", "set account");
+    deepEqual(Pilotfish('setting', 'account'), "1234", "get account");
+    deepEqual(Pilotfish('setting', 'account', ''), "", "set cleared");
+    deepEqual(Pilotfish('setting', 'account'), "", "get cleared");
 });
 
 test('Page attributes', function() {
@@ -85,3 +87,13 @@ test('Page attributes', function() {
     deepEqual(Pilotfish('pageAttr', "foo", ""), "", "set to empty string should return empty string");
     equal(Pilotfish('pageAttr', "foo"), "", "empty string after clear");
 });
+
+
+module('Plugins');
+test('Simple plugin', function() {
+  Pilotfish.register('upper', function(arg) {
+    return arg.toUpperCase();
+  });
+  equal(Pilotfish('upper', 'test'), "TEST", "upper plugin");
+});
+
