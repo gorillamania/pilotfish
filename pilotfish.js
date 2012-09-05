@@ -4,7 +4,8 @@
  * https://github.com/pilotfish/pilotfish
  * vim: set expandtab tabstop=4: 
  */
-(function(window, undefined){
+// Globals passed in so the optimizer can make them local variables
+(function(window, document, location, undefined){
 
 /* Setup
  * --------------------------------------------------------------------------*/
@@ -12,12 +13,6 @@ if(window.Pilotfish && window.Pilotfish.version) {
     // Abort: The tag is already on the page
     return;
 }
-
-// Shortcuts for browser globals to be explicit and make the min file size smaller.
-var document = window.document,
-    location = window.location,
-    navigator = window.navigator;
-
 
 // Internal goodies
 var _core         = {},
@@ -156,4 +151,4 @@ var toS = _core.toS = function(input) {
     preloadQueue = [];
 })();
 
-})(window);
+})(window, document, location);
