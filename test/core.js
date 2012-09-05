@@ -1,4 +1,6 @@
 /* Tests for the underlying framework */
+/* vim: set expandtab tabstop=4: */
+
 
 module('Browser compatibility assertions');
 test('document.querySelector and document.querySelectorAll are there', function() {
@@ -121,9 +123,9 @@ test('toS', function(){
 
 module('Plugins');
 test('Simple plugin', function() {
-  Pilotfish.register('upper', function(arg) {
-    return arg.toUpperCase();
-  });
-  equal(Pilotfish('upper', 'test'), "TEST", "upper plugin");
+    Pilotfish.register('upper', function(arg) {
+        return arg.toUpperCase();
+    });
+    equal(Pilotfish('upper', 'test'), "TEST", "upper plugin");
 });
 
