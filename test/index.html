@@ -11,10 +11,23 @@
   <div id="qunit"></div>
 </body>
 <script>
-  // Snippet
-  window.Pilotfish||((Pilotfish=function(){Pilotfish.q.push(arguments)}).q=[]);
+(function(w, d, S) {
+    w.Pilotfish || ((Pilotfish = function() {
+        Pilotfish.q.push(arguments);
+    }).q = []);
+    var p = d.createElement(S),
+        s = d.getElementsByTagName(S)[0];
+    p.async = !0;
+    // p.src = (location.protocol === "https:" ? "https:" : "http:") + "//cdn.pilotfish.io/client/latest/pilotfish.min.js";
+    p.src = '../pilotfish.js';
+    s.parentNode.insertBefore(p, s);
+})(window, document, "script");
+</script>
+<!-- End Pilotfish tag -->
+<script>
+  // Testing preloadd instructions
   Pilotfish('pageData', 'test page', 'yes');
 </script>
-<script src="../pilotfish.js"></script>
+
 <script src="core.js"></script>
 </html>
