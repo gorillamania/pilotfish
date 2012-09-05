@@ -95,6 +95,18 @@ test('Page attributes', function() {
     equal(Pilotfish('pageAttr', "foo"), "", "empty string after clear");
 });
 
+test('Selector', function(){
+    ok(Pilotfish('S', '') instanceof Array);
+    ok(Pilotfish('S', undefined) instanceof Array);
+    ok(Pilotfish('S', null) instanceof Array);
+    ok(Pilotfish('S', {}) instanceof Array);
+    ok(Pilotfish('S', []) instanceof Array);
+    equal(Pilotfish('S', '#qunit-banner').length, 1, '#qunit-banner');
+    equal(Pilotfish('S', '#nonexistant-id').length, 0, '#nonexistant-id');
+    equal(Pilotfish('S', '.result').length, 1, '.result');
+});
+
+
 test('Settings', function(){
     deepEqual(Pilotfish('setting'), "", "no key");
     deepEqual(Pilotfish('setting', 'account', '1234'), "1234", "set account");

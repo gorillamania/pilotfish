@@ -122,7 +122,7 @@ var log = _core.log = function(msg) {
 
 // Store page attributes that the website owners supplies us.
 // Useful for analytics or other plugins that behave differently depending based on the context
-var pageAttr = _core.pageAttr = function pageAttr(key, value) {
+var pageAttr = _core.pageAttr = function(key, value) {
     if (value !== undefined) {
        _pageAttrs[key] = toS(value);
     }
@@ -130,15 +130,25 @@ var pageAttr = _core.pageAttr = function pageAttr(key, value) {
 };
 
 // Settings for configuring the way pilotfish behaves
-var setting = _core.setting = function setting(key, value) {
+var setting = _core.setting = function (key, value) {
     if (value !== undefined) {
        _settings[key] = toS(value);
     }
     return _settings[key] || "";
 };
 
+// Retrieve DOM nodes with content with CSS3 selectors.
+var S = _core.S = function (selector) {
+    try {
+      // Chrome throws an error if you call querySelectorAll with an empty string
+      return doc.querySelectorAll(toS(selector));
+    } catch (e) {
+      return [];
+    }
+};
+
 // No matter what the input, return a string
-var toS = _core.toS = function toS(input) {
+var toS = _core.toS = function(input) {
     if (input === undefined || input === null || (typeof input == "number" && isNaN(input))) {
         return "";
     } else if (typeof input == "object") {
@@ -147,6 +157,13 @@ var toS = _core.toS = function toS(input) {
         return "" + input;
     }
 };
+
+/* Plugins that should be external 
+ * --------------------------------------------------------------------------*/
+var timeago = _plugins.timeago = function(options) {
+    options = extend({ selector: ".timeago" }, options);
+};
+
 
 /* Initialization
  * --------------------------------------------------------------------------*/
