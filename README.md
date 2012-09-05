@@ -37,8 +37,8 @@ Yes, Pilotfish works alongside these popular frameworks.
  
 Pilotfish uses a plugin driven architecture, so you only get the plugins you need. The base framework file is only XX when minified/gzipped. TODO: How big.
 
-#### Etymylogical Trivia
-Why the name pilotfish? A pilot fish is one of those little fish that hover around sharks and eat the parasites, creating a mutually beneficial relationship with the shark. Similarly, Pilotfish aims to work alongside your application to make it better.
+##### Why the name pilotfish?
+A pilot fish is one of those little fish that hover around sharks and eat the parasites, creating a mutually beneficial relationship with the shark. Similarly, Pilotfish aims to work alongside your application to make it better.
 
 
 ## Demo
@@ -134,12 +134,13 @@ an additional js file, but we are hoping no one notices. :)</small>
 ## Alternate Hosting Options
 
 ### Picking a specific version
-While it is recommend you use the 'stable', minified release of the javascript, you may also pick a different release state or lock to a specific version number. Examples:
+While it is recommend you use the [latest stable minified release](http://cdn.pilotfish.io/client/latest/pilotfish.min.js) of the javascript, you may also pick a different release state or lock to a specific version number. Examples:
 
-* /client/portfolio/0.1/portfolio.js # non minifed, full comments in source code
-* /client/portfolio/0.2/portfolio-min.js # the latest stable version of the 0.2 branch 
-* /client/portfolio/1/portfolio-min.js # will automatically upgrade to the latest stable release in the 1.0 series
-* /client/portfolio/master/portfolio-min.js # Latest release from github that passes all the tests
+* [/client/0.1.0/pilotfish.min.js](http://cdn.pilotfish.io/client/0.1.0/pilotfish.min.js) # this exact version only
+* [/client/0.1/pilotfish.min.js](http://cdn.pilotfish.io/client/0.1/pilotfish.min.js) # anything in the 0.1.x series
+* [/client/0/pilotfish.js](http://cdn.pilotfish.io/client/0/pilotfish.js) # anything in the 0.x.x series, non minifed
+
+* [https://raw.github.com/pilotfish/pilotfish/master/pilotfish.js](https://raw.github.com/pilotfish/pilotfish/master/pilotfish.js) # Pull latest commit from github (not for production)
 
 ### Self hosting
 You may host the javascript files yourself if you like. Simply download them from any of these sources and put them on your servers.
@@ -147,7 +148,8 @@ You may host the javascript files yourself if you like. Simply download them fro
 Note that the [server side api](https://github.com/pilotfish/pilotfish-api), and  [web console](https://github.com/pilotfish/pilotfish-console) are open source, you are free to download/install them and run them on your own server instead of using the Pilotfish hosted solution.
 
 #### Github CDN
-TODO
+http://pilotfish.github.com/client/latest/pilotfish.min.js
+https://pilotfish.github.com/client/latest/pilotfish.min.js
 
 #### Google CDN
 TODO
@@ -167,9 +169,9 @@ Would you like to help out? We need:
 
 * Plugins created
 * Features added
-* Bugs fixed
-* Tests written
-* Documentation written
+* [Bugs fixed](https://github.com/pilotfish/pilotfish/issues)
+* [Tests](https://github.com/pilotfish/pilotfish/tree/master/test) written
+* [Documentation](https://github.com/pilotfish/pilotfish/tree/master/doc) written
 
 See [doc/helping](https://github.com/pilotfish/pilotfish/blob/master/doc/helping.md) to get started. See [doc/development](https://github.com/pilotfish/pilotfish/blob/master/doc/development.md) for guidelines on how to write code that gets included in the production release.
 
