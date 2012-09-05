@@ -48,7 +48,7 @@ To see a working sample site, head over to our demo site TODO: Link, where we sh
 
 To use pilotfish, first include the base framework:
 
-`<script src="//cdn.pilotfish.io/client/portfolio-stable-min.js"></script>`
+`<script src="//cdn.pilotfish.io/client/latest/pilotfish.min.js"></script>`
 
 Then you include the javascript for which plugins you may want to use:
 
@@ -56,6 +56,9 @@ Then you include the javascript for which plugins you may want to use:
 
 Depending on the plugin, some additional configuration may be required. 
 
+For the Asynchronous version, see:
+
+<script src="https://gist.github.com/3645309.js?file=pilotfish-snippet.html"></script>
 
 ## Plugins
 Several core plugins are included with the platform, and there is also a community of developers that create plugins as they are needed.
