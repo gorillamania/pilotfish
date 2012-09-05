@@ -31,13 +31,13 @@ No. While there is a highly available, scalable platform-as-a-service at [api.pi
 
 ###### Does it work with jQuery, Prototype, Backbone, Underscore, jQuery UI, YUI, mooTools, dojo, etc.? 
 
-Yes, Pilotfish works alongside these popular frameworks.
+Pilotfish currently requires jQuery. We plan on supporting other frameworks soon. Let us know if you are interested in other frameworks, that will guide our priorities. The best way to do this is to [file an issue](https://github.com/pilotfish/pilotfish/issues/new).
 
 ###### That looks like a lot of plugins. Isn't the file huge?
  
 Pilotfish uses a plugin driven architecture, so you only get the plugins you need. The base framework file is only XX when minified/gzipped. TODO: How big.
 
-##### Why the name pilotfish?
+###### Why the name pilotfish?
 A pilot fish is one of those little fish that hover around sharks and eat the parasites, creating a mutually beneficial relationship with the shark. Similarly, Pilotfish aims to work alongside your application to make it better.
 
 
