@@ -56,9 +56,7 @@ Then you include the javascript for which plugins you may want to use:
 
 Depending on the plugin, some additional configuration may be required. 
 
-For the Asynchronous version, see:
-
-<script src="https://gist.github.com/3645309.js?file=pilotfish-snippet.html"></script>
+For the Asynchronous version, see: http://jsfiddle.net/Y4dbB/
 
 ## Plugins
 Several core plugins are included with the platform, and there is also a community of developers that create plugins as they are needed.
