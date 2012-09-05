@@ -12,6 +12,10 @@ test('JSON is supported', function() {
     equal(typeof JSON, "object", "typeof JSON");
 });
 
+test('jQuery is there', function() {
+    equal(typeof jQuery, "function", "typeof jQuery");
+});
+
 
 module('Pilotfish setup');
 test('Pilotfish object', function() {
@@ -21,13 +25,13 @@ test('Pilotfish object', function() {
 });
 
 test("Pilotfish(method, arg1, arg2)", function() {
-    equal(Pilotfish('pageAttr', 'x', 'y'), 'y');
-    equal(Pilotfish('pageAttr', 'x'), 'y');
+    equal(Pilotfish('pageData', 'x', 'y'), 'y');
+    equal(Pilotfish('pageData', 'x'), 'y');
     //deepEqual(Pilotfish('non existant function', 'x', 'y'), false);
 });
 
 test('Predefined function called', function() {
-    equal(Pilotfish('pageAttr', 'test page'), 'yes', "pageAttr('test page') == 'yes'");
+    equal(Pilotfish('pageData', 'test page'), 'yes', "pageData('test page') == 'yes'");
 });
 
 
@@ -37,30 +41,10 @@ test('simple', function(){
     deepEqual(Pilotfish('extend', {"one": 1}, {"one": false}), {"one": false}, "override");
     deepEqual(Pilotfish('extend', null, {"two": 2}), {"two": 2}, "null source");
     deepEqual(Pilotfish('extend', undefined, {"two": 2}), {"two": 2}, "undefined source");
-    deepEqual(Pilotfish('extend', [], {"two": 2}), {"two": 2}, "array source");
+    deepEqual(Pilotfish('extend', [], {"two": 2}), [], "array source");
     deepEqual(Pilotfish('extend', 42, {"two": 2}), {"two": 2}, "int source");
     deepEqual(Pilotfish('extend', "str", {"two": 2}), {"two": 2}, "string source");
-    deepEqual(Pilotfish('extend', true, {"two": 2}), {"two": 2}, "boolean true source");
     deepEqual(Pilotfish('extend', false, {"two": 2}), {"two": 2}, "boolean false source");
-});
-
-test('clone', function(){
-    var one = {"one": 1};
-    deepEqual(one, {"one": 1}, "cloning object");
-    var oneClone = Pilotfish('extend', one);
-    deepEqual(oneClone, {"one": 1}, "cloned object");
-    one.one = 42;
-    equal(one.one, 42, "original object updated");
-    equal(oneClone.one, 1, "cloned object does not get updated");
-
-    var dataTypes = [42, parseInt("asdf", 10), 0, "0", true, false, null, undefined, [], {}, "str", "", new Date()];
-    for (var i = 0; i < dataTypes.length; i++) {
-        deepEqual(Pilotfish('extend', dataTypes[i]), dataTypes[i], "clone typeof " + typeof dataTypes[i]);
-    }
-});
-
-test('complex', function(){
-    deepEqual(Pilotfish('extend', {}, Pilotfish), Pilotfish, "Clone pilotfish object");
 });
 
 module('Util');
@@ -78,37 +62,37 @@ test('log', function(){
     ok(true);
 });
 
-test('Page attributes', function() {
-    deepEqual(Pilotfish('pageAttr'), "", "no key");
-    deepEqual(Pilotfish('pageAttr', ""), "", "empty string key");
-    deepEqual(Pilotfish('pageAttr', "non existant"), "", "non existant key");
+test('Page data', function() {
+    deepEqual(Pilotfish('pageData'), "", "no key");
+    deepEqual(Pilotfish('pageData', ""), "", "empty string key");
+    deepEqual(Pilotfish('pageData', "non existant"), "", "non existant key");
 
-    equal(Pilotfish('pageAttr', "foo", "bar"), "bar", "set should return the value");
-    equal(Pilotfish('pageAttr', "foo"), "bar", "get foo");
+    equal(Pilotfish('pageData', "foo", "bar"), "bar", "set should return the value");
+    equal(Pilotfish('pageData', "foo"), "bar", "get foo");
 
-    Pilotfish('pageAttr', "foo", true);
-    equal(Pilotfish('pageAttr', "foo"), "true", "foo boolean true converted to string 'true'");
+    Pilotfish('pageData', "foo", true);
+    equal(Pilotfish('pageData', "foo"), "true", "foo boolean true converted to string 'true'");
 
-    Pilotfish('pageAttr', "foo", false);
-    equal(Pilotfish('pageAttr', "foo"), "false", "foo boolean false converted to string 'false'");
+    Pilotfish('pageData', "foo", false);
+    equal(Pilotfish('pageData', "foo"), "false", "foo boolean false converted to string 'false'");
 
-    Pilotfish('pageAttr', "foo", null);
-    equal(Pilotfish('pageAttr', "foo"), "", "null converted to empty string");
+    Pilotfish('pageData', "foo", null);
+    equal(Pilotfish('pageData', "foo"), "", "null converted to empty string");
 
-    Pilotfish('pageAttr', "foo", 0);
-    equal(Pilotfish('pageAttr', "foo"), "0", "integer 0 convertd to string 0");
+    Pilotfish('pageData', "foo", 0);
+    equal(Pilotfish('pageData', "foo"), "0", "integer 0 convertd to string 0");
 
     // Clear it
-    deepEqual(Pilotfish('pageAttr', "foo", ""), "", "set to empty string should return empty string");
-    equal(Pilotfish('pageAttr', "foo"), "", "empty string after clear");
+    deepEqual(Pilotfish('pageData', "foo", ""), "", "set to empty string should return empty string");
+    equal(Pilotfish('pageData', "foo"), "", "empty string after clear");
 });
 
 test('Selector', function(){
-    ok(Pilotfish('S', '') instanceof Array);
-    ok(Pilotfish('S', undefined) instanceof Array);
-    ok(Pilotfish('S', null) instanceof Array);
-    ok(Pilotfish('S', {}) instanceof Array);
-    ok(Pilotfish('S', []) instanceof Array);
+    equal(Pilotfish('S', '').length, 0, "empty string");
+    equal(Pilotfish('S', undefined).length, 0, "undefined");
+    equal(Pilotfish('S', null).length, 0, "null");
+    equal(typeof Pilotfish('S', {}), "object", "{}"); // jQuery {} returns {0: {}, length: 1}
+    equal(Pilotfish('S', []).length, 0, "[]");
     equal(Pilotfish('S', '#qunit-banner').length, 1, '#qunit-banner');
     equal(Pilotfish('S', '#nonexistant-id').length, 0, '#nonexistant-id');
     equal(Pilotfish('S', '.result').length, 1, '.result');
