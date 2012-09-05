@@ -64,6 +64,14 @@ test('complex', function(){
 });
 
 module('Util');
+test('each', function(){
+    var counter = 0;
+    Pilotfish('each', [1,2,4], function(i, member) {
+      counter += member;
+    });
+    ok(counter, 7);
+});
+
 test('log', function(){
     expect(1);
     Pilotfish('log', "Pilotfish('log') test:", "second arg", 3, [1,2,3], true, {});

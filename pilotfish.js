@@ -70,6 +70,14 @@ Pilotfish.register = function(name, func) {
 /* Core 
  * --------------------------------------------------------------------------*/
 
+var each = _core.each = function(objects, callback){
+    for (var i = 0; i < objects.length; i++ ) {
+        if (callback.call(objects[i], i, objects[i]) === false) {
+            break;
+        }
+    }
+};
+
 /* Javascript passes by reference for objects, so we need a facility to clone them.
  * We also need a simple way to combine two objects, 
  * handy for defining default functionality with user options that override.
@@ -156,12 +164,6 @@ var toS = _core.toS = function(input) {
     } else {
         return "" + input;
     }
-};
-
-/* Plugins that should be external 
- * --------------------------------------------------------------------------*/
-var timeago = _plugins.timeago = function(options) {
-    options = extend({ selector: ".timeago" }, options);
 };
 
 
