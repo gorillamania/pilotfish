@@ -148,8 +148,7 @@ You may host the javascript files yourself if you like. Simply download them fro
 Note that the [server side api](https://github.com/pilotfish/pilotfish-api), and  [web console](https://github.com/pilotfish/pilotfish-console) are open source, you are free to download/install them and run them on your own server instead of using the Pilotfish hosted solution.
 
 #### Github CDN
-http://pilotfish.github.com/client/latest/pilotfish.min.js
-https://pilotfish.github.com/client/latest/pilotfish.min.js
+[http://pilotfish.github.com/client/latest/pilotfish.min.js](http://pilotfish.github.com/client/latest/pilotfish.min.js)
 
 #### Google CDN
 TODO
