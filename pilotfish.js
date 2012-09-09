@@ -16,6 +16,7 @@ if(window.Pilotfish && window.Pilotfish.version) {
 
 // Internal goodies
 var _core         = {},
+    _eventLogs    = [],
     _pageData     = {},
     _plugins      = {},
     _settings     = {},
@@ -32,7 +33,7 @@ function checkCompatibility() {
     // For now, we require jQuery
     // In the future, we may build adaptors for other libraries
     if (! window.jQuery ) {
-      return false;
+        return false;
     }
 
     return true;
@@ -45,7 +46,7 @@ var Pilotfish = function(){
     }
 
     if (!compatible) {
-      return true;
+        return true;
     }
 
     // This top level function accepts args, which allows for us to do:
@@ -60,7 +61,7 @@ var Pilotfish = function(){
     } else if (typeof _plugins[method] === "function") {
         return _plugins[method].apply(Pilotfish, args);
     } else {
-        throw "Unknown method: " + method;
+        return false;
     }
 };
 window.Pilotfish = Pilotfish;
@@ -79,6 +80,38 @@ Pilotfish.register = function(name, func) {
 
 /* Core 
  * --------------------------------------------------------------------------*/
+
+/* Events
+ * -----------------------------------*/
+
+// Credit to https://gist.github.com/661855
+var subscribe = _core.subscribe = function() {
+  var $Pilotfish = jQuery(Pilotfish);
+  $Pilotfish.on.apply($Pilotfish, arguments);
+  return true;
+};
+
+var unsubscribe = _core.unsubscribe = function() {
+  var $Pilotfish = jQuery(Pilotfish);
+  $Pilotfish.off.apply($Pilotfish, arguments);
+};
+
+var publish = _core.publish = function() {
+  var $Pilotfish = jQuery(Pilotfish);
+  eventLog({"name": arguments[0], "args": arguments});
+  $Pilotfish.trigger.apply($Pilotfish, arguments);
+  return true;
+};
+
+var eventLog = _core.eventLog = function (eventData) {
+  if (eventData) {
+    _eventLogs.push(eventData);
+  }
+  return _eventLogs;
+};
+
+/* Util
+ * -----------------------------------*/
 
 var each = _core.each = function(objects, callback){
     jQuery.each(objects, callback);

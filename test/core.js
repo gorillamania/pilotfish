@@ -35,6 +35,34 @@ test('Predefined function called', function() {
 });
 
 
+module('Events');
+var clicked = false, action = 'buy_button_clicked';
+test('event fired', function() {
+  expect(12);
+  Pilotfish('subscribe', action, function(eventName, data) {
+    clicked = true;
+    equal(eventName, eventName, "eventName");
+    equal(data.category, 'category', 'category set');
+    equal(data.label, 'label', 'label set');
+    equal(data.value, 42, 'value set');
+    deepEqual(data.nonInteractive, false, 'nonInteractive set');
+
+    equal(Pilotfish('eventLog').length, 1, "event log length");
+  });
+
+  ok(! clicked, "event not fired yet");
+  ok(Pilotfish('publish', action, {'category': 'category', label: 'label', value: 42, nonInteractive: false}), "Event fired");
+  
+  ok(Pilotfish('unsubscribe', 'buy button clicked') !== false, "unsubscribe not false");
+
+  // Now it shouldn't fire
+  clicked = false;
+  ok(Pilotfish('publish', 'buy button clicked'), "Event fired");
+  ok(! clicked, "event not fired after unsubscribe");
+
+  equal(Pilotfish('eventLog').length, 2, "event log length 2");
+});
+
 module('Extend');
 test('simple', function(){
     deepEqual(Pilotfish('extend', {"one": 1}, {"two": 2}), {"one": 1, "two": 2}, "simple object extension");
