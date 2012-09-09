@@ -25,6 +25,12 @@
 </script>
 <!-- End Pilotfish tag -->
 <script>
+// Subscribe to errors and have them fail tests
+Pilotfish('subscribe', 'error', function(error, data) {
+     ok(false, "Pilotfish error: " + JSON.stringify(data));
+});
+</script>
+<script>
   // Testing preloadd instructions
   Pilotfish('pageData', 'test page', 'yes');
 </script>
