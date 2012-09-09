@@ -18,7 +18,6 @@ test('_gaq set up', function() {
 });
 asyncTest('ga.js setup', function() {
     Pilotfish('subscribe', 'plugins:tracker:backend_loaded', function(eventName, data) {
-        console.log("got here right backend?", data);
         if (data.backend == "google-analytics") {
             equal(typeof window._gat, "object", "typeof window._gat");
 

@@ -38,7 +38,7 @@ test('Predefined function called', function() {
 module('Events');
 var clicked = false, action = 'buy_button_clicked';
 test('event fired', function() {
-  expect(12);
+  expect(10);
   Pilotfish('subscribe', action, function(evt, data) {
     equal(evt.type, action, 'evt.type is action');
     clicked = true;
@@ -47,7 +47,6 @@ test('event fired', function() {
     equal(data.value, 42, 'value set');
     deepEqual(data.nonInteractive, false, 'nonInteractive set');
 
-    equal(Pilotfish('eventLog').length, 1, "event log length");
   });
 
   ok(! clicked, "event not fired yet");
@@ -60,7 +59,6 @@ test('event fired', function() {
   ok(Pilotfish('publish', 'buy button clicked'), "Event fired");
   ok(! clicked, "event not fired after unsubscribe");
 
-  equal(Pilotfish('eventLog').length, 2, "event log length 2");
 });
 
 module('Extend');
@@ -154,3 +152,19 @@ test('Simple plugin', function() {
     equal(Pilotfish('upper', 'test'), "TEST", "upper plugin");
 });
 
+
+module('Browser events');
+var loaded = false, ready = false;
+test('loading', function() {
+    Pilotfish('subscribe', "window:load", function() {
+       console.log("subscribed window:load");
+       loaded = true;
+    });
+    Pilotfish('subscribe', "document:ready", function() {
+       console.log("subscribed document:ready");
+       ready = true;
+    });
+
+    ok (! ready, 'not ready');
+    ok (! loaded, 'not loaded');
+}); 

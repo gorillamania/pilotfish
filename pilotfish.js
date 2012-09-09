@@ -110,6 +110,7 @@ var eventLog = _core.eventLog = function (eventData) {
   return _eventLogs;
 };
 
+
 /* Util
  * -----------------------------------*/
 
@@ -218,6 +219,16 @@ var toS = _core.toS = function(input) {
         Pilotfish.apply(Pilotfish, preloadQueue[i]);
     }
     preloadQueue = [];
+
+    // Global events
+    if (window.jQuery) {
+        jQuery(window).load(function() {
+            Pilotfish('publish', 'window:load');
+        });
+        jQuery(document).ready(function() {
+            Pilotfish('publish', 'document:ready');
+        });
+    }
 })();
 
 })(window, document, location);
