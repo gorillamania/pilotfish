@@ -27,7 +27,7 @@ test('Pilotfish object', function() {
 test("Pilotfish(method, arg1, arg2)", function() {
     equal(Pilotfish('pageData', 'x', 'y'), 'y');
     equal(Pilotfish('pageData', 'x'), 'y');
-    //deepEqual(Pilotfish('non existant function', 'x', 'y'), false);
+    deepEqual(Pilotfish('non existant function', 'x', 'y'), false);
 });
 
 test('Predefined function called', function() {
