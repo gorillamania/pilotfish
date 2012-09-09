@@ -4,7 +4,8 @@
  * https://github.com/pilotfish/pilotfish
  * vim: set expandtab tabstop=4: 
  */
-(function(window, undefined){
+// Globals passed in so the optimizer can make them local variables
+(function(window, document, location, undefined){
 
 /* Setup
  * --------------------------------------------------------------------------*/
@@ -13,14 +14,9 @@ if(window.Pilotfish && window.Pilotfish.version) {
     return;
 }
 
-// Shortcuts for browser globals to be explicit and make the min file size smaller.
-var document = window.document,
-    location = window.location,
-    navigator = window.navigator;
-
-
 // Internal goodies
 var _core         = {},
+    _eventLogs    = [],
     _pageData     = {},
     _plugins      = {},
     _settings     = {},
@@ -30,14 +26,14 @@ var _core         = {},
 function checkCompatibility() {
     // Gracefully degrade for older browsers that don't support what we need.
     // TODO: build a shim file for these features, conditionally load it.
-    if (! document.querySelector || ! window.console || ! window.JSON){
+    if (! window.JSON){
         return false;
     }
 
     // For now, we require jQuery
     // In the future, we may build adaptors for other libraries
     if (! window.jQuery ) {
-      return false;
+        return false;
     }
 
     return true;
@@ -50,7 +46,7 @@ var Pilotfish = function(){
     }
 
     if (!compatible) {
-      return true;
+        return true;
     }
 
     // This top level function accepts args, which allows for us to do:
@@ -65,7 +61,7 @@ var Pilotfish = function(){
     } else if (typeof _plugins[method] === "function") {
         return _plugins[method].apply(Pilotfish, args);
     } else {
-        throw "Unknown method: " + method;
+        return false;
     }
 };
 window.Pilotfish = Pilotfish;
@@ -85,9 +81,37 @@ Pilotfish.register = function(name, func) {
 /* Core 
  * --------------------------------------------------------------------------*/
 
-var each = _core.each = function(objects, callback){
-    jQuery.each(objects, callback);
+/* Events
+ * -----------------------------------*/
+
+// Credit to https://gist.github.com/661855
+var subscribe = _core.subscribe = function() {
+    var $Pilotfish = jQuery(Pilotfish);
+    $Pilotfish.on.apply($Pilotfish, arguments);
+    return true;
 };
+
+var unsubscribe = _core.unsubscribe = function() {
+    var $Pilotfish = jQuery(Pilotfish);
+    $Pilotfish.off.apply($Pilotfish, arguments);
+};
+
+var publish = _core.publish = function() {
+    var $Pilotfish = jQuery(Pilotfish);
+    eventLog({"name": arguments[0], "args": arguments});
+    $Pilotfish.trigger.apply($Pilotfish, arguments);
+    return true;
+};
+
+var eventLog = _core.eventLog = function (eventData) {
+  if (eventData) {
+      _eventLogs.push(eventData);
+  }
+  return _eventLogs;
+};
+
+/* Util
+ * -----------------------------------*/
 
 /* Javascript passes by reference for objects, so we need a facility to clone them.
  * We also need a simple way to combine two objects, 
@@ -99,13 +123,53 @@ var extend = _core.extend = function(source, target) {
     return jQuery.extend(source, target);
 };
 
-/* Sometimes we need to know if an object is {} */
+var error = _core.error = function(error, type) {
+    Pilotfish('publish', 'error', {type: type, error: error});
+    if (type) {
+        Pilotfish('publish', 'error:' + type, {error: error});
+    }
+};
+
+// Sometimes we need to know if an object is {} 
 function isPlainObject(obj) {
     return jQuery.isPlainObject(obj);
 }
 
+// Load a remote script, with an optional callback
+var loadScript = _core.loadScript = function(src, callback) {
+    Pilotfish('publish', 'external_script:started', {src: src});
+    var SCRIPT = "script",
+        firstScript = document.getElementsByTagName(SCRIPT)[0],
+        domScript = document.createElement(SCRIPT);
+    domScript.async = true;
+    domScript.src = src;
+
+    // Thanks http://stevesouders.com/efws/script-onload.php
+    domScript.onload = function() { 
+        if ( ! domScript.onloadDone ) {
+            domScript.onloadDone = true; 
+            Pilotfish('publish', 'external_script:loaded', {src: src});
+            if (typeof callback == "function") {
+                callback(); 
+            }
+        }
+    };
+    domScript.onreadystatechange = function() { 
+        if ( (/loaded|complete/).test(domScript.readyState) && !domScript.onloadDone ) {
+            domScript.onloadDone = true; 
+            Pilotfish('publish', 'external_script:loaded', {src: src});
+            if (typeof callback == "function") {
+                callback(); 
+            }
+        }
+    };
+
+    firstScript.parentNode.insertBefore(domScript, firstScript);
+};
+
 // Centralized logging, if the browser supports it.
 var log = _core.log = function(msg) {
+    Pilotfish('publish', 'log', {msg: msg});
     window.console && window.console.log.apply(window.console, arguments);
 };
 
@@ -113,7 +177,7 @@ var log = _core.log = function(msg) {
 // Useful for analytics or other plugins that behave differently depending based on the context
 var pageData = _core.pageData = function(key, value) {
     if (value !== undefined) {
-       _pageData[key] = toS(value);
+        _pageData[key] = toS(value);
     }
     return _pageData[key] || "";
 };
@@ -121,7 +185,7 @@ var pageData = _core.pageData = function(key, value) {
 // Settings for configuring the way pilotfish behaves
 var setting = _core.setting = function (key, value) {
     if (value !== undefined) {
-       _settings[key] = toS(value);
+        _settings[key] = toS(value);
     }
     return _settings[key] || "";
 };
@@ -129,7 +193,7 @@ var setting = _core.setting = function (key, value) {
 // Thin wrapper around the selector so that we may be able to
 // support other libraries some day 
 var S = _core.S = function (selector) {
-  return jQuery(selector);
+    return jQuery(selector);
 };
 
 // No matter what the input, return a string
@@ -156,4 +220,4 @@ var toS = _core.toS = function(input) {
     preloadQueue = [];
 })();
 
-})(window);
+})(window, document, location);
