@@ -15,7 +15,16 @@ How would you search for this? Googlability is an important part of your plugin 
 
 ## Client side API
 
-TODO
+```
+Pilotfish.register('plugin-name', function() {
+  // Plugin functionality
+});
+```
+
+Then subsequently called via :
+
+`Publish('plugin-name', arg1, ...);`
+
 
 ## Server side API
 
