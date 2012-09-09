@@ -10,6 +10,7 @@ test('setup', function() {
     equal(typeof PilotfishTracker, "function", "typeof PilotfishTracker");
     ok( PilotfishTracker.backend('google-analytics', {'accountid': 'UA-XXXXXXX-1'}), "PilotfishTracker.backend['google-analytics'] true");
     ok( PilotfishTracker.backend('quantcast', {'accountid': 'p-XXXXXXXXXX'}), "PilotfishTracker.backend['quantcast'] true");
+    ok( PilotfishTracker.backend('mixpanel', {'accountid': 'xxxxxxxxxxxxxxxxxxx'}), "PilotfishTracker.backend['mixpanel'] true");
 });
 
 
@@ -34,6 +35,16 @@ test('_qevents set up', function() {
 Pilotfish('subscribe', 'plugins:tracker:backend_loaded', function(eventName, data) {
     if (data.backend == "quantcast") {
         test('quant.js setup', function() {
+            ok(true);
+        });
+        // TODO: Override new Image() so we can see what pixels were fired
+    }
+});
+
+module('Mixpanel');
+Pilotfish('subscribe', 'plugins:tracker:backend_loaded', function(eventName, data) {
+    if (data.backend == "mixpanel") {
+        test('mixpanel js setup', function() {
             ok(true);
         });
         // TODO: Override new Image() so we can see what pixels were fired

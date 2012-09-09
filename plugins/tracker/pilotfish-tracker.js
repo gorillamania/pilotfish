@@ -20,6 +20,26 @@ Pilotfish('register', 'tracker', function() {
       }
 
       switch (backend) { 
+        case "mixpanel": 
+            backends[backend] = new TrackerBackend({
+               name: backend,
+               httpUrl: "http://cdn.mxpnl.com/libs/mixpanel-2.1.min.js",
+               httpsUrl: "https://cdn.mxpnl.com/libs/mixpanel-2.1.min.js",
+               afterLoad: function beforeLoad() {
+                 if (window.mixpanel) {
+                   window.mixpanel.init(options.accountid);
+                   window.mixpanel.track_pageview();
+                 }
+               },
+               recordView: function(path) {
+                 window.mixpanel && window.mixpanel.track_pageview(path);
+               },
+               recordEvent: function(eventName) {
+                 window.mixpanel && window.mixpanel.track(eventName);
+               }
+            });
+            return true;
+
         case "quantcast": 
           backends[backend] = new TrackerBackend({
                name: backend,
@@ -34,6 +54,7 @@ Pilotfish('register', 'tracker', function() {
                recordEvent: function() {}
             });
             return true;
+
         case "google-analytics": 
           backends[backend] = new TrackerBackend({
                name: backend,
