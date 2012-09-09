@@ -1,7 +1,7 @@
 [![Build Status](https://secure.travis-ci.org/pilotfish/pilotfish.png)](http://travis-ci.org/pilotfish/pilotfish)
 
 # Warning 
-**This code is not production ready.**  Pilotfish developers are practicing [README driven development](http://tom.preston-werner.com/2010/08/23/readme-driven-development.html), so this documentation is being written before the code is actually done. :) If the project interests you and you would like to be notified when the first release is ready, let us know. TODO: Link to newsletter signup.
+**This code is not production ready.**  Pilotfish developers are practicing [README driven development](http://tom.preston-werner.com/2010/08/23/readme-driven-development.html), so this documentation is being written before the code is actually done. :) To see the actual state of the code, checkout the [HISTORY](https://github.com/pilotfish/pilotfish/blob/master/HISTORY.md). If the project interests you and you would like to be notified when the first release is ready, let us know. TODO: Link to newsletter signup.
 
 ## About
 Software should be intuitive, easy, and fun to use. Pilotfish is a user experience platform for web and application developers to build better experiences. 

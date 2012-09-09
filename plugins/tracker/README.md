@@ -3,10 +3,10 @@
 * Asynchronously load plugins, optionally after page load.
 * Interface with multiple backends:
     * Google Analytics
-    * Mix Panel
-	* KISS Metrics
-	* Quantcast
-	* Comscore
+    * Quantcast
+    * TODO: Mix Panel
+    * TODO: KISS Metrics
+    * TODO: Comscore
 * Handle Backbone.js "thick clients" by registering a page view when a backbone route is executed
 * Capture user behavior by firing events. From your App, do:
  
@@ -15,9 +15,8 @@
 
 ```
  var PilotfishTracker = new Pilotfish('tracker');
- PilotfishTracker.backend('google-analytics', {"accountid": "adfadsf"})
- PilotfishTracker.backend('comscore', {"accountid": "adfadsf"})
- PilotfishTracker.backend('quantcast', {"accountid": "adfadsf"})
- 
+ PilotfishTracker.backend('google-analytics', {"accountid": "UA-XXXXXXX-1"})
+ PilotfishTracker.backend('quantcast', {"accountid": "p-XXXXXXX-1"})
+
  <input type="submit" value="Buy" onclick="PilotfishTracker.recordEvent('buy-button-clicked')"/>
 ```

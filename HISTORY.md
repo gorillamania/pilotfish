@@ -18,6 +18,7 @@ major.new[.maintenance[.trivial]]
 * First plugin - [Tracker](https://github.com/pilotfish/pilotfish/blob/master/plugins/tracker) released, v0.1.0
 	* Consolidate Event and page view tracking across multiple analytics providers
 	* Integration with Google Analytics
+	* Integration with Quantcast
 * Test framework with [qunit](http://qunitjs.com) and [phantomjs](http://phantomjs.org), run on every commit with [travis](http://travis-ci.org/#!/pilotfish/pilotfish)
 * [Grunt](https://github.com/cowboy/grunt) setup, with [release tasks](https://github.com/pilotfish/pilotfish/blob/master/tasks/release.js) that handle linting, minification, and distribution
 * Graceful degredation of unsupported browsers

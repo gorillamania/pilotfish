@@ -20,7 +20,20 @@ Pilotfish('register', 'tracker', function() {
       }
 
       switch (backend) { 
-        case "quantcast": return false;
+        case "quantcast": 
+          backends[backend] = new TrackerBackend({
+               name: backend,
+               httpUrl: "http://edge.quantserve.com/quant.js",
+               httpsUrl: "https://secure.quantserve.com/quant.js",
+               beforeLoad: function beforeLoad() {
+                  window._qevents = window._qevents || [];
+                  window._qevents.push({"qacct": options.accountid});
+               },
+               recordView: function(path) {
+               },
+               recordEvent: function() {}
+            });
+            return true;
         case "google-analytics": 
           backends[backend] = new TrackerBackend({
                name: backend,
@@ -65,7 +78,6 @@ Pilotfish('register', 'tracker', function() {
     };
 
 
-
     // Supported backends. Must implement:
     // name
     // httpUrl
@@ -103,7 +115,6 @@ Pilotfish('register', 'tracker', function() {
             }
             Pilotfish('publish', 'plugins:tracker:backend_loaded', {backend: options.name});
         }
-
 
         Pilotfish('loadScript', that.actualUrl, afterLoadCallback);
         return this;
