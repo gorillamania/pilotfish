@@ -26,7 +26,7 @@ var _core         = {},
 function checkCompatibility() {
     // Gracefully degrade for older browsers that don't support what we need.
     // TODO: build a shim file for these features, conditionally load it.
-    if (! document.querySelector || ! window.console || ! window.JSON){
+    if (! window.JSON){
         return false;
     }
 
@@ -112,10 +112,6 @@ var eventLog = _core.eventLog = function (eventData) {
 
 /* Util
  * -----------------------------------*/
-
-var each = _core.each = function(objects, callback){
-    jQuery.each(objects, callback);
-};
 
 /* Javascript passes by reference for objects, so we need a facility to clone them.
  * We also need a simple way to combine two objects, 
