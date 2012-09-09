@@ -39,9 +39,9 @@ module('Events');
 var clicked = false, action = 'buy_button_clicked';
 test('event fired', function() {
   expect(12);
-  Pilotfish('subscribe', action, function(eventName, data) {
+  Pilotfish('subscribe', action, function(evt, data) {
+    equal(evt.type, action, 'evt.type is action');
     clicked = true;
-    equal(eventName, eventName, "eventName");
     equal(data.category, 'category', 'category set');
     equal(data.label, 'label', 'label set');
     equal(data.value, 42, 'value set');

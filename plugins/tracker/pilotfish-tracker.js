@@ -32,6 +32,7 @@ Pilotfish('register', 'tracker', function() {
                   if (options.domain) {
                     window._gaq.push(['_setDomainName', 'aboinga.com']);
                   }
+                  window._gaq.push(['_trackPageview']);
                },
                recordView: function(path) {
                   var pageTracker = window._gat._getTracker(options.accountid);
@@ -48,17 +49,18 @@ Pilotfish('register', 'tracker', function() {
       }
     };
 
-    // Register a backend to interface with
     Tracker.recordView = function(path) {
       path = path || (location.pathname + location.search);
       for (var backend in backends) {
         backends[backend].recordView(path);
+        Pilotfish('publish', 'plugins:tracker:recordView', {backend: backend.name});
       }
     };
 
     Tracker.recordEvent = function(eventName, category, label, value, nonInteraction ) {
       for (var backend in backends) {
         backends[backend].recordEvent.apply(this,arguments);
+        Pilotfish('publish', 'plugins:tracker:recordEvent', {backend: backend.name});
       }
     };
 
@@ -76,31 +78,36 @@ Pilotfish('register', 'tracker', function() {
     // beforeLoad
     // afterLoad
     var TrackerBackend = function(options) {
-        this.name = options.name;
-        this.account = options.account;
-        this.httpUrl = options.httpUrl;
-        this.httpsUrl = options.httpsUrl || options.httpUrl;
+        var that = this;
+        that.name = options.name;
+        that.account = options.account;
+        that.httpUrl = options.httpUrl;
+        that.httpsUrl = options.httpsUrl || options.httpUrl;
 
-        this.actualUrl = securePage ? this.httpsUrl : this.httpUrl;
+        that.actualUrl = securePage ? that.httpsUrl : that.httpUrl;
 
         if (options.beforeLoad) {
-          this.beforeLoad = options.beforeLoad;
-          this.beforeLoad();
+            that.beforeLoad = options.beforeLoad;
+            that.beforeLoad();
         }
         if (options.afterLoad) {
-          this.afterLoad = options.afterLoad;
-          Pilotfish('loadScript', this.actualUrl, this.afterLoad);
-        } else {
-          Pilotfish('loadScript', this.actualUrl);
+            that.afterLoad = options.afterLoad;
         }
 
+        that.recordView = options.recordView;
+        that.recordEvent = options.recordEvent;
+
+        function afterLoadCallback() {
+            if (typeof options.afterLoad == "function") {
+                options.afterLoad();
+            }
+            Pilotfish('publish', 'plugins:tracker:backend_loaded', {backend: options.name});
+        }
+
+
+        Pilotfish('loadScript', that.actualUrl, afterLoadCallback);
         return this;
-    };
-    TrackerBackend.prototype.recordView = function(path) {
-      return true;
-    };
-    TrackerBackend.prototype.recordEvent = function(tracker) {
-      return true;
+
     };
 
     return Tracker;

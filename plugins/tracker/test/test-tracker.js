@@ -8,15 +8,23 @@ module('Pilotfish Tracker Core');
 test('setup', function() {
     var PilotfishTracker = new Pilotfish('tracker');
     equal(typeof PilotfishTracker, "function", "typeof PilotfishTracker");
-    ok( PilotfishTracker.backend('google-analytics', {'accountid': 'UX-XXXXXX-1'}), "PilotfishTracker.backend['google-analytics'] true");
+    ok( PilotfishTracker.backend('google-analytics', {'accountid': 'UA-XXXXXXX-1'}), "PilotfishTracker.backend['google-analytics'] true");
 });
 
 
 module('Google Analytics');
 test('_gaq set up', function() {
-  equal(typeof window._gaq, "object", "typeof window._gaq");
+    equal(typeof window._gaq, "object", "typeof window._gaq");
 });
-// TODO: Check that ga.js loaded correctly
-// TODO: Override new Image() so we can see what pixels were fired
-// TOOD: trigger an event and watch it get set
-// equal(typeof window._gat, "object", "typeof window._gat");
+asyncTest('ga.js setup', function() {
+    Pilotfish('subscribe', 'plugins:tracker:backend_loaded', function(eventName, data) {
+        console.log("got here right backend?", data);
+        if (data.backend == "google-analytics") {
+            equal(typeof window._gat, "object", "typeof window._gat");
+
+            // TODO: Override new Image() so we can see what pixels were fired
+
+            start();
+        }
+    });
+});
