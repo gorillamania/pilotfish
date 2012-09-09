@@ -125,9 +125,9 @@ var extend = _core.extend = function(source, target) {
 };
 
 var error = _core.error = function(error, type) {
-    Pilotfish('publish', 'error', {type: type, error: error});
+    publish('error', {type: type, error: error});
     if (type) {
-        Pilotfish('publish', 'error:' + type, {error: error});
+        publish('error:' + type, {error: error});
     }
 };
 
@@ -138,7 +138,7 @@ function isPlainObject(obj) {
 
 // Load a remote script, with an optional callback
 var loadScript = _core.loadScript = function(src, callback) {
-    Pilotfish('publish', 'external_script:started', {src: src});
+    publish('external_script:started', {src: src});
     var SCRIPT = "script",
         firstScript = document.getElementsByTagName(SCRIPT)[0],
         domScript = document.createElement(SCRIPT);
@@ -149,7 +149,7 @@ var loadScript = _core.loadScript = function(src, callback) {
     domScript.onload = function() { 
         if ( ! domScript.onloadDone ) {
             domScript.onloadDone = true; 
-            Pilotfish('publish', 'external_script:loaded', {src: src});
+            publish('external_script:loaded', {src: src});
             if (typeof callback == "function") {
                 callback(); 
             }
@@ -158,7 +158,7 @@ var loadScript = _core.loadScript = function(src, callback) {
     domScript.onreadystatechange = function() { 
         if ( (/loaded|complete/).test(domScript.readyState) && !domScript.onloadDone ) {
             domScript.onloadDone = true; 
-            Pilotfish('publish', 'external_script:loaded', {src: src});
+            publish('external_script:loaded', {src: src});
             if (typeof callback == "function") {
                 callback(); 
             }
@@ -170,7 +170,7 @@ var loadScript = _core.loadScript = function(src, callback) {
 
 // Centralized logging, if the browser supports it.
 var log = _core.log = function(msg) {
-    Pilotfish('publish', 'log', {msg: msg});
+    publish('log', {msg: msg});
     window.console && window.console.log.apply(window.console, arguments);
 };
 
@@ -223,10 +223,10 @@ var toS = _core.toS = function(input) {
     // Global events
     if (window.jQuery) {
         jQuery(window).load(function() {
-            Pilotfish('publish', 'window:load');
+            publish('window:load');
         });
         jQuery(document).ready(function() {
-            Pilotfish('publish', 'document:ready');
+            publish('document:ready');
         });
     }
 })();

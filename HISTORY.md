@@ -1,5 +1,5 @@
-See a history of changes for this project is here. Note that we follow [software versioning standards](http://semver.org) as follows:
-major.new[.maintenance[.trivial]]
+A history of changes for this project is here. We follow [software versioning standards](http://semver.org) as follows:
+major.new.maintenance[.trivial]
 
 
 # 0.1.0
@@ -19,6 +19,7 @@ major.new[.maintenance[.trivial]]
 	* Consolidate Event and page view tracking across multiple analytics providers
 	* Integration with Google Analytics
 	* Integration with Quantcast
+	* Integration with MixPanel
 * Test framework with [qunit](http://qunitjs.com) and [phantomjs](http://phantomjs.org), run on every commit with [travis](http://travis-ci.org/#!/pilotfish/pilotfish)
 * [Grunt](https://github.com/cowboy/grunt) setup, with [release tasks](https://github.com/pilotfish/pilotfish/blob/master/tasks/release.js) that handle linting, minification, and distribution
 * Graceful degredation of unsupported browsers
