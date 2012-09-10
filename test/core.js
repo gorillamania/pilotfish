@@ -155,16 +155,11 @@ test('Simple plugin', function() {
 
 module('Browser events');
 var loaded = false, ready = false;
-test('loading', function() {
-    Pilotfish('subscribe', "window:load", function() {
-       console.log("subscribed window:load");
-       loaded = true;
+Pilotfish('onready', function() { ready = true; });
+Pilotfish('onload', function() { loaded = true; });
+jQuery(window).load(function() {
+    test('window loaded', function() {
+        ok(loaded, 'loaded');
+        ok(ready, 'ready');
     });
-    Pilotfish('subscribe', "document:ready", function() {
-       console.log("subscribed document:ready");
-       ready = true;
-    });
-
-    ok (! ready, 'not ready');
-    ok (! loaded, 'not loaded');
-}); 
+});

@@ -104,10 +104,17 @@ var publish = _core.publish = function() {
 };
 
 var eventLog = _core.eventLog = function (eventData) {
-  if (eventData) {
-      _eventLogs.push(eventData);
-  }
-  return _eventLogs;
+    if (eventData) {
+        _eventLogs.push(eventData);
+    }
+    return _eventLogs;
+};
+
+var onload = _core.onload = function(callback) {
+    jQuery(window).load(callback);
+};
+var onready = _core.onready = function(callback) {
+    jQuery(document).ready(callback);
 };
 
 
