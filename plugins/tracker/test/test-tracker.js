@@ -4,20 +4,18 @@ Pilotfish('subscribe', 'error', function(error, data) {
     ok(false, "Pilotfish error: " + JSON.stringify(data));
 });
 
+
 module('Pilotfish Tracker Core');
 test('setup', function() {
     var PilotfishTracker = new Pilotfish('tracker');
     equal(typeof PilotfishTracker, "function", "typeof PilotfishTracker");
-    ok( PilotfishTracker.backend('google-analytics', {'accountid': 'UA-XXXXXXX-1'}), "PilotfishTracker.backend['google-analytics'] true");
+    ok( PilotfishTracker.backend('google-analytics', {'accountid': 'UA-88888888-1'}), "PilotfishTracker.backend['google-analytics'] true");
     ok( PilotfishTracker.backend('quantcast', {'accountid': 'p-XXXXXXXXXX'}), "PilotfishTracker.backend['quantcast'] true");
     ok( PilotfishTracker.backend('mixpanel', {'accountid': 'xxxxxxxxxxxxxxxxxxx'}), "PilotfishTracker.backend['mixpanel'] true");
 });
 
 
 module('Google Analytics');
-test('_gaq set up', function() {
-    equal(typeof window._gaq, "object", "typeof window._gaq");
-});
 Pilotfish('subscribe', 'plugins:tracker:backend_loaded', function(eventName, data) {
     if (data.backend == "google-analytics") {
         test('ga.js setup', function() {

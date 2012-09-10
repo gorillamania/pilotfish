@@ -22,21 +22,41 @@ Pilotfish('register', 'tracker', function() {
       switch (backend) { 
         case "mixpanel": 
             backends[backend] = new TrackerBackend({
-               name: backend,
-               httpUrl: "http://cdn.mxpnl.com/libs/mixpanel-2.1.min.js",
-               httpsUrl: "https://cdn.mxpnl.com/libs/mixpanel-2.1.min.js",
-               afterLoad: function beforeLoad() {
-                 if (window.mixpanel) {
-                   window.mixpanel.init(options.accountid);
-                   window.mixpanel.track_pageview();
-                 }
-               },
-               recordView: function(path) {
-                 window.mixpanel && window.mixpanel.track_pageview(path);
-               },
-               recordEvent: function(eventName) {
-                 window.mixpanel && window.mixpanel.track(eventName);
-               }
+                name: backend,
+                httpUrl: "http://cdn.mxpnl.com/libs/mixpanel-2.1.min.js",
+                httpsUrl: "https://cdn.mxpnl.com/libs/mixpanel-2.1.min.js",
+                beforeLoad: function beforeLoad() {
+                    var a = window.mixpanel = (window.mixpanel || []);
+                    a._i = [];
+                    a.init = function (b, c, f) {
+                      function d(a, b) {
+                        var c = b.split(".");
+                        a[b] = function () {
+                          a.push([b].concat(Array.prototype.slice.call(arguments, 0)));
+                        };
+                      }
+                      var g = a;
+                      "undefined" !== typeof f ? g = a[f] = [] : f = "mixpanel";
+                      g.people = g.people || [];
+                      var h = "disable track track_pageview track_links track_forms register register_once unregister identify name_tag set_config people.identify people.set people.increment".split(" ");
+                      for (var e = 0; e < h.length; e++) {
+                         d(g, h[e]);
+                      }
+                      a._i.push([b, c, f]);
+                    };
+                    a.__SV = 1.1;
+                },
+                afterLoad: function beforeLoad() {
+                    if (window.mixpanel) {
+                        window.mixpanel.init(options.accountid);
+                    }
+                },
+                recordView: function(path) {
+                    window.mixpanel && window.mixpanel.track_pageview(path);
+                },
+                recordEvent: function(eventName) {
+                    window.mixpanel && window.mixpanel.track(eventName);
+                }
             });
             return true;
 
@@ -47,9 +67,9 @@ Pilotfish('register', 'tracker', function() {
                httpsUrl: "https://secure.quantserve.com/quant.js",
                beforeLoad: function beforeLoad() {
                   window._qevents = window._qevents || [];
-                  window._qevents.push({"qacct": options.accountid});
                },
                recordView: function(path) {
+                  window._qevents.push( { qacct: options.accountid} );
                },
                recordEvent: function() {}
             });
@@ -64,13 +84,12 @@ Pilotfish('register', 'tracker', function() {
                   window._gaq = window._gaq || [];
                   window._gaq.push(['_setAccount', options.accountid]);
                   if (options.domain) {
-                    window._gaq.push(['_setDomainName', 'aboinga.com']);
+                    window._gaq.push(['_setDomainName', options.domain]);
                   }
-                  window._gaq.push(['_trackPageview']);
                },
                recordView: function(path) {
                   var pageTracker = window._gat._getTracker(options.accountid);
-                  pageTracker._trackPageView(path);
+                  pageTracker._trackPageview(path);
                },
                recordEvent: function(eventName, category, label, value, nonInteraction ) {
                   // https://developers.google.com/analytics/devguides/collection/gajs/eventTrackerGuide
@@ -135,6 +154,7 @@ Pilotfish('register', 'tracker', function() {
                 options.afterLoad();
             }
             Pilotfish('publish', 'plugins:tracker:backend_loaded', {backend: options.name});
+            that.recordView();
         }
 
         Pilotfish('loadScript', that.actualUrl, afterLoadCallback);
