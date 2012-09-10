@@ -104,11 +104,19 @@ var publish = _core.publish = function() {
 };
 
 var eventLog = _core.eventLog = function (eventData) {
-  if (eventData) {
-      _eventLogs.push(eventData);
-  }
-  return _eventLogs;
+    if (eventData) {
+        _eventLogs.push(eventData);
+    }
+    return _eventLogs;
 };
+
+var onload = _core.onload = function(callback) {
+    jQuery(window).load(callback);
+};
+var onready = _core.onready = function(callback) {
+    jQuery(document).ready(callback);
+};
+
 
 /* Util
  * -----------------------------------*/
@@ -124,9 +132,9 @@ var extend = _core.extend = function(source, target) {
 };
 
 var error = _core.error = function(error, type) {
-    Pilotfish('publish', 'error', {type: type, error: error});
+    publish('error', {type: type, error: error});
     if (type) {
-        Pilotfish('publish', 'error:' + type, {error: error});
+        publish('error:' + type, {error: error});
     }
 };
 
@@ -137,7 +145,7 @@ function isPlainObject(obj) {
 
 // Load a remote script, with an optional callback
 var loadScript = _core.loadScript = function(src, callback) {
-    Pilotfish('publish', 'external_script:started', {src: src});
+    publish('external_script:started', {src: src});
     var SCRIPT = "script",
         firstScript = document.getElementsByTagName(SCRIPT)[0],
         domScript = document.createElement(SCRIPT);
@@ -148,7 +156,7 @@ var loadScript = _core.loadScript = function(src, callback) {
     domScript.onload = function() { 
         if ( ! domScript.onloadDone ) {
             domScript.onloadDone = true; 
-            Pilotfish('publish', 'external_script:loaded', {src: src});
+            publish('external_script:loaded', {src: src});
             if (typeof callback == "function") {
                 callback(); 
             }
@@ -157,7 +165,7 @@ var loadScript = _core.loadScript = function(src, callback) {
     domScript.onreadystatechange = function() { 
         if ( (/loaded|complete/).test(domScript.readyState) && !domScript.onloadDone ) {
             domScript.onloadDone = true; 
-            Pilotfish('publish', 'external_script:loaded', {src: src});
+            publish('external_script:loaded', {src: src});
             if (typeof callback == "function") {
                 callback(); 
             }
@@ -169,7 +177,7 @@ var loadScript = _core.loadScript = function(src, callback) {
 
 // Centralized logging, if the browser supports it.
 var log = _core.log = function(msg) {
-    Pilotfish('publish', 'log', {msg: msg});
+    publish('log', {msg: msg});
     window.console && window.console.log.apply(window.console, arguments);
 };
 
@@ -218,6 +226,16 @@ var toS = _core.toS = function(input) {
         Pilotfish.apply(Pilotfish, preloadQueue[i]);
     }
     preloadQueue = [];
+
+    // Global events
+    if (window.jQuery) {
+        jQuery(window).load(function() {
+            publish('window:load');
+        });
+        jQuery(document).ready(function() {
+            publish('document:ready');
+        });
+    }
 })();
 
 })(window, document, location);
