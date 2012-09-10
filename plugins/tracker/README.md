@@ -1,22 +1,35 @@
 ## About
 
-* Asynchronously load plugins, optionally after page load.
-* Interface with multiple backends:
-    * Google Analytics
-    * Quantcast
-    * TODO: Mix Panel
-    * TODO: KISS Metrics
-    * TODO: Comscore
-* Handle Backbone.js "thick clients" by registering a page view when a backbone route is executed
-* Capture user behavior by firing events. From your App, do:
- 
+* Send user events to a server
+* Handles "thick clients" where urls are changed via hashtag, by registering a page view when a route is executed.
+    * Backbone
+    * TODO: Other MVCs?
+* Handle multiple backends. 
+    * Currently supported:
+        * Mix Panel
+        * Google Analytics
+        * Quantcast (page views only, no events)
+    * Planned support: 
+        * Pilotfish API
+        * KISS Metrics
+        * Comscore (page views only, no events)
+
 ## Usage
 
 
 ```
- var PilotfishTracker = new Pilotfish('tracker');
- PilotfishTracker.backend('google-analytics', {"accountid": "UA-XXXXXXX-1"})
- PilotfishTracker.backend('quantcast', {"accountid": "p-XXXXXXX-1"})
+Pilotfish('tracker', {
+    backends: {
+        'google-analytics': {"accountid": "UA-XXXXXXX-1"},
+        'quantcast': {"accountid": "p-XXXXXXX-1"},
+        'mixpanel': {"accountid": "aaaaaaaaaaaaaaaaaaaaaaa"}
+    },
+    events: [
+        'buy-button-clicked',
+        'cancel-button-clicked'
+    ]
+});
 
- <input type="submit" value="Buy" onclick="PilotfishTracker.recordEvent('buy-button-clicked')"/>
+<input type="submit" value="Buy" onclick="Pilotfish('fire', 'buy-button-clicked')"/>
+<input type="submit" value="Buy" onclick="Pilotfish('fire', 'cancel-button-clicked')"/>
 ```

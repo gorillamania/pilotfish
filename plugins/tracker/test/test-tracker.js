@@ -1,50 +1,21 @@
 /* Tests for the Pilotfish tracker plugin */
 
-Pilotfish('subscribe', 'error', function(error, data) {
-    ok(false, "Pilotfish error: " + JSON.stringify(data));
-});
-
-
 module('Pilotfish Tracker Core');
 test('setup', function() {
-    var PilotfishTracker = new Pilotfish('tracker');
-    equal(typeof PilotfishTracker, "function", "typeof PilotfishTracker");
-    ok( PilotfishTracker.backend('google-analytics', {'accountid': 'UA-88888888-1'}), "PilotfishTracker.backend['google-analytics'] true");
-    ok( PilotfishTracker.backend('quantcast', {'accountid': 'p-XXXXXXXXXX'}), "PilotfishTracker.backend['quantcast'] true");
-    ok( PilotfishTracker.backend('mixpanel', {'accountid': 'xxxxxxxxxxxxxxxxxxx'}), "PilotfishTracker.backend['mixpanel'] true");
-});
 
+    ok(Pilotfish('tracker', {
+        backends: {
+            'google-analytics': {"accountid": "UA-XXXXXXX-1"},
+            'quantcast': {"accountid": "p-XXXXXXX-1"},
+            'mixpanel':{"accountid": "aaaaaaaaaaaaaaaaaaaaaaa"}
+        }, 
+        events: [
+            'test:event1',
+            'test:event2'
+        ]
+    }), 'Pilotfish tracker call true');
 
-module('Google Analytics');
-Pilotfish('subscribe', 'plugins:tracker:backend_loaded', function(eventName, data) {
-    if (data.backend == "google-analytics") {
-        test('ga.js setup', function() {
-            equal(typeof window._gat, "object", "typeof window._gat");
+    Pilotfish('publish', 'test:event1');
+    Pilotfish('publish', 'test:event2');
 
-            // TODO: Override new Image() so we can see what pixels were fired
-        });
-    }
-});
-
-module('Quantcast');
-test('_qevents set up', function() {
-    equal(typeof window._qevents, "object", "typeof window._qevents");
-});
-Pilotfish('subscribe', 'plugins:tracker:backend_loaded', function(eventName, data) {
-    if (data.backend == "quantcast") {
-        test('quant.js setup', function() {
-            ok(true);
-        });
-        // TODO: Override new Image() so we can see what pixels were fired
-    }
-});
-
-module('Mixpanel');
-Pilotfish('subscribe', 'plugins:tracker:backend_loaded', function(eventName, data) {
-    if (data.backend == "mixpanel") {
-        test('mixpanel js setup', function() {
-            ok(true);
-        });
-        // TODO: Override new Image() so we can see what pixels were fired
-    }
 });
