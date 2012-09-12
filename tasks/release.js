@@ -81,6 +81,16 @@ module.exports = function(grunt) {
         return true;
     });
 
+    grunt.registerTask("buildPlugins", "Create the files in ./dist/plugins/", function() {
+        var plugins = ['tracker'];
+        for (var i = 0; i < plugins.length; i++) {
+            var n = plugins[i];
+            grunt.log.subhead("Packaging " + n + " plugin");
+
+            grunt.helper('copyp', 'plugins/' + n + '/pilotfish-' + n + '.js', 'dist/client/plugins/' + n + '/pilotfish-' + n + '.js');
+        }
+    });
+
     grunt.registerTask("gitRelease", "git commit/tag/push the files in ./dist/", function() {
 
         // Read the version from the pacakge.json. 
