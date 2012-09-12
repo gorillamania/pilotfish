@@ -2,7 +2,7 @@ A history of changes for this project is here. We follow [software versioning st
 major.new.maintenance[.trivial]
 
 
-# 0.1.0 [Pilotfish quality rating](https://github.com/pilotfish/pilotfish/blob/master/doc/ratings.md): ![0.5 fish](http://cdn.pilotfish.io/img/pilotfish-rating-0.5.png)
+# 0.1.0 ![0.5 fish](http://cdn.pilotfish.io/img/pilotfish-rating-0.5.png)
 
 * [Minimum Viable Product](http://en.wikipedia.org/wiki/Lean_Startup)
 * [Tag on page syntax](https://gist.github.com/3645309) created, with async support. 
@@ -15,11 +15,7 @@ major.new.maintenance[.trivial]
 	* [extend](publish/subscribe/unsubscribe](https://github.com/pilotfish/pilotfish/blob/master/doc/core.md#extend) (via jQuery)
 * Basic plugin infrastructure via [Pilotfish('register')](https://github.com/pilotfish/pilotfish/blob/master/doc/core.md#registering-plugins)
 * Preload Queue to better handle asynchronously loaded js
-* First plugin - [Tracker](https://github.com/pilotfish/pilotfish/blob/master/plugins/tracker) released, v0.1.0
-	* Consolidate Event and page view tracking across multiple analytics providers
-	* Integration with Google Analytics
-	* Integration with Quantcast
-	* Integration with MixPanel
+* First plugin - [Tracker](https://github.com/pilotfish/pilotfish/blob/master/plugins/tracker) released
 * Test framework with [qunit](http://qunitjs.com) and [phantomjs](http://phantomjs.org), run on every commit with [travis](http://travis-ci.org/#!/pilotfish/pilotfish)
 * [Grunt](https://github.com/cowboy/grunt) setup, with [release tasks](https://github.com/pilotfish/pilotfish/blob/master/tasks/release.js) that handle linting, minification, and distribution
 * Graceful degredation of unsupported browsers
