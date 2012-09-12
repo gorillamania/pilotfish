@@ -156,10 +156,6 @@ module.exports = function(grunt) {
 
     // Copy file from src to dest, making directories if necessary
     grunt.registerHelper('copyp', function(src, dest) {
-        if (fs.existsSync(dest)) {
-            grunt.warn("Destination file exists: " + dest);
-        }
-
         var destDir = grunt.helper('basename', dest);
         if ( ! fs.existsSync(destDir)) { 
             grunt.verbose.writeln("Creating directory" + destDir);
