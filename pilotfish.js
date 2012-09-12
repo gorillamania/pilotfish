@@ -19,26 +19,12 @@ var _core         = {},
     _pageData     = {},
     _plugins      = {},
     _settings     = {},
+    NOT_THERE     = "NOT_THERE",
     compatible    = checkCompatibility(),
     secure        = location.protocol === 'https:',
     cdnHost       = secure ? '//pilotfish.github.com/' : 'http://cdn.pilotfish.io/',
-    preloadQueue  = window.Pilotfish && window.Pilotfish.q || [];
+    loadQueue     = window.Pilotfish && window.Pilotfish.q || [];
 
-function checkCompatibility() {
-    // Gracefully degrade for older browsers that don't support what we need.
-    // TODO: build a shim file for these features, conditionally load it.
-    if (! window.JSON){
-        return false;
-    }
-
-    // For now, we require jQuery
-    // In the future, we may build adaptors for other libraries
-    if (! window.jQuery ) {
-        return false;
-    }
-
-    return true;
-}
 
 // Set up the global Pilotfish object
 var Pilotfish = function(){
@@ -62,7 +48,7 @@ var Pilotfish = function(){
     } else if (typeof _plugins[method] === "function") {
         return _plugins[method].apply(Pilotfish, args);
     } else {
-        return false;
+        return NOT_THERE;
     }
 };
 window.Pilotfish = Pilotfish;
@@ -77,6 +63,37 @@ Pilotfish.core = function(name, func) {
 
 /* Core 
  * --------------------------------------------------------------------------*/
+
+function checkCompatibility() {
+    // Gracefully degrade for older browsers that don't support what we need.
+    // TODO: build a shim file for these features, conditionally load it.
+    if (! window.JSON){
+        return false;
+    }
+
+    // For now, we require jQuery
+    // In the future, we may build adaptors for other libraries
+    if (! window.jQuery ) {
+        return false;
+    }
+
+    return true;
+}
+
+function emptyLoadQueue() {
+    // The loadQueue allows for us to do:
+    // Pilotfish('pageData', 'test page', 'yes')
+    // before the js is on the page.
+    // It also manages the dependencies for plugins
+    var copyQueue = loadQueue;
+    loadQueue = [];
+    for (var i = 0, l = copyQueue.length; i < l; i++) {
+        if (Pilotfish.apply(Pilotfish, copyQueue[i]) === NOT_THERE ){
+            // It wasn't there yet, leave it in the queue in case a future plugin gets loaded that can handle it
+            loadQueue.push(copyQueue[i]);
+        }
+    }
+}
 
 /* Events
  * -----------------------------------*/
@@ -191,6 +208,7 @@ var requirePlugin = _core.requirePlugin = function(plugin, src) {
         publish('plugin:loaded', {plugin: plugin});
     });
 };
+Pilotfish('subscribe', 'plugin:loaded', emptyLoadQueue);
 
 var hasPlugin = _core.hasPlugin = function(plugin) {
     return typeof _plugins[plugin] == "function";
@@ -240,13 +258,7 @@ var toS = _core.toS = function(input) {
 /* Initialization
  * --------------------------------------------------------------------------*/
 (function init(){
-    // The preloadQueue allows for us to do:
-    // Pilotfish('pageData', 'test page', 'yes')
-    // before the js is on the page.
-    for (var i = 0, l = preloadQueue.length; i < l; i++) {
-        Pilotfish.apply(Pilotfish, preloadQueue[i]);
-    }
-    preloadQueue = [];
+    emptyLoadQueue();
 
     // Global Events that we want to make available to pilotfish
     if (window.jQuery) {
