@@ -4,8 +4,12 @@
 
 Pilotfish('register', 'trackerInit', function(options) {
 
-    options = Pilotfish('extend', {backends: {}, events: []}, options);
-    var pageView = "core:pageView";
+    options = Pilotfish('extend', {
+        backends: {}, // backends to use to track
+        events: [], // Events to listen for and record 
+        hashChangePageView: false // treat hash changes as page views (for thick clients)
+    }, options);
+    var pageView = "pageview";
 
     function track(backend, eventName, data) {
         switch (backend) { 
@@ -37,7 +41,7 @@ Pilotfish('register', 'trackerInit', function(options) {
         }
     }
 
-    function listenForEvent(evt, data) {
+    function recordEvent(evt, data) {
         for (var backend in options.backends) {
             if (options.backends.hasOwnProperty(backend)) {
                 track(backend, evt.type, data);
@@ -48,14 +52,20 @@ Pilotfish('register', 'trackerInit', function(options) {
 
     // If they passed in events to listen for, subscribe to them
     if (options.events) {
-      for (var i = 0; i < options.events.length; i++ ) {
-          Pilotfish('subscribe', options.events[i], listenForEvent);
-      }
+        for (var i = 0; i < options.events.length; i++ ) {
+            Pilotfish('subscribe', options.events[i], recordEvent);
+        }
     }
 
     // An API so publisher can call Pilotfish('tracker', 'event', [eventData])
-    Pilotfish('register', 'tracker', listenForEvent);
+    Pilotfish('register', 'tracker', recordEvent);
 
-    // TODO: Solve the thick client problem
+
+    // For thick clients that use the hash tag as page views, record them that way.
+    if (options.hashChangePageView) {
+        Pilotfish('subscribe', 'window:hashchange', function(data) {
+            recordEvent('pageview', data);
+        });
+    }
     return true;
 });

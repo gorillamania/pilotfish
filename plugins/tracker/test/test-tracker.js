@@ -3,7 +3,7 @@
 module('Pilotfish Tracker Core');
 test('setup', function() {
 
-    ok(Pilotfish('tracker', {
+    ok(Pilotfish('trackerInit', {
         backends: {
             'google-analytics': {"accountid": "UA-XXXXXXX-1"},
             'quantcast': {"accountid": "p-XXXXXXX-1"},
