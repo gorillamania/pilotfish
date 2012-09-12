@@ -2,10 +2,10 @@
  * See README.md
  */
 
-Pilotfish('register', 'tracker', function(options) {
+Pilotfish('register', 'trackerInit', function(options) {
 
     options = Pilotfish('extend', {backends: {}, events: []}, options);
-    var pageView = "core:thickClientView";
+    var pageView = "core:pageView";
 
     function track(backend, eventName, data) {
         switch (backend) { 
@@ -41,17 +41,21 @@ Pilotfish('register', 'tracker', function(options) {
         for (var backend in options.backends) {
             if (options.backends.hasOwnProperty(backend)) {
                 track(backend, evt.type, data);
-                Pilotfish('publish', 'plugin:tracker:recordEvent', data);
+                Pilotfish('publish', 'plugin:tracker:recordEvent', {evt: evt.type, data: data});
             }
         }
     }
-    Pilotfish('subscribe', pageView, listenForEvent);
 
-    for (var i = 0; i < options.events.length; i++ ) {
-        Pilotfish('subscribe', options.events[i], listenForEvent);
+    // If they passed in events to listen for, subscribe to them
+    if (options.events) {
+      for (var i = 0; i < options.events.length; i++ ) {
+          Pilotfish('subscribe', options.events[i], listenForEvent);
+      }
     }
 
+    // An API so publisher can call Pilotfish('tracker', 'event', [eventData])
+    Pilotfish('register', 'tracker', listenForEvent);
 
-    // Now set it up to listen for Backbone route changes
+    // TODO: Solve the thick client problem
     return true;
 });

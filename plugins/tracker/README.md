@@ -3,7 +3,7 @@
 [Pilotfish quality rating](https://github.com/pilotfish/pilotfish/blob/master/doc/ratings.md): ![0.5 fish](http://cdn.pilotfish.io/img/pilotfish-rating-0.5.png)
 
 * Send user events to a server
-* Handles "thick clients" where urls are changed via hashtag, by registering a page view when a route is executed.
+* TODO Handles "thick clients" where urls are changed via hashtag, by registering a page view when a route is executed.
     * Backbone
     * TODO: Other MVCs?
 * Handle multiple backends. 
@@ -17,7 +17,6 @@
         * Comscore (page views only, no events)
 
 ## Usage
-
 
 ```
 Pilotfish('tracker', {
