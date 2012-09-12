@@ -1,7 +1,13 @@
 A history of changes for this project is here. We follow [software versioning standards](http://semver.org) as follows:
 major.new.maintenance[.trivial]
 
-## 0.1.1
+### 0.2.0
+* API for plugin management
+    * Register plugins with `Pilotfish('registerPlugin', 'name', func)`
+    * Dynamically load/require with `Pilotfish('requirePlugin', 'name', [url])` - will asynchronously load the plugin from the cdn.pilotfish.io if no url is supplied
+    * Test for plugins with `Pilotfish('hasPlugin', 'name')`
+
+##### 0.1.1
 * New events for load, ready, and hashtag change
 
 # 0.1.0 ![1 fish](http://cdn.pilotfish.io/img/pilotfish-rating-1.0.png)

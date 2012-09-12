@@ -66,7 +66,7 @@ var Pilotfish = function(){
     }
 };
 window.Pilotfish = Pilotfish;
-Pilotfish.version = "0.1.1";
+Pilotfish.version = "0.2.0";
 
 // Core API
 Pilotfish.core = function(name, func) {
