@@ -65,7 +65,7 @@ var Pilotfish = function(){
     }
 };
 window.Pilotfish = Pilotfish;
-Pilotfish.version = "0.1.0";
+Pilotfish.version = "0.1.1";
 
 // Core API
 Pilotfish.core = function(name, func) {
@@ -116,6 +116,7 @@ var onload = _core.onload = function(callback) {
 var onready = _core.onready = function(callback) {
     jQuery(document).ready(callback);
 };
+
 
 
 /* Util
@@ -227,11 +228,15 @@ var toS = _core.toS = function(input) {
     }
     preloadQueue = [];
 
-    // Global events
+    // Global Events that we want to make available to pilotfish
     if (window.jQuery) {
         jQuery(window).load(function() {
             publish('window:load');
+        })
+        .bind("hashchange", function() {
+            publish('window:hashchange', {path: location.hash.substring(1)});
         });
+
         jQuery(document).ready(function() {
             publish('document:ready');
         });
