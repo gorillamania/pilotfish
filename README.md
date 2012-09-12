@@ -123,7 +123,7 @@ We currently to support all browsers that support [querySelectorAll](http://cani
 * Chrome >= 4
 * Firefox >= 3.5
 * Internet Explorer >= 8
-* Safari (including iOS) >= 4
+* Safari (including iOS) >= 5
 
 For older browsers that don't support required functionality, we aim to gracefully degrade - silently disabled without causing problems for the user.
 
