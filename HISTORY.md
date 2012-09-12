@@ -2,7 +2,7 @@ A history of changes for this project is here. We follow [software versioning st
 major.new.maintenance[.trivial]
 
 
-# 0.1.0
+# 0.1.0 [Pilotfish quality rating](https://github.com/pilotfish/pilotfish/blob/master/doc/ratings.md): ![0.5 fish](http://cdn.pilotfish.io/img/pilotfish-rating-0.5.png)
 
 * [Minimum Viable Product](http://en.wikipedia.org/wiki/Lean_Startup)
 * [Tag on page syntax](https://gist.github.com/3645309) created, with async support. 
