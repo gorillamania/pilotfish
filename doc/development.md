@@ -1,17 +1,17 @@
+# Pilotfish development guide
+
+You are welcome to fork this repository. We'd love getting pull requests.
+
 ## Environment Setup
-You are welcome to fork this repository. We'd love getting pull requests. Here are some recommendations for setting up your environment so that the code you write smells like the main project.
+ Here are some recommendations for setting up your environment so that the code you write smells like the main project.
 
-**TODO**
-
-* jslint/jshint
-* editorconfig
-* use something to run tests on every write
+* jslint/jshint all the things!
+* [editorconfig](http://editorconfig.org/) so we have the same spacing style
 * phantomjs - to automatically run all the qunit tests for you
 	* Mac - `brew install phantomjs` is the easiest. [Alternatives](http://ariya.ofilabs.com/2012/02/phantomjs-and-mac-os-x.html)
-	* Unbuntu - TODO
-
+	
 ## Testing
-We recommend [Test Driven Development](http://en.wikipedia.org/wiki/Test-driven_development) be used, and we aim for 100% coverage. 
+We recommend [Test Driven Development](http://en.wikipedia.org/wiki/Test-driven_development) be used, and we aim for 100% coverage. If you use `grunt watch`, you can have it run the tests every time you write a file.
 
 We use travis-ci for automagic testing on every commit. Current test status:
 
@@ -20,7 +20,7 @@ We use travis-ci for automagic testing on every commit. Current test status:
 
 ### Running Tests
 
-`npm test`
+`grunt test`
 
 ## Coding Philosophy
 In order to ensure high quality code, we ask that contributors follow some coding standards. 
@@ -52,7 +52,7 @@ And we think that pretty much covers it.
 ### Pedantic coding standards
 Most of the suggestions below apply to Javascript in specific, since most of the project is written in javascript. For the most part, we follow the [jQuery Core Style Guidelines](http://docs.jquery.com/JQuery_Core_Style_Guidelines), but we'd like to call out the following additional points:
 
-* Spaces, not tabs. 2 of them for node.js files, 4 for everything else. Pro tip: Use an editor that supports [editorconfig](http://editorconfig.org/), and this will be handled for you.
+* Spaces, not tabs. 4 of them. Pro tip: Use an editor that supports [editorconfig](http://editorconfig.org/), and this will be handled for you.
 * Minification is the computer's job, not yours. Use explicit variable names.
 * Braces on the same line, or I am afraid this won't work out.
 * Cleverness is seldom required. When it is, comment it.
@@ -73,4 +73,3 @@ Here are a few interesting resources:
 * http://google-styleguide.googlecode.com/svn/trunk/javascriptguide.xml
 * https://developers.google.com/closure/compiler/docs/js-for-compiler
 * http://substack.net/posts/b96642
-

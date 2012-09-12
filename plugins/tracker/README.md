@@ -71,6 +71,10 @@ Would you like to help out? We need:
 * [Tests](https://github.com/pilotfish/pilotfish/tree/master/plugins/tracker/test) written
 * [Documentation](https://github.com/pilotfish/pilotfish/tree/master/doc) written
 
+## Development
+See the [pilotfish development guide](https://github.com/pilotfish/pilotfish/blob/master/doc/development.md)
+
+
 ## License
 All core plugins for Pilotfish are licensed under the same license as Pilotfish (MIT) see [LICENSE](https://github.com/pilotfish/pilotfish/blob/master/LICENSE)
 
