@@ -54,7 +54,7 @@ To use pilotfish, first include the base framework:
 
 Then you include the javascript for which plugins you may want to use:
 
-`<script src="//cdn.pilotfish.io/plugins/new-user-walkthrough/new-user-walkthrough-stable-min.js"></script>`
+`<script src="//cdn.pilotfish.io/client/plugins/tracker/pilotfish-tracker.min.js"></script>`
 
 Depending on the plugin, some additional configuration may be required. 
 
@@ -63,12 +63,8 @@ For the Asynchronous version, see: http://jsfiddle.net/Y4dbB/
 ## Plugins
 Several core plugins are included with the platform, and there is also a community of developers that create plugins as they are needed.
 
-### Core
-
-* User Notifications
-
 ### Existing plugins
-* TODO 
+* [Tracker](https://github.com/pilotfish/pilotfish/tree/master/plugins/tracker) - reports on user events to the analytics backend of your choosing
 
 ### Ideas for plugins
 

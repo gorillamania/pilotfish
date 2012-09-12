@@ -19,18 +19,26 @@
 ## Usage
 
 ```
-Pilotfish('tracker', {
+Pilotfish('trackerInit', {
     backends: {
         'google-analytics': {"accountid": "UA-XXXXXXX-1"},
         'quantcast': {"accountid": "p-XXXXXXX-1"},
         'mixpanel': {"accountid": "aaaaaaaaaaaaaaaaaaaaaaa"}
     },
-    events: [
-        'buy-button-clicked',
-        'cancel-button-clicked'
-    ]
 });
 
-<input type="submit" value="Buy" onclick="Pilotfish('fire', 'buy-button-clicked')"/>
-<input type="submit" value="Buy" onclick="Pilotfish('fire', 'cancel-button-clicked')"/>
+<input type="submit" value="Buy" onclick="Pilotfish('tracker', 'buy-button-clicked')"/>
+<input type="submit" value="Buy" onclick="Pilotfish('tracker', 'cancel-button-clicked')"/>
 ```
+
+## History
+
+#### 0.3.0
+* Support for recording hash tag changes as a page view
+
+#### 0.2.0
+* Support for Mix Panel
+* Support for Quantcast
+  
+#### 0.1.0 MVP
+* Fire off events to Google Analytics 
