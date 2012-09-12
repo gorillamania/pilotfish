@@ -5,6 +5,8 @@
 
 Pilotfish('register', 'trackerInit', function(options) {
 
+    var version = "0.3.0";
+
     options = Pilotfish('extend', {
         backends: {}, // backends to use to track
         events: [], // Events to listen for and record 

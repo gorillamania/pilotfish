@@ -1,9 +1,11 @@
 /* Pilotfish plugin for a tracking user behavior, with multiple backends
  * Version 0.3.0
- * See README.md
+ * See https://github.com/pilotfish/pilotfish/tree/master/plugins/tracker
  */
 
 Pilotfish('register', 'trackerInit', function(options) {
+
+    var version = "0.3.0";
 
     options = Pilotfish('extend', {
         backends: {}, // backends to use to track
