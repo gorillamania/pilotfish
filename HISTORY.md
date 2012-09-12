@@ -4,7 +4,7 @@ major.new.maintenance[.trivial]
 ## 0.1.1
 * New events for load, ready, and hashtag change
 
-# 0.1.0 ![0.5 fish](http://cdn.pilotfish.io/img/pilotfish-rating-0.5.png)
+# 0.1.0 ![1 fish](http://cdn.pilotfish.io/img/pilotfish-rating-1.0.png)
 
 * [Minimum Viable Product](http://en.wikipedia.org/wiki/Lean_Startup)
 * [Tag on page syntax](https://gist.github.com/3645309) created, with async support. 
