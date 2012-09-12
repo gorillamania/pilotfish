@@ -54,7 +54,7 @@ To use pilotfish, first include the base framework:
 
 Then you include the javascript for which plugins you may want to use:
 
-`<script src="//cdn.pilotfish.io/client/plugins/tracker/pilotfish-tracker.min.js"></script>`
+`<script src="//cdn.pilotfish.io/client/plugins/tracker/pilotfish-tracker.js"></script>`
 
 Depending on the plugin, some additional configuration may be required. 
 
