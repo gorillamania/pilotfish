@@ -29,6 +29,8 @@
 Pilotfish('subscribe', 'error', function(error, data) {
      ok(false, "Pilotfish error: " + JSON.stringify(data));
 });
+// Load a plugin dynamically
+Pilotfish('requirePlugin', 'tracker', '../plugins/tracker/pilotfish-tracker.js');
 </script>
 <script>
   // Testing preloadd instructions

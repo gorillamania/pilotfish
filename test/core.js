@@ -1,6 +1,4 @@
 /* Tests for the underlying framework */
-/* vim: set expandtab tabstop=4: */
-
 
 module('Browser compatibility assertions');
 test('document.querySelector and document.querySelectorAll are there', function() {
@@ -147,10 +145,19 @@ test('toS', function(){
 
 module('Plugins');
 test('Simple plugin', function() {
-    Pilotfish.register('upper', function(arg) {
+    Pilotfish('registerPlugin', 'upper', function(arg) {
         return arg.toUpperCase();
     });
     equal(Pilotfish('upper', 'test'), "TEST", "upper plugin");
+});
+test('Plugin checking', function() {
+    ok( ! Pilotfish('hasPlugin', 'non existant plugin'), 'hasPlugin with non existant plugin');
+    ok(Pilotfish('hasPlugin', 'upper'), 'hasPlugin with existant plugin');
+});
+jQuery(window).load(function() {
+    test('Dynamically loaded plugin', function() {
+        ok(Pilotfish('hasPlugin', 'trackerInit'), 'trackerInit is there');
+    });
 });
 
 

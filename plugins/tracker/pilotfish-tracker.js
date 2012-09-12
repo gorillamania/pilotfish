@@ -3,9 +3,9 @@
  * See https://github.com/pilotfish/pilotfish/tree/master/plugins/tracker
  */
 
-Pilotfish('register', 'trackerInit', function(options) {
+Pilotfish('registerPlugin', 'trackerInit', function(options) {
 
-    var version = "0.3.0";
+    this.version = "0.3.0";
 
     options = Pilotfish('extend', {
         backends: {}, // backends to use to track
@@ -53,16 +53,15 @@ Pilotfish('register', 'trackerInit', function(options) {
         }
     }
 
+    // An API so publisher can call Pilotfish('tracker', 'event', [eventData])
+    Pilotfish('registerPlugin', 'tracker', recordEvent);
+
     // If they passed in events to listen for, subscribe to them
     if (options.events) {
         for (var i = 0; i < options.events.length; i++ ) {
             Pilotfish('subscribe', options.events[i], recordEvent);
         }
     }
-
-    // An API so publisher can call Pilotfish('tracker', 'event', [eventData])
-    Pilotfish('register', 'tracker', recordEvent);
-
 
     // For thick clients that use the hash tag as page views, record them that way.
     if (options.hashChangePageView) {
