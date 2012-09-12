@@ -2,7 +2,6 @@
  * For production usage, use the .min version.
  * For more details, including licensing information, see
  * https://github.com/pilotfish/pilotfish
- * vim: set expandtab tabstop=4: 
  */
 // Globals passed in so the optimizer can make them local variables
 (function(window, document, location, undefined){
@@ -21,7 +20,9 @@ var _core         = {},
     _plugins      = {},
     _settings     = {},
     compatible    = checkCompatibility(),
-    preloadQueue = window.Pilotfish && window.Pilotfish.q || [];
+    secure        = location.protocol === 'https:',
+    cdnHost       = secure ? '//pilotfish.github.com/' : 'http://cdn.pilotfish.io/',
+    preloadQueue  = window.Pilotfish && window.Pilotfish.q || [];
 
 function checkCompatibility() {
     // Gracefully degrade for older browsers that don't support what we need.
@@ -45,7 +46,7 @@ var Pilotfish = function(){
         return true;
     }
 
-    if (!compatible) {
+    if (! compatible) {
         return true;
     }
 
@@ -65,17 +66,13 @@ var Pilotfish = function(){
     }
 };
 window.Pilotfish = Pilotfish;
-Pilotfish.version = "0.1.1";
+Pilotfish.version = "0.2.0";
 
 // Core API
 Pilotfish.core = function(name, func) {
     _core[name] = func;
 };
 
-// Plugin API
-Pilotfish.register = function(name, func) {
-    _plugins[name] = func;
-};
 
 
 /* Core 
@@ -116,7 +113,6 @@ var onload = _core.onload = function(callback) {
 var onready = _core.onready = function(callback) {
     jQuery(document).ready(callback);
 };
-
 
 
 /* Util
@@ -174,6 +170,30 @@ var loadScript = _core.loadScript = function(src, callback) {
     };
 
     firstScript.parentNode.insertBefore(domScript, firstScript);
+};
+
+
+/* Plugins
+ * -----------------------------------*/
+
+var registerPlugin = _core.registerPlugin = function(plugin, func) {
+    _plugins[plugin] = func;
+};
+
+// Manage plugin dependencies
+var requirePlugin = _core.requirePlugin = function(plugin, src) {
+    // Do we already have it?
+    if (hasPlugin(plugin)) {
+       return;
+    }
+    src = src || [cdnHost, 'client/plugins/', plugin, '/pilotfish-', plugin, '.min.js'].join('');
+    loadScript(src, function() {
+        publish('plugin:loaded', {plugin: plugin});
+    });
+};
+
+var hasPlugin = _core.hasPlugin = function(plugin) {
+    return typeof _plugins[plugin] == "function";
 };
 
 // Centralized logging, if the browser supports it.
