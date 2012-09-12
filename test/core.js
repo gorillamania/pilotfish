@@ -36,30 +36,31 @@ test('Predefined function called', function() {
 
 
 module('Events');
-var clicked = false, action = 'buy_button_clicked';
 test('event fired', function() {
-  expect(10);
-  Pilotfish('subscribe', action, function(evt, data) {
-    equal(evt.type, action, 'evt.type is action');
-    clicked = true;
-    equal(data.category, 'category', 'category set');
-    equal(data.label, 'label', 'label set');
-    equal(data.value, 42, 'value set');
-    deepEqual(data.nonInteractive, false, 'nonInteractive set');
+    var clicked = false, action = 'buy_button_clicked';
+    expect(10);
+    Pilotfish('subscribe', action, function(evt, data) {
+        equal(evt.type, action, 'evt.type is action');
+        clicked = true;
+        equal(data.category, 'category', 'category set');
+        equal(data.label, 'label', 'label set');
+        equal(data.value, 42, 'value set');
+        deepEqual(data.nonInteractive, false, 'nonInteractive set');
 
-  });
+    });
 
-  ok(! clicked, "event not fired yet");
-  ok(Pilotfish('publish', action, {'category': 'category', label: 'label', value: 42, nonInteractive: false}), "Event fired");
-  
-  ok(Pilotfish('unsubscribe', 'buy button clicked') !== false, "unsubscribe not false");
+    ok(! clicked, "event not fired yet");
+    ok(Pilotfish('publish', action, {'category': 'category', label: 'label', value: 42, nonInteractive: false}), "Event fired");
+    
+    ok(Pilotfish('unsubscribe', 'buy button clicked') !== false, "unsubscribe not false");
 
-  // Now it shouldn't fire
-  clicked = false;
-  ok(Pilotfish('publish', 'buy button clicked'), "Event fired");
-  ok(! clicked, "event not fired after unsubscribe");
+    // Now it shouldn't fire
+    clicked = false;
+    ok(Pilotfish('publish', 'buy button clicked'), "Event fired");
+    ok(! clicked, "event not fired after unsubscribe");
 
 });
+
 
 module('Extend');
 test('simple', function(){

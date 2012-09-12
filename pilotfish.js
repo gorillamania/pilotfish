@@ -118,6 +118,7 @@ var onready = _core.onready = function(callback) {
 };
 
 
+
 /* Util
  * -----------------------------------*/
 
@@ -227,11 +228,15 @@ var toS = _core.toS = function(input) {
     }
     preloadQueue = [];
 
-    // Global events
+    // Global Events that we want to make available to pilotfish
     if (window.jQuery) {
         jQuery(window).load(function() {
             publish('window:load');
+        })
+        .bind("hashchange", function() {
+            publish('window:hashchange', {path: location.hash.substring(1)});
         });
+
         jQuery(document).ready(function() {
             publish('document:ready');
         });
