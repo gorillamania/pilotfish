@@ -1,7 +1,7 @@
 {
     "name": "pilotfish",
     "description": "Pilotfish, a toolkit for improving user experience",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "keywords": [
         "user experience",
         "user interface",
@@ -38,7 +38,7 @@
     ],
     "dependencies": {},
     "devDependencies": {
-        "grunt": "~0.3.13"
+        "grunt": "~0.3.15"
     },
     "homepage": "http://pilotfish.io",
     "os": [],
@@ -47,6 +47,6 @@
         "node": ">=0.8"
     },
     "scripts": {
-      "test": "grunt qunit"
+      "test": "grunt test"
     }
 }

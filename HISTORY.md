@@ -1,6 +1,8 @@
 A history of changes for this project is here. We follow [software versioning standards](http://semver.org) as follows:
 major.new.maintenance[.trivial]
 
+## 0.1.1
+* New events for load, ready, and hashtag change
 
 # 0.1.0 ![0.5 fish](http://cdn.pilotfish.io/img/pilotfish-rating-0.5.png)
 

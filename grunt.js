@@ -78,6 +78,8 @@ module.exports = function(grunt) {
     // Load all the tasks inside the tasks/ directory
     grunt.loadTasks('tasks');
 
+    grunt.registerTask('test', 'qunit');
+
     // This is what gets run when you don't specify an argument for grunt. 
     // Should be non destructive
     grunt.registerTask('default', 'lint qunit');
