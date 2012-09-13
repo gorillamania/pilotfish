@@ -21,6 +21,7 @@ On at least 1 production site, being used by real end users.
 	* Issues/Support
 
 * Unit tests that can be run through a browser. [Sample](https://github.com/pilotfish/pilotfish/tree/master/test), with instructions for doing so in the documentation
+* Code passes a static processor like [jslint](http://www.jslint.com/) or [jshint](http://www.jshint.com/)
 
 
 ## Two fish ![image](http://cdn.pilotfish.io/img/pilotfish-rating-2.0.png)
@@ -29,7 +30,6 @@ On at least 1 production site, being used by real end users.
 * Multiple sites using it
 * Author is responsive to issues
 * Established release process with [versioning](http://semver.org) and change notes/history. [Sample](https://github.com/pilotfish/pilotfish/blob/master/HISTORY.md)
-* Passes a static processor like [jslint](http://www.jslint.com/) or [jshint](http://www.jshint.com/)
 
 
 ## Three fish ![image](http://cdn.pilotfish.io/img/pilotfish-rating-3.0.png)
