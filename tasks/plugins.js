@@ -82,7 +82,7 @@ module.exports = function(grunt) {
                 var processed = grunt.template.process(contents, {"pluginName": plugin}, 'init');
                 grunt.file.write(dest, processed);
 
-                grunt.verbose.or.write('Writing ' + dir + 'README');
+                grunt.verbose.or.writeln('Writing ' + to);
             }
 
             copyAndProcess('README.md', 'README.md');
