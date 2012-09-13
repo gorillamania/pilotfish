@@ -65,14 +65,13 @@ Several core plugins are included with the platform, and there is also a communi
 
 ### Existing plugins
 * [Tracker](https://github.com/pilotfish/pilotfish/tree/master/plugins/tracker) - reports on user events to the analytics backend of your choosing
+* [Unstuck](https://github.com/pilotfish/pilotfish/tree/master/plugins/unstuck) - Automagically finds usability problems
 
 ### Ideas for plugins
 
 * New User Tutorial
 * Javascript Error Handling
 * Online Help
-* Auto Detect Stuck Users
-* Anaytlics Abstraction layer
 * Form Helpers
 * Auto Login
 * Mouse Tracking
@@ -85,7 +84,6 @@ Several core plugins are included with the platform, and there is also a communi
 * Signup Lightbox
 * Ratings
 * Highlight referred keywords
-* Analtyics Abstraction Layer
 * Workflow Engine
 * Client Side Pagination
 * Tabs 
