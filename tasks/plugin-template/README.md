@@ -4,7 +4,7 @@
 
 This is a core plugin for the [Pilotfish user experience toolkit](http://pilotfish.io), that aims to be awesome!
 
-Featurs:
+Features:
 
 * Feature 1
 * Feature 2
