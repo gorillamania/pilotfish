@@ -12,4 +12,6 @@ Pilotfish('registerPlugin', '{%= pluginName %}', function(options) {
     }, options);
 
     // Awesome code!
+
+    return true;
 });
