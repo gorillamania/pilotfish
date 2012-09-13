@@ -16,7 +16,7 @@ module.exports = function(grunt) {
         // 'browser' for files that are run by a browser (window, document, etc.)
         // 'qunit', ok, equal, etc.
         lint: {
-            node: ['grunt.js', 'tasks/**/*.js'],
+            node: ['grunt.js', 'tasks/*.js'],
             browser: ['pilotfish.js', 'plugins/*/*.js'],
             qunit: ['test/*.js', 'plugins/*/test/*.js']
         },
@@ -29,7 +29,7 @@ module.exports = function(grunt) {
                 expr: true,
                 forin: true,
                 indent: 2,
-                latedef: true,
+                latedef: false,
                 newcap: true,
                 noarg: true,
                 noempty: true, // debatable
