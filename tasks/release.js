@@ -81,41 +81,6 @@ module.exports = function(grunt) {
         return true;
     });
 
-
-    grunt.registerTask("buildPlugins", "Create the files in ./dist/plugins/", function() {
-        var plugins = ['tracker'];
-        for (var i = 0; i < plugins.length; i++) {
-            var n = plugins[i];
-            grunt.log.subhead("Packaging " + n + " plugin");
-            // TODO: Sanity checks
-            // TODO: Take the existing banner instead of hard coding
-
-            var banner = "/* Pilotfish " + n + " plugin, see https://github.com/pilotfish/pilotfish/blob/master/plugins/" + n + "\n" +
-                         "* Copyright (c) 2012 Nick Sullivan, MIT license https://github.com/pilotfish/pilotfish/blob/master/LICENSE */\n",
-                srcfile = 'plugins/' + n + '/pilotfish-' + n + '.js',
-                minfile = 'dist/client/plugins/' + n + '/pilotfish-' + n + '.min.js';
-
-            grunt.helper('copyp', srcfile, 'dist/client/' + srcfile);
-
-            var max = grunt.file.read(srcfile);
-
-             // Concat banner + minified source.
-            var min = banner + grunt.helper('uglify', max, grunt.config('uglify'));
-            grunt.file.write(minfile, min);
-
-            // Fail task if errors were logged.
-            if (this.errorCount) { return false; }
-
-            // Otherwise, print a success message....
-            grunt.log.writeln('File "' + minfile + '" created.');
-            // ...and report some size information.
-            grunt.helper('min_max_info', min, max);
-
-
-        }
-        return true;
-    });
-
     grunt.registerTask("gitRelease", "git commit/tag/push the files in ./dist/", function() {
 
         // Read the version from the pacakge.json. 
