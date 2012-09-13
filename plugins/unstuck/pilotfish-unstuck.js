@@ -12,4 +12,5 @@ Pilotfish('registerPlugin', 'unstuck', function(options) {
     }, options);
 
     // Awesome code!
+    return true;
 });
