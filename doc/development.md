@@ -5,11 +5,13 @@ You are welcome to fork this repository. We'd love getting pull requests.
 ## Environment Setup
  Here are some recommendations for setting up your environment so that the code you write smells like the main project.
 
-* jslint/jshint all the things!
 * [editorconfig](http://editorconfig.org/) so we have the same spacing style
 * phantomjs - to automatically run all the qunit tests for you
-	* Mac - `brew install phantomjs` is the easiest. [Alternatives](http://ariya.ofilabs.com/2012/02/phantomjs-and-mac-os-x.html)
-	
+    * Mac - `brew install phantomjs` is the easiest. [Alternatives](http://ariya.ofilabs.com/2012/02/phantomjs-and-mac-os-x.html)
+    * *nix - [Download](http://phantomjs.org/download.html) or [Build from source](http://phantomjs.org/build.html)
+* casperjs - 
+    * Mac - `brew install casperjs` [Additional instructions](http://casperjs.org/installation.html)
+
 ## Testing
 We recommend [Test Driven Development](http://en.wikipedia.org/wiki/Test-driven_development) be used, and we aim for 100% coverage. If you use `grunt watch`, you can have it run the tests every time you write a file.
 
