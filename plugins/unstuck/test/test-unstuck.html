@@ -30,4 +30,13 @@ Pilotfish('subscribe', 'error', function(error, data) {
 </script>
 <script src="../pilotfish-unstuck.js"></script>
 <script src="test-unstuck.js"></script>
+
+<a href="http://pilotfish.io/" id="link_no_pointer" style="cursor:default">Link without pointer</a><br />
+<a href="http://pilotfish.io/" id="link_with_pointer">Link with pointer</a><br />
+
+<script>
+Pilotfish('subscribe', 'plugins:unstuck:clicked_link_no_pointer', function() {
+    console.log("clicked_link_no_pointer!");
+});
+</script>
 </html>
