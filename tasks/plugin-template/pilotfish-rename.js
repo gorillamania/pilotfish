@@ -5,7 +5,11 @@
 
 Pilotfish('registerPlugin', '{%= pluginName %}', function(options) {
 
-    this.version = "0.1.0";
+    var pluginMeta = {
+        version     : "0.2.0",
+        name        : '{%= pluginName %}',
+        eventPrefix : 'plugins:{%= pluginName %}'
+    };
 
     options = Pilotfish('extend', {
         // Your default options...
