@@ -5,38 +5,37 @@
 
 Pilotfish('registerPlugin', 'unstuck', function(options) {
 
-    this.version = "0.1.0";
-    this.pluginName = arguments[1];
-    this.eventPrefix = 'plugins:' + this.pluginName + ':';
+    // TODO
+    var pluginMeta = {
+        version     : "0.2.0",
+        name        : 'unstuck',
+        eventPrefix : 'plugins:unstuck'
+    };
 
     options = Pilotfish('extend', {
         // Your default options...
     }, options);
 
 
-    // Ideas:
     /* Click actions
      *---------------------------------*/
 
     // Click resulted in url change, but target wasn't a pointer
-    jQuery(window).unload(function(evt) {
-        console.log("Hi, unload");
-        console.log("evt", evt);
-        console.log("tgt", evt.target);
-        console.log("tgt", evt.target);
-        console.log("is pointer", mouseIsPointer(evt.target));
-        if (mouseIsPointer(evt.target)) {
-            console.log("last clickc poiter");
-            Pilotfish('publish', this.eventPrefix + 'clicked_link_no_pointer', serializeElement(lastClickTarget()));
+
+    // Click resulted in an ajax request, but no status indicator
+
+    // Click results in a scroll
+
+    // Click resulted in hash tag change, but wasn't a pointer
+    Pilotfish('subscribe', 'window:hashchange', function(data) {
+        if (isLastClickPointer() === false) {
+            broadcast("hash_change_no_pointer");
         }
     });
 
-
-    // Click resulted in an ajax request, but target wasn't a pointer
-
-    // Click resulted in a dom reflow, but target wasn't a pointer
-
     // User clicked on something that was a pointer, but nothing happened, so they clicked on it again
+  
+    // clicked on something that wasn't clickable
 
     /* Application problems
      *---------------------------------*/
@@ -60,7 +59,7 @@ Pilotfish('registerPlugin', 'unstuck', function(options) {
 
     // user_searched
 
-    // clicked on something that wasn't clickable
+    // Tap into the accelerometer and watch for a thrown computer :)
 
     /* Helpers
      *---------------------------------*/
@@ -68,16 +67,20 @@ Pilotfish('registerPlugin', 'unstuck', function(options) {
     // Record the state of recent clicks
     var recentClicks = [];
     jQuery(document).click(function(evt) {
-        recentClicks.push[{
+        recentClicks.push({
             when: new Date().getTime(),
             target: evt.target,
             pointer: mouseIsPointer(evt.target)
-        }];
+        });
         // Only remember the last few clicks
         if (recentClicks.length > 5) {
           recentClicks.shift();
         }
     });
+
+    function broadcast(name) {
+        Pilotfish("publish", pluginMeta.eventPrefix, {name: name, target: serializeElement(lastClickTarget())});
+    }
 
     function serializeElement(elem) {
         // TODO: Something better
@@ -85,23 +88,20 @@ Pilotfish('registerPlugin', 'unstuck', function(options) {
     }
 
     function mouseIsPointer(elem) {
-        return jQuery("img").css("cursor") === "pointer";
+        return jQuery(elem).css("cursor") === "pointer";
     }
 
     function isLastClickPointer() {
-        console.log("last click pointer", recentClicks);
         if (recentClicks.length === 0) {
            return null;
         }
-        console.log("ispointer",recentClicks[recentClicks.length-1].pointer );
         return recentClicks[recentClicks.length-1].pointer;
     }
+
     function lastClickTarget() {
-        console.log("last click target", recentClicks);
         if (recentClicks.length === 0) {
            return null;
         }
-        console.log("last target", recentClicks[recentClicks.length-1].target);
         return recentClicks[recentClicks.length-1].target;
     }
 

@@ -24,19 +24,33 @@
 })(window, document, "script");
 </script>
 <script>
-Pilotfish('subscribe', 'error', function(error, data) {
-    ok(false, "Pilotfish error: " + JSON.stringify(data));
+Pilotfish('subscribe', 'error', function(event, data) {
+  // Cause a test failure if there are any pilotfish errors
+  throw new Error('Pilotfish: ' + data.error);
 });
 </script>
 <script src="../pilotfish-unstuck.js"></script>
 <script src="test-unstuck.js"></script>
 
-<a href="http://pilotfish.io/" id="link_no_pointer" style="cursor:default">Link without pointer</a><br />
-<a href="http://pilotfish.io/" id="link_with_pointer">Link with pointer</a><br />
+<style type="text/css">
+  .link { text-decoration: underline;}
+  .cursor_default { cursor:default;}
+  .cursor_pointer { cursor:pointer;}
+</style>
 
+
+<!-- Note that we can't use traditional <a> for these tests because jQuery.click won't work on links. 
+  http://stackoverflow.com/questions/1694595/can-i-call-jquery-click-to-follow-an-a-link-if-i-havent-bound-an-event-hand
+  -->
+<span data-dest="http://pilotfish.io/" id="link_no_pointer" class="link cursor_default">Link without pointer</span><br />
+<span data-dest="http://pilotfish.io/" id="link_with_pointer" class="link cursor_pointer">Link with pointer</span><br />
+
+<span data-dest="#hash_no_pointer" id="hash_no_pointer" class="link cursor_default">Hash link without pointer</span><br />
+<span data-dest="#hash_with_pointer" id="hash_with_pointer" class="link cursor_pointer">Hash link with pointer</span><br />
 <script>
-Pilotfish('subscribe', 'plugins:unstuck:clicked_link_no_pointer', function() {
-    console.log("clicked_link_no_pointer!");
+$(".link").click(function(evt) {
+  location.href=evt.target.getAttribute("data-dest");
 });
 </script>
+
 </html>
