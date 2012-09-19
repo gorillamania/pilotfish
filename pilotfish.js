@@ -267,13 +267,19 @@ var toS = _core.toS = function(input) {
  * --------------------------------------------------------------------------*/
 (function init(){
 
+    var lastHash;
     // Global Events that we want to make available to pilotfish
     if (window.jQuery) {
         jQuery(window).load(function() {
             publish('window:load');
         })
         .bind("hashchange", function() {
-            publish('window:hashchange', {path: location.hash.substring(1)});
+            var hash = location.hash.substring(1);
+            // Some browsers trigger this event twice
+            if (hash !== lastHash) {
+                publish('window:hashchange', {path: hash});
+                lastHash = hash;
+            }
         });
 
         jQuery(document).ready(function() {
