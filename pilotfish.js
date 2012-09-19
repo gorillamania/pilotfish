@@ -110,9 +110,13 @@ var unsubscribe = _core.unsubscribe = function() {
     $Pilotfish.off.apply($Pilotfish, arguments);
 };
 
-var publish = _core.publish = function() {
+var publish = _core.publish = function(name, data) {
+    if (!name) {
+      error("publish() called without a name");
+      return false;
+    }
     var $Pilotfish = jQuery(Pilotfish);
-    eventLog({"name": arguments[0], "args": arguments});
+    eventLog({"name": name, "args": arguments});
     $Pilotfish.trigger.apply($Pilotfish, arguments);
     return true;
 };
@@ -262,7 +266,6 @@ var toS = _core.toS = function(input) {
 /* Initialization
  * --------------------------------------------------------------------------*/
 (function init(){
-    emptyLoadQueue();
 
     // Global Events that we want to make available to pilotfish
     if (window.jQuery) {
@@ -277,6 +280,8 @@ var toS = _core.toS = function(input) {
             publish('document:ready');
         });
     }
+
+    emptyLoadQueue();
 })();
 
 })(window, document, location);
