@@ -41,18 +41,18 @@ var Pilotfish = function(){
     // This is the preferred public API, because it will work before or after the pilotfish.js is loaded.
 
     var method = arguments[0], args = Array.prototype.slice.call( arguments, 1 );
-    if (typeof Pilotfish[method] === "function") {
+    if (isFunction(Pilotfish[method])) {
         return Pilotfish[method].apply(Pilotfish, args);
-    } else if (typeof _core[method] === "function") {
+    } else if (isFunction(_core[method])) {
         return _core[method].apply(Pilotfish, args);
-    } else if (typeof _plugins[method] === "function") {
+    } else if (isFunction(_plugins[method])) {
         return _plugins[method].apply(Pilotfish, args);
     } else {
         return NOT_THERE;
     }
 };
 window.Pilotfish = Pilotfish;
-Pilotfish.version = "0.2.0";
+Pilotfish.version = "0.3.0";
 
 // Core API
 Pilotfish.core = function(name, func) {
@@ -110,9 +110,13 @@ var unsubscribe = _core.unsubscribe = function() {
     $Pilotfish.off.apply($Pilotfish, arguments);
 };
 
-var publish = _core.publish = function() {
+var publish = _core.publish = function(name, data) {
+    if (!name) {
+      error("publish() called without a name");
+      return false;
+    }
     var $Pilotfish = jQuery(Pilotfish);
-    eventLog({"name": arguments[0], "args": arguments});
+    eventLog({"name": name, "args": arguments});
     $Pilotfish.trigger.apply($Pilotfish, arguments);
     return true;
 };
@@ -156,6 +160,10 @@ var error = _core.error = function(error, type) {
 function isPlainObject(obj) {
     return jQuery.isPlainObject(obj);
 }
+// And we often need to know if the argument is a function
+function isFunction(obj) {
+    return typeof obj === "function";
+}
 
 // Load a remote script, with an optional callback
 var loadScript = _core.loadScript = function(src, callback) {
@@ -171,7 +179,7 @@ var loadScript = _core.loadScript = function(src, callback) {
         if ( ! domScript.onloadDone ) {
             domScript.onloadDone = true; 
             publish('external_script:loaded', {src: src});
-            if (typeof callback == "function") {
+            if (isFunction(callback)) {
                 callback(); 
             }
         }
@@ -180,7 +188,7 @@ var loadScript = _core.loadScript = function(src, callback) {
         if ( (/loaded|complete/).test(domScript.readyState) && !domScript.onloadDone ) {
             domScript.onloadDone = true; 
             publish('external_script:loaded', {src: src});
-            if (typeof callback == "function") {
+            if (isFunction(callback)) {
                 callback(); 
             }
         }
@@ -211,7 +219,7 @@ var requirePlugin = _core.requirePlugin = function(plugin, src) {
 Pilotfish('subscribe', 'plugin:loaded', emptyLoadQueue);
 
 var hasPlugin = _core.hasPlugin = function(plugin) {
-    return typeof _plugins[plugin] == "function";
+    return isFunction(_plugins[plugin]);
 };
 
 // Centralized logging, if the browser supports it.
@@ -258,21 +266,28 @@ var toS = _core.toS = function(input) {
 /* Initialization
  * --------------------------------------------------------------------------*/
 (function init(){
-    emptyLoadQueue();
 
+    var lastHash;
     // Global Events that we want to make available to pilotfish
     if (window.jQuery) {
         jQuery(window).load(function() {
             publish('window:load');
         })
         .bind("hashchange", function() {
-            publish('window:hashchange', {path: location.hash.substring(1)});
+            var hash = location.hash.substring(1);
+            // Some browsers trigger this event twice
+            if (hash !== lastHash) {
+                publish('window:hashchange', {path: hash});
+                lastHash = hash;
+            }
         });
 
         jQuery(document).ready(function() {
             publish('document:ready');
         });
     }
+
+    emptyLoadQueue();
 })();
 
 })(window, document, location);
