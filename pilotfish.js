@@ -102,7 +102,6 @@ function emptyLoadQueue() {
 var on = _core.on = function() {
     var $Pilotfish = jQuery(Pilotfish);
     $Pilotfish.on.apply($Pilotfish, arguments);
-    return true;
 };
 
 var off = _core.off = function() {
@@ -272,6 +271,10 @@ var toS = _core.toS = function(input) {
     if (window.jQuery) {
         jQuery(window).load(function() {
             trigger('window:load');
+        })
+        .bind("unload", function() {
+            console.log("jquery unload");
+            trigger('window:unload');
         })
         .bind("hashchange", function() {
             var hash = location.hash.substring(1);
