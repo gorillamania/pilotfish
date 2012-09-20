@@ -52,13 +52,16 @@ Please check out [the existing issues](https://github.com/pilotfish/pilotfish/is
 
 ## History
 
+###### 0.3.1
+* FIX: Events firing properly
+
 #### 0.3.0
 * Support for recording hash tag changes as a page view
 
 #### 0.2.0
 * Support for Mix Panel
 * Support for Quantcast
-  
+
 #### 0.1.0 MVP
 * Fire off events to Google Analytics 
 

@@ -5,7 +5,7 @@
 
 Pilotfish('registerPlugin', 'trackerInit', function(options) {
 
-    this.version = "0.3.0";
+    this.version = "0.3.1";
 
     options = Pilotfish('extend', {
         backends: {}, // backends to use to track
@@ -44,11 +44,11 @@ Pilotfish('registerPlugin', 'trackerInit', function(options) {
         }
     }
 
-    function recordEvent(evt, data) {
+    function recordEvent(eventName, data) {
         for (var backend in options.backends) {
             if (options.backends.hasOwnProperty(backend)) {
-                track(backend, evt.type, data);
-                Pilotfish('publish', 'plugin:tracker:recordEvent', {evt: evt.type, data: data});
+                track(backend, eventName, data);
+                Pilotfish('publish', 'plugin:tracker:recordEvent', {evt: eventName, data: data, backend: backend});
             }
         }
     }
