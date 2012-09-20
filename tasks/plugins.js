@@ -3,7 +3,7 @@
 module.exports = function(grunt) {
 
     grunt.registerTask("buildPlugins", "Create the files in ./dist/plugins/", function() {
-        var plugins = ['tracker'];
+        var plugins = ['tracker', 'unstuck'];
         for (var i = 0; i < plugins.length; i++) {
             var n = plugins[i];
             grunt.log.subhead("Packaging " + n + " plugin");
