@@ -52,7 +52,7 @@ var Pilotfish = function(){
     }
 };
 window.Pilotfish = Pilotfish;
-Pilotfish.version = "0.3.0";
+Pilotfish.version = "0.4.0";
 
 // Core API
 Pilotfish.core = function(name, func) {
