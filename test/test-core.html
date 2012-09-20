@@ -26,7 +26,7 @@
 <!-- End Pilotfish tag -->
 <script>
 // Subscribe to errors and have them fail tests
-Pilotfish('subscribe', 'error', function(error, data) {
+Pilotfish('on', 'error', function(error, data) {
      ok(false, "Pilotfish error: " + JSON.stringify(data));
 });
 // Load a plugin dynamically

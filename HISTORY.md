@@ -1,6 +1,9 @@
 A history of changes for this project is here. We follow [software versioning standards](http://semver.org) as follows:
 major.new.maintenance[.trivial]
 
+### 0.4.0
+* Events API renamed to use the more standard on/off/trigger
+
 ### 0.3.0
 * NEW: Deal with errors more elegantly
 * NEW: [Unstuck](https://github.com/pilotfish/pilotfish/blob/master/plugins/unstuck) plugin released

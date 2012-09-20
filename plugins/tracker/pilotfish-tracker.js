@@ -56,16 +56,16 @@ Pilotfish('registerPlugin', 'trackerInit', function(options) {
     // An API so publisher can call Pilotfish('tracker', 'event', [eventData])
     Pilotfish('registerPlugin', 'tracker', recordEvent);
 
-    // If they passed in events to listen for, subscribe to them
+    // If they passed in events to listen for...
     if (options.events) {
         for (var i = 0; i < options.events.length; i++ ) {
-            Pilotfish('subscribe', options.events[i], recordEvent);
+            Pilotfish('on', options.events[i], recordEvent);
         }
     }
 
     // For thick clients that use the hash tag as page views, record them that way.
     if (options.hashChangePageView) {
-        Pilotfish('subscribe', 'window:hashchange', function(data) {
+        Pilotfish('on', 'window:hashchange', function(data) {
             recordEvent('pageview', data);
         });
     }

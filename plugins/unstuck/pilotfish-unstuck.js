@@ -27,7 +27,7 @@ Pilotfish('registerPlugin', 'unstuck', function(options) {
     // Click results in a scroll
 
     // Click resulted in hash tag change, but wasn't a pointer
-    Pilotfish('subscribe', 'window:hashchange', function(data) {
+    Pilotfish('on', 'window:hashchange', function(data) {
         if (isLastClickPointer() === false) {
             broadcast("hash_change_no_pointer");
         }
@@ -79,7 +79,7 @@ Pilotfish('registerPlugin', 'unstuck', function(options) {
     });
 
     function broadcast(name) {
-        Pilotfish("publish", pluginMeta.eventPrefix, {name: name, target: serializeElement(lastClickTarget())});
+        Pilotfish('trigger', pluginMeta.eventPrefix, {name: name, target: serializeElement(lastClickTarget())});
     }
 
     function serializeElement(elem) {

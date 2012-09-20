@@ -99,20 +99,20 @@ function emptyLoadQueue() {
  * -----------------------------------*/
 
 // Credit to https://gist.github.com/661855
-var subscribe = _core.subscribe = function() {
+var on = _core.on = function() {
     var $Pilotfish = jQuery(Pilotfish);
     $Pilotfish.on.apply($Pilotfish, arguments);
     return true;
 };
 
-var unsubscribe = _core.unsubscribe = function() {
+var off = _core.off = function() {
     var $Pilotfish = jQuery(Pilotfish);
     $Pilotfish.off.apply($Pilotfish, arguments);
 };
 
-var publish = _core.publish = function(name, data) {
+var trigger = _core.trigger = function(name, data) {
     if (!name) {
-      error("publish() called without a name");
+      error("trigger() called without a name");
       return false;
     }
     var $Pilotfish = jQuery(Pilotfish);
@@ -150,9 +150,9 @@ var extend = _core.extend = function(source, target) {
 };
 
 var error = _core.error = function(error, type) {
-    publish('error', {type: type, error: error});
+    trigger('error', {type: type, error: error});
     if (type) {
-        publish('error:' + type, {error: error});
+        trigger('error:' + type, {error: error});
     }
 };
 
@@ -167,7 +167,7 @@ function isFunction(obj) {
 
 // Load a remote script, with an optional callback
 var loadScript = _core.loadScript = function(src, callback) {
-    publish('external_script:started', {src: src});
+    trigger('external_script:started', {src: src});
     var SCRIPT = "script",
         firstScript = document.getElementsByTagName(SCRIPT)[0],
         domScript = document.createElement(SCRIPT);
@@ -178,7 +178,7 @@ var loadScript = _core.loadScript = function(src, callback) {
     domScript.onload = function() { 
         if ( ! domScript.onloadDone ) {
             domScript.onloadDone = true; 
-            publish('external_script:loaded', {src: src});
+            trigger('external_script:loaded', {src: src});
             if (isFunction(callback)) {
                 callback(); 
             }
@@ -187,7 +187,7 @@ var loadScript = _core.loadScript = function(src, callback) {
     domScript.onreadystatechange = function() { 
         if ( (/loaded|complete/).test(domScript.readyState) && !domScript.onloadDone ) {
             domScript.onloadDone = true; 
-            publish('external_script:loaded', {src: src});
+            trigger('external_script:loaded', {src: src});
             if (isFunction(callback)) {
                 callback(); 
             }
@@ -213,7 +213,7 @@ var requirePlugin = _core.requirePlugin = function(plugin, src) {
     }
     src = src || [cdnHost, 'client/plugins/', plugin, '/pilotfish-', plugin, '.min.js'].join('');
     loadScript(src, function() {
-        publish('plugin:loaded', {plugin: plugin});
+        trigger('plugin:loaded', {plugin: plugin});
     });
 };
 Pilotfish('subscribe', 'plugin:loaded', emptyLoadQueue);
@@ -224,7 +224,7 @@ var hasPlugin = _core.hasPlugin = function(plugin) {
 
 // Centralized logging, if the browser supports it.
 var log = _core.log = function(msg) {
-    publish('log', {msg: msg});
+    trigger('log', {msg: msg});
     window.console && window.console.log.apply(window.console, arguments);
 };
 
@@ -271,19 +271,19 @@ var toS = _core.toS = function(input) {
     // Global Events that we want to make available to pilotfish
     if (window.jQuery) {
         jQuery(window).load(function() {
-            publish('window:load');
+            trigger('window:load');
         })
         .bind("hashchange", function() {
             var hash = location.hash.substring(1);
             // Some browsers trigger this event twice
             if (hash !== lastHash) {
-                publish('window:hashchange', {path: hash});
+                trigger('window:hashchange', {path: hash});
                 lastHash = hash;
             }
         });
 
         jQuery(document).ready(function() {
-            publish('document:ready');
+            trigger('document:ready');
         });
     }
 

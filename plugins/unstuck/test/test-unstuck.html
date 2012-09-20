@@ -24,7 +24,7 @@
 })(window, document, "script");
 </script>
 <script>
-Pilotfish('subscribe', 'error', function(event, data) {
+Pilotfish('on', 'error', function(event, data) {
   // Cause a test failure if there are any pilotfish errors
   throw new Error('Pilotfish: ' + data.error);
 });

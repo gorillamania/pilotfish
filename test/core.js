@@ -37,7 +37,7 @@ module('Events');
 test('event fired', function() {
     var clicked = false, action = 'buy_button_clicked';
     expect(10);
-    Pilotfish('subscribe', action, function(evt, data) {
+    Pilotfish('on', action, function(evt, data) {
         equal(evt.type, action, 'evt.type is action');
         clicked = true;
         equal(data.category, 'category', 'category set');
@@ -48,14 +48,14 @@ test('event fired', function() {
     });
 
     ok(! clicked, "event not fired yet");
-    ok(Pilotfish('publish', action, {'category': 'category', label: 'label', value: 42, nonInteractive: false}), "Event fired");
+    ok(Pilotfish('trigger', action, {'category': 'category', label: 'label', value: 42, nonInteractive: false}), "Event fired");
     
-    ok(Pilotfish('unsubscribe', 'buy button clicked') !== false, "unsubscribe not false");
+    ok(Pilotfish('off', 'buy button clicked') !== false, "off not false");
 
     // Now it shouldn't fire
     clicked = false;
-    ok(Pilotfish('publish', 'buy button clicked'), "Event fired");
-    ok(! clicked, "event not fired after unsubscribe");
+    ok(Pilotfish('trigger', 'buy button clicked'), "Event fired");
+    ok(! clicked, "event not fired after off");
 
 });
 

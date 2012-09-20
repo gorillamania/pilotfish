@@ -7,7 +7,7 @@ QUnit.asyncTest('setup', function() {
     QUnit.ok(Pilotfish('unstuck', {}), 'Pilotfish unstuck call true');
 
     var hash_change_no_pointer = 0;
-    Pilotfish('subscribe', 'plugins:unstuck', function(evt, data) {
+    Pilotfish('on', 'plugins:unstuck', function(evt, data) {
       if (data.name == 'hash_change_no_pointer') {
         hash_change_no_pointer++;
       }
