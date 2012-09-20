@@ -75,6 +75,15 @@ module.exports = function(grunt) {
         }
     });
 
+    // Helpful for testing certain tests that don't run via the file:// protocol,
+    // such as the tracker tests that use 3rd party providers
+    grunt.registerTask('webserver', 'Start a http server to serve the files.', function() {
+        var connect = require('connect');
+        var done = this.async();
+        grunt.log.writeln('Running a static web server on port 8042');
+        connect(connect['static'](__dirname)).listen(8042);
+    });
+
     // Load all the tasks inside the tasks/ directory
     grunt.loadTasks('tasks');
 
