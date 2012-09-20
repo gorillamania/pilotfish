@@ -38,6 +38,7 @@
     ],
     "dependencies": {},
     "devDependencies": {
+        "connect": "~2.4.6",
         "grunt": "~0.3.15",
         "grunt-casper": "~1",
         "prompt": "~0.2.7"

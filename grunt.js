@@ -18,7 +18,7 @@ module.exports = function(grunt) {
         lint: {
             node: ['grunt.js', 'tasks/*.js'],
             browser: ['pilotfish.js', 'plugins/*/*.js'],
-            qunit: ['test/*.js', 'plugins/*/test/*.js']
+            qunit: ['test/*.js']
         },
         jshint: {
             // Apply to all js fils
@@ -40,7 +40,7 @@ module.exports = function(grunt) {
             globals: {},
             // Just for the 'node' src files
             node: {
-                globals: {module:true, require: true}
+                globals: {module:true, require: true, __dirname: true}
             },
             // Just for the 'browser' src files
             browser: {
@@ -65,7 +65,7 @@ module.exports = function(grunt) {
 
         // Run qunit on all the test files, using phantomjs
         qunit: {
-            files: ['test/*.html', 'plugins/*/test/*.html']
+            files: ['test/*.html']
         },
 
         // Every time a js file is changed, run lint and qunit
