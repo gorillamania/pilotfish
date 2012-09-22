@@ -52,7 +52,7 @@ var Pilotfish = function(){
     }
 };
 window.Pilotfish = Pilotfish;
-Pilotfish.version = "0.4.0";
+Pilotfish.version = "0.4.1";
 
 // Core API
 Pilotfish.core = function(name, func) {
@@ -102,7 +102,6 @@ function emptyLoadQueue() {
 var on = _core.on = function() {
     var $Pilotfish = jQuery(Pilotfish);
     $Pilotfish.on.apply($Pilotfish, arguments);
-    return true;
 };
 
 var off = _core.off = function() {
@@ -216,7 +215,7 @@ var requirePlugin = _core.requirePlugin = function(plugin, src) {
         trigger('plugin:loaded', {plugin: plugin});
     });
 };
-Pilotfish('subscribe', 'plugin:loaded', emptyLoadQueue);
+Pilotfish('on', 'plugin:loaded', emptyLoadQueue);
 
 var hasPlugin = _core.hasPlugin = function(plugin) {
     return isFunction(_plugins[plugin]);
@@ -272,6 +271,10 @@ var toS = _core.toS = function(input) {
     if (window.jQuery) {
         jQuery(window).load(function() {
             trigger('window:load');
+        })
+        .bind("unload", function() {
+            console.log("jquery unload");
+            trigger('window:unload');
         })
         .bind("hashchange", function() {
             var hash = location.hash.substring(1);
