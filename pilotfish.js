@@ -52,7 +52,7 @@ var Pilotfish = function(){
     }
 };
 window.Pilotfish = Pilotfish;
-Pilotfish.version = "0.4.0";
+Pilotfish.version = "0.4.1";
 
 // Core API
 Pilotfish.core = function(name, func) {
@@ -215,7 +215,7 @@ var requirePlugin = _core.requirePlugin = function(plugin, src) {
         trigger('plugin:loaded', {plugin: plugin});
     });
 };
-Pilotfish('subscribe', 'plugin:loaded', emptyLoadQueue);
+Pilotfish('on', 'plugin:loaded', emptyLoadQueue);
 
 var hasPlugin = _core.hasPlugin = function(plugin) {
     return isFunction(_plugins[plugin]);
