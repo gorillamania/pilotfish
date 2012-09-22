@@ -13,7 +13,9 @@ Pilotfish('registerPlugin', 'unstuck', function(options) {
     };
 
     options = Pilotfish('extend', {
-        // Your default options...
+        trackEvents: true,
+        hash_change_no_pointer: true,
+        url_change_no_pointer: true
     }, options);
 
 
@@ -21,24 +23,33 @@ Pilotfish('registerPlugin', 'unstuck', function(options) {
      *---------------------------------*/
 
     // Click resulted in url change, but target wasn't a pointer
+    if (options.url_change_no_pointer) {
+      Pilotfish('on', 'window:unload', function(data) {
+          if (isLastClickPointer() === false) {
+              broadcast('url_change_no_pointer');
+          }
+      });
+    }
 
     // Click resulted in an ajax request, but no status indicator
 
     // Click results in a scroll
 
     // Click resulted in hash tag change, but wasn't a pointer
-    Pilotfish('on', 'window:hashchange', function(data) {
-        if (isLastClickPointer() === false) {
-            broadcast("hash_change_no_pointer");
-        }
-    });
+    if (options.hash_change_no_pointer) {
+      Pilotfish('on', 'window:hashchange', function(data) {
+          if (isLastClickPointer() === false) {
+              broadcast('hash_change_no_pointer');
+          }
+      });
+    }
 
-    // User clicked on something that was a pointer, but nothing happened, so they clicked on it again
-  
-    // clicked on something that wasn't clickable
+    // Clicked on something that had a pointer, but didn't do anything
 
     /* Application problems
      *---------------------------------*/
+
+    // User clicked on something that was a pointer, but nothing happened, so they clicked on it again
 
     // click resulted in a javascript error
 
@@ -79,6 +90,9 @@ Pilotfish('registerPlugin', 'unstuck', function(options) {
     });
 
     function broadcast(name) {
+        if (options.trackEvents) {
+            Pilotfish('track', pluginMeta.eventPrefix + ':' + name);
+        }
         Pilotfish('trigger', pluginMeta.eventPrefix, {name: name, target: serializeElement(lastClickTarget())});
     }
 

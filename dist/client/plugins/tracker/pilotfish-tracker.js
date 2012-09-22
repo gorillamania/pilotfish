@@ -48,7 +48,7 @@ Pilotfish('registerPlugin', 'trackerInit', function(options) {
         for (var backend in options.backends) {
             if (options.backends.hasOwnProperty(backend)) {
                 track(backend, eventName, data);
-                Pilotfish('publish', 'plugin:tracker:recordEvent', {evt: eventName, data: data, backend: backend});
+                Pilotfish('fire', 'plugin:tracker:recordEvent', {evt: eventName, data: data, backend: backend});
             }
         }
     }
