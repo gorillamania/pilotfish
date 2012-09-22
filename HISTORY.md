@@ -1,6 +1,9 @@
 A history of changes for this project is here. We follow [software versioning standards](http://semver.org) as follows:
 major.new.maintenance[.trivial]
 
+##### 0.4.1
+* Fixes for loading plugins
+
 ### 0.4.0
 * Events API renamed to use the more standard on/off/trigger
 
