@@ -60,6 +60,9 @@ Please check out [the existing issues](https://github.com/pilotfish/pilotfish/is
 
 ## History
 
+#### 0.3.0
+* `click_js_error` event 
+
 #### 0.2.0
 * Update for Pilotfish 0.5.0 (unload event)
 * `url_change_no_pointer` event 

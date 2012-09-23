@@ -29,5 +29,8 @@ QUnit.asyncTest('setup', function() {
 
     }, 50);
 
+    // I can't get this to work automatically without breaking the test, but uncommenting it and manually
+    // running it correctly throws an error
+    // jQuery("#error_link").click();
 
 });

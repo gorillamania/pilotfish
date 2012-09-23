@@ -47,6 +47,8 @@ Pilotfish('on', 'error', function(event, data) {
 
 <span data-dest="#hash_no_pointer" id="hash_no_pointer" class="link cursor_default">Hash link without pointer</span><br />
 <span data-dest="#hash_with_pointer" id="hash_with_pointer" class="link cursor_pointer">Hash link with pointer</span><br />
+<span id="error_link" onclick="error">Error link</span><br />
+
 <script>
 $(".link").click(function(evt) {
   location.href=evt.target.getAttribute("data-dest");

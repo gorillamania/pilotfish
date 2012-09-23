@@ -6,15 +6,16 @@
 Pilotfish('registerPlugin', 'unstuck', function(options) {
 
     var pluginMeta = {
-        version     : "0.2.0",
+        version     : "0.3.0",
         name        : 'unstuck',
         eventPrefix : 'plugins:unstuck',
         defaults    : {
             trackEvents: true,
             clickRecency: 50, // Number of milliseconds that defines a recent click
             // Events
-            hash_change_no_pointer: true,
-            url_change_no_pointer : true
+            hash_change_no_pointer  : true,
+            url_change_no_pointer   : true,
+            click_js_error          : true
         }
     };
 
@@ -50,7 +51,13 @@ Pilotfish('registerPlugin', 'unstuck', function(options) {
 
     // User clicked on something that was a pointer, twice
 
-    // click_error click resulted in a javascript error
+    // click_js_error click resulted in a javascript error
+    Pilotfish('on', 'js_error', function(evt, data) {
+        if (wasLastClickRecent() === true) {
+            broadcast('click_js_error', data);
+        }
+    });
+
 
     // frequent_reload user has reloaded more than x in x seconds
 
@@ -76,7 +83,7 @@ Pilotfish('registerPlugin', 'unstuck', function(options) {
 
     // Record the state of recent clicks
     var recentClicks = [];
-    jQuery(document).click(function(evt) {
+    Pilotfish('on', document, 'click', function(evt) {
         recentClicks.push({
             when: new Date().getTime(),
             target: evt.target,
@@ -88,11 +95,14 @@ Pilotfish('registerPlugin', 'unstuck', function(options) {
         }
     });
 
-    function broadcast(name) {
+    function broadcast(name, data) {
         if (options.trackEvents) {
             Pilotfish('track', pluginMeta.eventPrefix + ':' + name);
         }
-        Pilotfish('trigger', pluginMeta.eventPrefix, {name: name, target: serializeElement(lastClickTarget())});
+        data = data || {};
+        data.name = name;
+        data.target = serializeElement(lastClickTarget());
+        Pilotfish('trigger', pluginMeta.eventPrefix, data);
     }
 
     function serializeElement(elem) {
