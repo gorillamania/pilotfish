@@ -1,173 +1,173 @@
 /* Tests for the underlying framework */
 
-module('Browser compatibility assertions');
-test('document.querySelector and document.querySelectorAll are there', function() {
-    equal(typeof document.querySelectorAll, "function", "typeof document.querySelectorAll");
-    equal(typeof document.querySelector, "function", "typeof document.querySelector");
+QUnit.module('Browser compatibility assertions');
+QUnit.test('document.querySelector and document.querySelectorAll are there', function() {
+    QUnit.equal(typeof document.querySelectorAll, "function", "typeof document.querySelectorAll");
+    QUnit.equal(typeof document.querySelector, "function", "typeof document.querySelector");
 });
 
-test('JSON is supported', function() {
-    equal(typeof JSON, "object", "typeof JSON");
+QUnit.test('JSON is supported', function() {
+    QUnit.equal(typeof JSON, "object", "typeof JSON");
 });
 
-test('jQuery is there', function() {
-    equal(typeof jQuery, "function", "typeof jQuery");
-});
-
-
-module('Pilotfish setup');
-test('Pilotfish object', function() {
-    equal(typeof Pilotfish, "function", "typeof Pilotfish");
-    equal(typeof Pilotfish.version, "string", "typeof Pilotfish.version");
-    ok((/[0-9]{1}\.[0-9]{1,2}\.[0-9]{1,3}/).test(Pilotfish.version), "Pilotfish.version matches x.x.x");
-});
-
-test("Pilotfish(method, arg1, arg2)", function() {
-    equal(Pilotfish('pageData', 'x', 'y'), 'y');
-    equal(Pilotfish('pageData', 'x'), 'y');
-    equal(Pilotfish('non existant function', 'x', 'y'), "NOT_THERE");
-});
-
-test('Predefined function called', function() {
-    equal(Pilotfish('pageData', 'test page'), 'yes', "pageData('test page') == 'yes'");
+QUnit.test('jQuery is there', function() {
+    QUnit.equal(typeof jQuery, "function", "typeof jQuery");
 });
 
 
-module('Events');
-test('event fired', function() {
+QUnit.module('Pilotfish setup');
+QUnit.test('Pilotfish object', function() {
+    QUnit.equal(typeof Pilotfish, "function", "typeof Pilotfish");
+    QUnit.equal(typeof Pilotfish.version, "string", "typeof Pilotfish.version");
+    QUnit.ok((/[0-9]{1}\.[0-9]{1,2}\.[0-9]{1,3}/).test(Pilotfish.version), "Pilotfish.version matches x.x.x");
+});
+
+QUnit.test("Pilotfish(method, arg1, arg2)", function() {
+    QUnit.equal(Pilotfish('pageData', 'x', 'y'), 'y');
+    QUnit.equal(Pilotfish('pageData', 'x'), 'y');
+    QUnit.equal(Pilotfish('non existant function', 'x', 'y'), "NOT_THERE");
+});
+
+QUnit.test('Predefined function called', function() {
+    QUnit.equal(Pilotfish('pageData', 'test page'), 'yes', "pageData('test page') == 'yes'");
+});
+
+
+QUnit.module('Events');
+QUnit.test('event fired', function() {
     var clicked = false, action = 'buy_button_clicked';
-    expect(10);
+    QUnit.expect(10);
     Pilotfish('on', action, function(evt, data) {
-        equal(evt.type, action, 'evt.type is action');
+        QUnit.equal(evt.type, action, 'evt.type is action');
         clicked = true;
-        equal(data.category, 'category', 'category set');
-        equal(data.label, 'label', 'label set');
-        equal(data.value, 42, 'value set');
-        deepEqual(data.nonInteractive, false, 'nonInteractive set');
+        QUnit.equal(data.category, 'category', 'category set');
+        QUnit.equal(data.label, 'label', 'label set');
+        QUnit.equal(data.value, 42, 'value set');
+        QUnit.deepEqual(data.nonInteractive, false, 'nonInteractive set');
 
     });
 
-    ok(! clicked, "event not fired yet");
-    ok(Pilotfish('trigger', action, {'category': 'category', label: 'label', value: 42, nonInteractive: false}), "Event fired");
+    QUnit.ok(! clicked, "event not fired yet");
+    QUnit.ok(Pilotfish('trigger', action, {'category': 'category', label: 'label', value: 42, nonInteractive: false}), "Event fired");
     
-    ok(Pilotfish('off', 'buy button clicked') !== false, "off not false");
+    QUnit.ok(Pilotfish('off', 'buy button clicked') !== false, "off not false");
 
     // Now it shouldn't fire
     clicked = false;
-    ok(Pilotfish('trigger', 'buy button clicked'), "Event fired");
-    ok(! clicked, "event not fired after off");
+    QUnit.ok(Pilotfish('trigger', 'buy button clicked'), "Event fired");
+    QUnit.ok(! clicked, "event not fired after off");
 
 });
 
 
-module('Extend');
-test('simple', function(){
-    deepEqual(Pilotfish('extend', {"one": 1}, {"two": 2}), {"one": 1, "two": 2}, "simple object extension");
-    deepEqual(Pilotfish('extend', {"one": 1}, {"one": false}), {"one": false}, "override");
-    deepEqual(Pilotfish('extend', null, {"two": 2}), {"two": 2}, "null source");
-    deepEqual(Pilotfish('extend', undefined, {"two": 2}), {"two": 2}, "undefined source");
-    deepEqual(Pilotfish('extend', [], {"two": 2}), [], "array source");
-    deepEqual(Pilotfish('extend', 42, {"two": 2}), {"two": 2}, "int source");
-    deepEqual(Pilotfish('extend', "str", {"two": 2}), {"two": 2}, "string source");
-    deepEqual(Pilotfish('extend', false, {"two": 2}), {"two": 2}, "boolean false source");
+QUnit.module('Extend');
+QUnit.test('simple', function(){
+    QUnit.deepEqual(Pilotfish('extend', {"one": 1}, {"two": 2}), {"one": 1, "two": 2}, "simple object extension");
+    QUnit.deepEqual(Pilotfish('extend', {"one": 1}, {"one": false}), {"one": false}, "override");
+    QUnit.deepEqual(Pilotfish('extend', null, {"two": 2}), {"two": 2}, "null source");
+    QUnit.deepEqual(Pilotfish('extend', undefined, {"two": 2}), {"two": 2}, "undefined source");
+    QUnit.deepEqual(Pilotfish('extend', [], {"two": 2}), [], "array source");
+    QUnit.deepEqual(Pilotfish('extend', 42, {"two": 2}), {"two": 2}, "int source");
+    QUnit.deepEqual(Pilotfish('extend', "str", {"two": 2}), {"two": 2}, "string source");
+    QUnit.deepEqual(Pilotfish('extend', false, {"two": 2}), {"two": 2}, "boolean false source");
 });
 
-module('Util');
+QUnit.module('Util');
 
-test('log', function(){
-    expect(1);
+QUnit.test('log', function(){
+    QUnit.expect(1);
     Pilotfish('log', "Pilotfish('log') test:", "second arg", 3, [1,2,3], true, {});
-    ok(true);
+    QUnit.ok(true);
 });
 
-test('Page data', function() {
-    deepEqual(Pilotfish('pageData'), "", "no key");
-    deepEqual(Pilotfish('pageData', ""), "", "empty string key");
-    deepEqual(Pilotfish('pageData', "non existant"), "", "non existant key");
+QUnit.test('Page data', function() {
+    QUnit.deepEqual(Pilotfish('pageData'), "", "no key");
+    QUnit.deepEqual(Pilotfish('pageData', ""), "", "empty string key");
+    QUnit.deepEqual(Pilotfish('pageData', "non existant"), "", "non existant key");
 
-    equal(Pilotfish('pageData', "foo", "bar"), "bar", "set should return the value");
-    equal(Pilotfish('pageData', "foo"), "bar", "get foo");
+    QUnit.equal(Pilotfish('pageData', "foo", "bar"), "bar", "set should return the value");
+    QUnit.equal(Pilotfish('pageData', "foo"), "bar", "get foo");
 
     Pilotfish('pageData', "foo", true);
-    equal(Pilotfish('pageData', "foo"), "true", "foo boolean true converted to string 'true'");
+    QUnit.equal(Pilotfish('pageData', "foo"), "true", "foo boolean true converted to string 'true'");
 
     Pilotfish('pageData', "foo", false);
-    equal(Pilotfish('pageData', "foo"), "false", "foo boolean false converted to string 'false'");
+    QUnit.equal(Pilotfish('pageData', "foo"), "false", "foo boolean false converted to string 'false'");
 
     Pilotfish('pageData', "foo", null);
-    equal(Pilotfish('pageData', "foo"), "", "null converted to empty string");
+    QUnit.equal(Pilotfish('pageData', "foo"), "", "null converted to empty string");
 
     Pilotfish('pageData', "foo", 0);
-    equal(Pilotfish('pageData', "foo"), "0", "integer 0 convertd to string 0");
+    QUnit.equal(Pilotfish('pageData', "foo"), "0", "integer 0 convertd to string 0");
 
     // Clear it
-    deepEqual(Pilotfish('pageData', "foo", ""), "", "set to empty string should return empty string");
-    equal(Pilotfish('pageData', "foo"), "", "empty string after clear");
+    QUnit.deepEqual(Pilotfish('pageData', "foo", ""), "", "set to empty string should return empty string");
+    QUnit.equal(Pilotfish('pageData', "foo"), "", "empty string after clear");
 });
 
-test('Selector', function(){
-    equal(Pilotfish('S', '').length, 0, "empty string");
-    equal(Pilotfish('S', undefined).length, 0, "undefined");
-    equal(Pilotfish('S', null).length, 0, "null");
-    equal(typeof Pilotfish('S', {}), "object", "{}"); // jQuery {} returns {0: {}, length: 1}
-    equal(Pilotfish('S', []).length, 0, "[]");
-    equal(Pilotfish('S', '#qunit-banner').length, 1, '#qunit-banner');
-    equal(Pilotfish('S', '#nonexistant-id').length, 0, '#nonexistant-id');
-    equal(Pilotfish('S', '.result').length, 1, '.result');
-});
-
-
-test('Settings', function(){
-    deepEqual(Pilotfish('setting'), "", "no key");
-    deepEqual(Pilotfish('setting', 'account', '1234'), "1234", "set account");
-    deepEqual(Pilotfish('setting', 'account'), "1234", "get account");
-    deepEqual(Pilotfish('setting', 'account', ''), "", "set cleared");
-    deepEqual(Pilotfish('setting', 'account'), "", "get cleared");
+QUnit.test('Selector', function(){
+    QUnit.equal(Pilotfish('S', '').length, 0, "empty string");
+    QUnit.equal(Pilotfish('S', undefined).length, 0, "undefined");
+    QUnit.equal(Pilotfish('S', null).length, 0, "null");
+    QUnit.equal(typeof Pilotfish('S', {}), "object", "{}"); // jQuery {} returns {0: {}, length: 1}
+    QUnit.equal(Pilotfish('S', []).length, 0, "[]");
+    QUnit.equal(Pilotfish('S', '#qunit-banner').length, 1, '#qunit-banner');
+    QUnit.equal(Pilotfish('S', '#nonexistant-id').length, 0, '#nonexistant-id');
+    QUnit.equal(Pilotfish('S', '.result').length, 1, '.result');
 });
 
 
-test('toS', function(){
-    deepEqual(Pilotfish('toS', null), "", "null");
-    deepEqual(Pilotfish('toS', {}), "{}", "empty object");
-    deepEqual(Pilotfish('toS', {foo: 1}), '{"foo":1}', "full object");
-    deepEqual(Pilotfish('toS', []), "[]", "empty array");
-    deepEqual(Pilotfish('toS', [4,5,6]), "[4,5,6]", "3 element array");
-    deepEqual(Pilotfish('toS', true), "true", "boolean true");
-    deepEqual(Pilotfish('toS', false), "false", "boolean false");
-    deepEqual(Pilotfish('toS', undefined), "", "undefined");
-    deepEqual(Pilotfish('toS', 0), "0", "0 int");
-    deepEqual(Pilotfish('toS', "0"), "0", "0 str");
-    deepEqual(Pilotfish('toS', parseInt("asdf", 10)), "", "NaN");
+QUnit.test('Settings', function(){
+    QUnit.deepEqual(Pilotfish('setting'), "", "no key");
+    QUnit.deepEqual(Pilotfish('setting', 'account', '1234'), "1234", "set account");
+    QUnit.deepEqual(Pilotfish('setting', 'account'), "1234", "get account");
+    QUnit.deepEqual(Pilotfish('setting', 'account', ''), "", "set cleared");
+    QUnit.deepEqual(Pilotfish('setting', 'account'), "", "get cleared");
+});
+
+
+QUnit.test('toS', function(){
+    QUnit.deepEqual(Pilotfish('toS', null), "", "null");
+    QUnit.deepEqual(Pilotfish('toS', {}), "{}", "empty object");
+    QUnit.deepEqual(Pilotfish('toS', {foo: 1}), '{"foo":1}', "full object");
+    QUnit.deepEqual(Pilotfish('toS', []), "[]", "empty array");
+    QUnit.deepEqual(Pilotfish('toS', [4,5,6]), "[4,5,6]", "3 element array");
+    QUnit.deepEqual(Pilotfish('toS', true), "true", "boolean true");
+    QUnit.deepEqual(Pilotfish('toS', false), "false", "boolean false");
+    QUnit.deepEqual(Pilotfish('toS', undefined), "", "undefined");
+    QUnit.deepEqual(Pilotfish('toS', 0), "0", "0 int");
+    QUnit.deepEqual(Pilotfish('toS', "0"), "0", "0 str");
+    QUnit.deepEqual(Pilotfish('toS', parseInt("asdf", 10)), "", "NaN");
     var now = new Date();
-    deepEqual(Pilotfish('toS', now), JSON.stringify(now), "date");
+    QUnit.deepEqual(Pilotfish('toS', now), JSON.stringify(now), "date");
 });
 
 
-module('Plugins');
-test('Simple plugin', function() {
+QUnit.module('Plugins');
+QUnit.test('Simple plugin', function() {
     Pilotfish('registerPlugin', 'upper', function(arg) {
         return arg.toUpperCase();
     });
-    equal(Pilotfish('upper', 'test'), "TEST", "upper plugin");
+    QUnit.equal(Pilotfish('upper', 'test'), "TEST", "upper plugin");
 });
-test('Plugin checking', function() {
-    ok( ! Pilotfish('hasPlugin', 'non existant plugin'), 'hasPlugin with non existant plugin');
-    ok(Pilotfish('hasPlugin', 'upper'), 'hasPlugin with existant plugin');
+QUnit.test('Plugin checking', function() {
+    QUnit.ok( ! Pilotfish('hasPlugin', 'non existant plugin'), 'hasPlugin with non existant plugin');
+    QUnit.ok(Pilotfish('hasPlugin', 'upper'), 'hasPlugin with existant plugin');
 });
 jQuery(window).load(function() {
-    test('Dynamically loaded plugin', function() {
-        ok(Pilotfish('hasPlugin', 'trackerInit'), 'trackerInit is there');
+    QUnit.test('Dynamically loaded plugin', function() {
+        QUnit.ok(Pilotfish('hasPlugin', 'trackerInit'), 'trackerInit is there');
     });
 });
 
 
-module('Browser events');
+QUnit.module('Browser events');
 var loaded = false, ready = false;
 Pilotfish('onready', function() { ready = true; });
 Pilotfish('onload', function() { loaded = true; });
 jQuery(window).load(function() {
-    test('window loaded', function() {
-        ok(loaded, 'loaded');
-        ok(ready, 'ready');
+    QUnit.test('window loaded', function() {
+        QUnit.ok(loaded, 'loaded');
+        QUnit.ok(ready, 'ready');
     });
 });
