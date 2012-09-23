@@ -25,7 +25,7 @@ QUnit.test('Pilotfish object', function() {
 QUnit.test("Pilotfish(method, arg1, arg2)", function() {
     QUnit.equal(Pilotfish('pageData', 'x', 'y'), 'y');
     QUnit.equal(Pilotfish('pageData', 'x'), 'y');
-    QUnit.equal(Pilotfish('non existant function', 'x', 'y'), "NOT_THERE");
+    QUnit.equal(Pilotfish('non existant function', 'x', 'y'), "MISSING");
 });
 
 QUnit.test('Predefined function called', function() {
