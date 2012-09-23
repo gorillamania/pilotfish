@@ -193,3 +193,27 @@ jQuery(window).load(function() {
         QUnit.ok(ready, 'ready');
     });
 });
+
+
+/* TODO:
+I can't get this to work without halting the test, but it was enough to prove that it worked
+QUnit.module("Errors");
+QUnit.asyncTest("Error Event", function() {
+
+    var caught = false;
+    Pilotfish('on', 'js_error', function(evt, data) {
+        caught = true;
+        QUnit.equal(data.msg, "Script error.", "data.msg");
+        QUnit.start();
+    });
+
+    (function() {
+      // Simulate an error
+      undefinedVar;
+    })();
+
+    QUnit.ok(caught, "error caught");
+
+});
+*/
+

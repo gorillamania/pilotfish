@@ -1,6 +1,9 @@
 A history of changes for this project is here. We follow [software versioning standards](http://semver.org) as follows:
 major.new.maintenance[.trivial]
 
+### 0.6.0 (wip)
+* NEW: `js_error` event for javascript errors
+
 ### 0.5.0
 * NEW: Update event API to support dom elements or custom events
 * Expose `Pilotfish.compatible` (boolean if the browser is compatible)

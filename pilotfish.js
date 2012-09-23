@@ -59,7 +59,7 @@ var Pilotfish = function(){
 window.Pilotfish = Pilotfish;
 
 // Make certain elements public
-Pilotfish.version = "0.5.0";
+Pilotfish.version = "0.6.0";
 Pilotfish.cdnHost = cdnHost;
 Pilotfish.compatible = compatible;
 
@@ -307,9 +307,29 @@ var toS = _core.toS = function(input) {
                 lastHash = hash;
             }
         });
-
     }
 
+    // Javascript errors on the page
+    // errors - see https://developer.mozilla.org/en/DOM/window.onerror
+    var oldErrorHandler = window.onerror || function() { return false; };
+    window.onerror = function(msg, url, line) {
+        try {
+            if (typeof msg != 'string') {
+                // Not all browsers call error with the msg, url, line syntax. Some (Safari <=5 pass an object)
+                return oldErrorHandler.apply(window, arguments);
+            }
+
+            trigger('js_error', {msg: msg,  url: url, line: line});
+        } catch (e) {
+            // If there is anything wrong with this code, it needs to fail silently or it will recurse
+            log("Error in the error handler", e);
+        }
+
+        // let default handler run.
+        return oldErrorHandler.apply(window, arguments);
+    };
+
+    // Call any functions that have been queued
     emptyLoadQueue();
 })();
 
