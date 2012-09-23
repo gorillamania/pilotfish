@@ -19,9 +19,9 @@ var _core         = {},
     _pageData     = {},
     _plugins      = {},
     _settings     = {},
-    NOT_THERE     = "NOT_THERE",
+    MISSING       = "MISSING",
     compatible    = checkCompatibility(),
-    secure        = location.protocol === 'https:',
+    secure        = location.protocol == 'https:',
     cdnHost       = secure ? '//pilotfish.github.com/' : 'http://cdn.pilotfish.io/',
     loadQueue     = window.Pilotfish && window.Pilotfish.q || [];
 
@@ -32,6 +32,7 @@ var Pilotfish = function(){
         return true;
     }
 
+    // Gracefully fail if we don't support this browser
     if (! compatible) {
         return true;
     }
@@ -42,24 +43,25 @@ var Pilotfish = function(){
 
     var method = arguments[0], args = Array.prototype.slice.call( arguments, 1 );
     if (isFunction(Pilotfish[method])) {
+        // Direct method
         return Pilotfish[method].apply(Pilotfish, args);
     } else if (isFunction(_core[method])) {
+        // Core method
         return _core[method].apply(Pilotfish, args);
     } else if (isFunction(_plugins[method])) {
+        // Registered Plugin
         return _plugins[method].apply(Pilotfish, args);
     } else {
-        return NOT_THERE;
+        // Not found. Perhaps a plugin is still laoding?
+        return MISSING;
     }
 };
 window.Pilotfish = Pilotfish;
-Pilotfish.version = "0.4.1";
 
-// Core API
-Pilotfish.core = function(name, func) {
-    _core[name] = func;
-};
-
-
+// Make certain elements public
+Pilotfish.version = "0.5.0";
+Pilotfish.cdnHost = cdnHost;
+Pilotfish.compatible = compatible;
 
 /* Core 
  * --------------------------------------------------------------------------*/
@@ -88,7 +90,7 @@ function emptyLoadQueue() {
     var copyQueue = loadQueue;
     loadQueue = [];
     for (var i = 0, l = copyQueue.length; i < l; i++) {
-        if (Pilotfish.apply(Pilotfish, copyQueue[i]) === NOT_THERE ){
+        if (Pilotfish.apply(Pilotfish, copyQueue[i]) == MISSING ){
             // It wasn't there yet, leave it in the queue in case a future plugin gets loaded that can handle it
             loadQueue.push(copyQueue[i]);
         }
@@ -98,28 +100,47 @@ function emptyLoadQueue() {
 /* Events
  * -----------------------------------*/
 
-// Credit to https://gist.github.com/661855
+// Listen for events. Two different ways of calling:
+// Pilotfish('on', 'custom_event', function() { ... });
+// or
+// Pilotfish('on', document, 'click', function() { ... });
 var on = _core.on = function() {
-    var $Pilotfish = jQuery(Pilotfish);
-    $Pilotfish.on.apply($Pilotfish, arguments);
-};
-
-var off = _core.off = function() {
-    var $Pilotfish = jQuery(Pilotfish);
-    $Pilotfish.off.apply($Pilotfish, arguments);
-};
-
-var trigger = _core.trigger = function(name, data) {
-    if (!name) {
-      error("trigger() called without a name");
-      return false;
+    if (typeof arguments[0] == "string") {
+        jQuery(Pilotfish).on(arguments[0], arguments[1]);
+    } else if (typeof arguments[0] == "object"){
+        jQuery(arguments[0]).on(arguments[1], arguments[2]);
     }
-    var $Pilotfish = jQuery(Pilotfish);
-    eventLog({"name": name, "args": arguments});
-    $Pilotfish.trigger.apply($Pilotfish, arguments);
-    return true;
 };
 
+// Stop listening for events. Two different ways of calling
+// Pilotfish('off', 'custom_event', function() { ... });
+// or
+// Pilotfish('off', document, 'click', function() { ... });
+var off = _core.off = function() {
+    if (typeof arguments[0] == "string") {
+        jQuery(Pilotfish).off(arguments[0], arguments[1]);
+    } else if (typeof arguments[0] == "object"){
+        // This doesn't appear to work, because we don't have the original selector
+        jQuery(arguments[0]).off(arguments[1]);
+    }
+};
+
+// Fire an event on the Pilotfish object. Two different ways of calling
+// Pilotfish('trigger', 'custom_event', [data]);
+// or
+// Pilotfish('trigger', document, 'click');
+var trigger = _core.trigger = function() {
+    if (typeof arguments[0] == "string") {
+        jQuery(Pilotfish).trigger(arguments[0], arguments[1] || {});
+        eventLog({"name": arguments[0], "args": arguments});
+    } else if (typeof arguments[0] == "object"){
+        jQuery(arguments[0]).trigger(arguments[1]);
+        eventLog({"name": arguments[1], "args": arguments});
+    }
+};
+
+// Keep track of fired events. Handy for debuggin, can be accessed in the console with:
+// Pilotfish('eventLog')
 var eventLog = _core.eventLog = function (eventData) {
     if (eventData) {
         _eventLogs.push(eventData);
@@ -127,13 +148,15 @@ var eventLog = _core.eventLog = function (eventData) {
     return _eventLogs;
 };
 
-var onload = _core.onload = function(callback) {
-    jQuery(window).load(callback);
-};
+// Run a function when the document is ready. If it is already ready, run it immediately
 var onready = _core.onready = function(callback) {
     jQuery(document).ready(callback);
 };
 
+// Run a function when the page is loaded. If it is already loaded, run it immediately
+var onload = _core.onload = function(callback) {
+    jQuery(window).load(callback);
+};
 
 /* Util
  * -----------------------------------*/
@@ -148,6 +171,7 @@ var extend = _core.extend = function(source, target) {
     return jQuery.extend(source, target);
 };
 
+// Record an error. Always use this instead of "throw"
 var error = _core.error = function(error, type) {
     trigger('error', {type: type, error: error});
     if (type) {
@@ -155,10 +179,11 @@ var error = _core.error = function(error, type) {
     }
 };
 
-// Sometimes we need to know if an object is {} 
+// Sometimes we need to know if an object is {}
 function isPlainObject(obj) {
     return jQuery.isPlainObject(obj);
 }
+
 // And we often need to know if the argument is a function
 function isFunction(obj) {
     return typeof obj === "function";
@@ -166,7 +191,8 @@ function isFunction(obj) {
 
 // Load a remote script, with an optional callback
 var loadScript = _core.loadScript = function(src, callback) {
-    trigger('external_script:started', {src: src});
+    var prefix = "external_script:";
+    trigger(prefix + 'started', {src: src});
     var SCRIPT = "script",
         firstScript = document.getElementsByTagName(SCRIPT)[0],
         domScript = document.createElement(SCRIPT);
@@ -175,18 +201,18 @@ var loadScript = _core.loadScript = function(src, callback) {
 
     // Thanks http://stevesouders.com/efws/script-onload.php
     domScript.onload = function() { 
-        if ( ! domScript.onloadDone ) {
-            domScript.onloadDone = true; 
-            trigger('external_script:loaded', {src: src});
+        if ( ! domScript.done ) {
+            domScript.done = true; 
+            trigger(prefix + 'loaded', {src: src});
             if (isFunction(callback)) {
                 callback(); 
             }
         }
     };
     domScript.onreadystatechange = function() { 
-        if ( (/loaded|complete/).test(domScript.readyState) && !domScript.onloadDone ) {
-            domScript.onloadDone = true; 
-            trigger('external_script:loaded', {src: src});
+        if ( (/loaded|complete/).test(domScript.readyState) && !domScript.done ) {
+            domScript.done = true; 
+            trigger(prefix + 'loaded', {src: src});
             if (isFunction(callback)) {
                 callback(); 
             }
@@ -200,11 +226,14 @@ var loadScript = _core.loadScript = function(src, callback) {
 /* Plugins
  * -----------------------------------*/
 
+// Register a plugin to be used with Pilotfish('')
+// See https://github.com/pilotfish/pilotfish/blob/master/doc/plugins.md
 var registerPlugin = _core.registerPlugin = function(plugin, func) {
     _plugins[plugin] = func;
 };
 
-// Manage plugin dependencies
+// Manage plugin dependencies. Will download it from Pilotfish.cdnHost if needed.
+// Optional src argument for a specific url for the plugin
 var requirePlugin = _core.requirePlugin = function(plugin, src) {
     // Do we already have it?
     if (hasPlugin(plugin)) {
@@ -217,11 +246,12 @@ var requirePlugin = _core.requirePlugin = function(plugin, src) {
 };
 Pilotfish('on', 'plugin:loaded', emptyLoadQueue);
 
+// Do we already have this plugin loaded?
 var hasPlugin = _core.hasPlugin = function(plugin) {
     return isFunction(_plugins[plugin]);
 };
 
-// Centralized logging, if the browser supports it.
+// Centralized logging
 var log = _core.log = function(msg) {
     trigger('log', {msg: msg});
     window.console && window.console.log.apply(window.console, arguments);
@@ -269,14 +299,7 @@ var toS = _core.toS = function(input) {
     var lastHash;
     // Global Events that we want to make available to pilotfish
     if (window.jQuery) {
-        jQuery(window).load(function() {
-            trigger('window:load');
-        })
-        .bind("unload", function() {
-            console.log("jquery unload");
-            trigger('window:unload');
-        })
-        .bind("hashchange", function() {
+        jQuery(window).bind("hashchange", function() {
             var hash = location.hash.substring(1);
             // Some browsers trigger this event twice
             if (hash !== lastHash) {
@@ -285,9 +308,6 @@ var toS = _core.toS = function(input) {
             }
         });
 
-        jQuery(document).ready(function() {
-            trigger('document:ready');
-        });
     }
 
     emptyLoadQueue();

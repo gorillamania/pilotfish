@@ -34,29 +34,51 @@ QUnit.test('Predefined function called', function() {
 
 
 QUnit.module('Events');
-QUnit.test('event fired', function() {
+QUnit.test('custom events', function() {
     var clicked = false, action = 'buy_button_clicked';
-    Pilotfish('on', action, function(evt, data) {
-        console.log("click called");
+
+    var handler = function(evt, data) {
         QUnit.equal(evt.type, action, 'evt.type is action');
         clicked = true;
         QUnit.equal(data.category, 'category', 'category set');
         QUnit.equal(data.label, 'label', 'label set');
         QUnit.equal(data.value, 42, 'value set');
         QUnit.deepEqual(data.nonInteractive, false, 'nonInteractive set');
-
-    });
+    };
+    Pilotfish('on', action, handler);
 
     QUnit.ok(! clicked, "event not fired yet");
     Pilotfish('trigger', action, {'category': 'category', label: 'label', value: 42, nonInteractive: false});
 
-    QUnit.ok(Pilotfish('off', 'buy button clicked') !== false, "off not false");
+    QUnit.ok(Pilotfish('off', 'buy button clicked', handler) !== false, "off not false");
 
     // Now it shouldn't fire
     clicked = false;
     Pilotfish('trigger', 'buy button clicked');
     QUnit.ok(! clicked, "event not fired after off");
 
+});
+
+QUnit.test('dom events', function() {
+
+    var div = document.createElement("div"),
+        clicked = false;
+
+    var handler = function(evt, data) {
+        QUnit.equal(evt.type, 'click', 'evt.type is action');
+        clicked = true;
+    };
+    Pilotfish('on', div, 'click', handler);
+
+    QUnit.ok(! clicked, "click event not fired yet");
+    Pilotfish('trigger', div, 'click', {'category': 'category', label: 'label', value: 42, nonInteractive: false});
+
+    // This doesn't work, because jQuery.off requires the selector used
+    //QUnit.ok(Pilotfish('off', 'click', handler) !== false, "off not false");
+    // Now it shouldn't fire
+    //clicked = false;
+    //Pilotfish('trigger', div, 'click');
+    //QUnit.ok(! clicked, "event not fired after off");
 });
 
 
