@@ -1,8 +1,16 @@
 A history of changes for this project is here. We follow [software versioning standards](http://semver.org) as follows:
 major.new.maintenance[.trivial]
 
+### 0.5.0
+* NEW: Update event API to support dom elements or custom events
+* Expose `Pilotfish.compatible` (boolean if the browser is compatible)
+* Expose `Pilotfish.cdnHost` (where the plugins will be loaded from)
+* Remove `Pilotfish.core()`
+* Remove `window:[un]load` and `document:ready` events (no need, use `Pilotfish('load')` and `Pilotfish('ready')` instead.
+* Improved inline code documentation
+
 ##### 0.4.1
-* Fixes for loading plugins
+* Fix for loading plugins, introduced in 0.4.0
 
 ### 0.4.0
 * Events API renamed to use the more standard on/off/trigger
