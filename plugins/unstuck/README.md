@@ -6,13 +6,8 @@ This is a core plugin for the [Pilotfish user experience toolkit](http://pilotfi
 
 Events:
 
-* ERR
-	* `unhandled_click` - User clicked, nothing happened, so they clicked again
-	* `same_message` - the user received the same notice more than once on a page view (chances are they didn't understand it)
-	* `multiple_reload` - The user has reloaded the page several times
-* WARN
-	* `back_forward_reload` - User came back to the same page more than once back-forward-back.  
-	* `slowed_cadence` - User was clicking along at a good pace, but then spends more than x standard deviations on a particular page.
+* `hash_change_no_pointer` - The hash of the page changed, but the recent click wasn't a pointer
+* `url_change_no_pointer` - The user left the page, but the last element they clicked on wasn't a pointer
 
 ## Usage
 
@@ -20,8 +15,8 @@ This plugin is a core plugin of pilotfish, and as such these instructions assume
 
 ```
 Pilotfish('requirePlugin', 'unstuck');
-Pilotfish('subscribe', 'unhandled_click', function(evt, data){
-   // Do whatever you want when the user had an unhandled click
+Pilotfish('on', 'plugins:unstuck', function(evt, data){
+   // data.name will be the event
 });
 ```
 To track the activity using Pilotfish tracker and have it feed into your analytics platform:
@@ -35,7 +30,6 @@ Pilotfish('trackerInit', function({
         'quantcast': {"accountid": "p-XXXXXXX-1"},
         'mixpanel': {"accountid": "aaaaaaaaaaaaaaaaaaaaaaa"}
     },
-    events: ['unhandled_click', 'same_message', 'multiple_reload']
 });
 
 ```
@@ -52,13 +46,27 @@ We want you to have a good experience, too. :)
 Please check out [the existing issues](https://github.com/pilotfish/pilotfish/issues), and if you don't see that your problem is already being worked on, please [file an issue](https://github.com/pilotfish/pilotfish/issues/new)
 
 ## TODO
-* TODO item 1
-* TODO item 2
+* `ajax_no_indicator`
+* Stuck click
+* `click_caused_error`
+* Frequent reloads
+* User stopped the page before it was downloaded 
+* user sees the same message twice
+* user hit back x times in a row
+* slowed_cadence - this page is taking signifigantly longer than previous pages
+* lost_focus
+* user_searched, and didn't find anything
+* Tap into the accelerometer and watch for a thrown computer :)
 
 ## History
 
-#### 0.1.0 MVP
-* Fire off events to Google Analytics 
+#### 0.2.0
+* Update for Pilotfish 0.5.0 (unload event)
+* `url_change_no_pointer` event 
+
+#### 0.1.0
+* MVP
+* `hash_change_no_pointer` event 
 
 ## Contributing
 

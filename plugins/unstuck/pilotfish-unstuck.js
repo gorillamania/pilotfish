@@ -5,53 +5,52 @@
 
 Pilotfish('registerPlugin', 'unstuck', function(options) {
 
-    // TODO
     var pluginMeta = {
         version     : "0.2.0",
         name        : 'unstuck',
-        eventPrefix : 'plugins:unstuck'
+        eventPrefix : 'plugins:unstuck',
+        defaults    : {
+            trackEvents: true,
+            clickRecency: 50, // Number of milliseconds that defines a recent click
+            // Events
+            hash_change_no_pointer: true,
+            url_change_no_pointer : true
+        }
     };
 
-    options = Pilotfish('extend', {
-        trackEvents: true,
-        hash_change_no_pointer: true,
-        url_change_no_pointer: true
-    }, options);
+    options = Pilotfish('extend', pluginMeta.defaults, options);
 
 
     /* Click actions
      *---------------------------------*/
 
-    // Click resulted in url change, but target wasn't a pointer
+    // url_cange_no_pointer. Click resulted in url change, but target wasn't a pointer
     if (options.url_change_no_pointer) {
-      Pilotfish('on', 'window:unload', function(data) {
-          if (isLastClickPointer() === false) {
+      Pilotfish('on', window, 'unload', function(data) {
+          if (wasLastClickPointer() === false && wasLastClickRecent() === true) {
               broadcast('url_change_no_pointer');
+          }
+      });
+    }
+
+
+    // hash_change_no_pointer. Click resulted in hash tag change, but wasn't a pointer
+    if (options.hash_change_no_pointer) {
+      Pilotfish('on', 'window:hashchange', function(data) {
+          if (wasLastClickPointer() === false && wasLastClickRecent() === true) {
+              broadcast('hash_change_no_pointer');
           }
       });
     }
 
     // Click resulted in an ajax request, but no status indicator
 
-    // Click results in a scroll
-
-    // Click resulted in hash tag change, but wasn't a pointer
-    if (options.hash_change_no_pointer) {
-      Pilotfish('on', 'window:hashchange', function(data) {
-          if (isLastClickPointer() === false) {
-              broadcast('hash_change_no_pointer');
-          }
-      });
-    }
-
-    // Clicked on something that had a pointer, but didn't do anything
-
     /* Application problems
      *---------------------------------*/
 
-    // User clicked on something that was a pointer, but nothing happened, so they clicked on it again
+    // User clicked on something that was a pointer, twice
 
-    // click resulted in a javascript error
+    // click_error click resulted in a javascript error
 
     // frequent_reload user has reloaded more than x in x seconds
 
@@ -105,11 +104,19 @@ Pilotfish('registerPlugin', 'unstuck', function(options) {
         return jQuery(elem).css("cursor") === "pointer";
     }
 
-    function isLastClickPointer() {
+    function wasLastClickPointer() {
         if (recentClicks.length === 0) {
            return null;
         }
         return recentClicks[recentClicks.length-1].pointer;
+    }
+
+    function wasLastClickRecent() {
+        if (recentClicks.length === 0) {
+           return null;
+        }
+        var now = new Date().getTime();
+        return (now - recentClicks[recentClicks.length-1].when) < options.clickRecency;
     }
 
     function lastClickTarget() {

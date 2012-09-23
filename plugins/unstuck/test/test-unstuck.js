@@ -8,9 +8,13 @@ QUnit.asyncTest('setup', function() {
 
     var hash_change_no_pointer = 0;
     Pilotfish('on', 'plugins:unstuck', function(evt, data) {
-      if (data.name == 'hash_change_no_pointer') {
-        hash_change_no_pointer++;
-      }
+        if (data.name == 'hash_change_no_pointer') {
+            hash_change_no_pointer++;
+        } else if (data.name == 'url_change_no_pointer') {
+            // I couldn't figour out how to test this in an automated way, so I just
+            // watch for the console.log to be printed when clicking on the #url_no_pointer link
+            console.log("url_change_no_pointer recorded!");
+        }
     });
     jQuery("#hash_with_pointer").click(); // should not fire event
 
