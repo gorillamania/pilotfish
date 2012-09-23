@@ -36,8 +36,8 @@ QUnit.test('Predefined function called', function() {
 QUnit.module('Events');
 QUnit.test('event fired', function() {
     var clicked = false, action = 'buy_button_clicked';
-    QUnit.expect(10);
     Pilotfish('on', action, function(evt, data) {
+        console.log("click called");
         QUnit.equal(evt.type, action, 'evt.type is action');
         clicked = true;
         QUnit.equal(data.category, 'category', 'category set');
@@ -48,13 +48,13 @@ QUnit.test('event fired', function() {
     });
 
     QUnit.ok(! clicked, "event not fired yet");
-    QUnit.ok(Pilotfish('trigger', action, {'category': 'category', label: 'label', value: 42, nonInteractive: false}), "Event fired");
-    
+    Pilotfish('trigger', action, {'category': 'category', label: 'label', value: 42, nonInteractive: false});
+
     QUnit.ok(Pilotfish('off', 'buy button clicked') !== false, "off not false");
 
     // Now it shouldn't fire
     clicked = false;
-    QUnit.ok(Pilotfish('trigger', 'buy button clicked'), "Event fired");
+    Pilotfish('trigger', 'buy button clicked');
     QUnit.ok(! clicked, "event not fired after off");
 
 });
